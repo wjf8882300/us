@@ -22,4 +22,26 @@
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
   </resultMap>
+
+	<!-- 批量插入用户信息 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into us_t_user
+		(id, user_type, user_name,
+		password,class_name,user_no,team_name,team_leader,teacher,create_date,last_update_date,is_delete)
+		values
+		<foreach collection="list" separator="," open="" close=""
+			item="item">
+			(#{item.id}, #{item.userType}, #{item.userName},
+			#{item.password},#{item.className},#{item.userNo},#{item.teamName},#{item.teamLeader},#{item.teacher},#{item.createDate},#{item.lastUpdateDate},'0')
+		</foreach>
+	</insert>
+	
+	<!-- 删除原有信息 -->
+	<update id="modifyOld">
+		update us_t_user t 
+		set t.is_delete = '1',
+		    t.version = t.version + 1,
+		    t.last_update_date = now()
+		where t.is_delete = '0'
+	</update>
 </mapper>
