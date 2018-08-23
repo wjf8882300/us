@@ -1,7 +1,7 @@
 package com.runxsports.provider.cs.cms.service;
 
 import org.springframework.web.multipart.MultipartFile;
-
+import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.entity.User;
 import com.runxsports.provider.cs.cms.model.bo.UserBO;
 import com.runxsports.provider.cs.cms.model.vo.UserVO;
@@ -28,4 +28,6 @@ public interface UserService {
 	 * @return User
 	 */
 	User findByUserNo(String userNo);
+	
+	PageInfo<User> queryAllUser(UserBO userBO);
 }

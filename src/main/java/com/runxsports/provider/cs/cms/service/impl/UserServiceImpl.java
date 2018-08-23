@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.DeleteStatusEnum;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.GlobalCallbackEnum;
@@ -17,6 +19,7 @@ import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
 import com.runxsports.provider.cs.cms.common.util.ExcelReadHelper;
 import com.runxsports.provider.cs.cms.common.util.IDUtil;
+import com.runxsports.provider.cs.cms.common.util.ValidateUtils;
 import com.runxsports.provider.cs.cms.entity.User;
 import com.runxsports.provider.cs.cms.mapper.UserMapper;
 import com.runxsports.provider.cs.cms.model.ExcelUser;
@@ -118,6 +121,26 @@ public class UserServiceImpl implements UserService {
             throw new CmsException(GlobalCallbackEnum.SC_FORBIDDEN);
 		}
 		return user;
+	}
+	
+	public PageInfo<User> queryAllUser(UserBO userBO) {
+		
+		Integer currentPage = userBO.getStart();
+        Integer pageSize = userBO.getLength();
+        ValidateUtils.notBlank(String.valueOf(currentPage), GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        ValidateUtils.notBlank(String.valueOf(pageSize), GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        if (currentPage < 0 || pageSize <= 0) {
+            log.error("分页数据有误");
+            throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        }
+
+        PageHelper.startPage(currentPage + 1, pageSize);
+        User record = new User();
+		record.setUserType(userBO.getUserType());
+		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
+		List<User> result = userMapper.select(record);
+		PageInfo<User> pageInfo = new PageInfo<User>(result);
+		return pageInfo;
 	}
 
 }

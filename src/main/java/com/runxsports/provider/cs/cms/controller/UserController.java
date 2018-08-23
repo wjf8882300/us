@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
 import com.runxsports.provider.cs.cms.entity.User;
@@ -50,6 +51,10 @@ public class UserController extends BaseController {
 	@GetMapping("byuserno/{userNo}")
     public RespData<User> findByUserNo(@PathVariable("userNo")String userNo){
 		return success(this.userService.findByUserNo(userNo));
+	}
 		
+	@PostMapping("/queryAll")
+    public RespData<PageInfo<User>> queryAllUser(@RequestBody UserBO userBO){
+        return success(userService.queryAllUser(userBO));
     }
 }

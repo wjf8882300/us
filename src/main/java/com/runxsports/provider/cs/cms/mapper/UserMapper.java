@@ -7,8 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import com.runxsports.provider.cs.cms.entity.User;
 
 import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.common.special.InsertListMapper;
 
-public interface UserMapper extends Mapper<User> {
+public interface UserMapper extends Mapper<User>, InsertListMapper<User> {
 	
 	/**
 	 * 批量插入
