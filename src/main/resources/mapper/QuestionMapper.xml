@@ -18,4 +18,33 @@
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
   </resultMap>
+  
+  
+    <resultMap id="BaseResultMap" type="com.runxsports.provider.cs.cms.entity.Question" >
+	    <id column="id" property="id" jdbcType="BIGINT" />
+	    <result column="question_group" property="questionGroup" jdbcType="CHAR" />
+	    <result column="question_type" property="questionType" jdbcType="CHAR" />
+	    <result column="question_content" property="questionContent" jdbcType="VARCHAR" />
+	    <result column="question_sort" property="questionSort" jdbcType="INTEGER" />
+	    <result column="is_delete" property="isDelete" jdbcType="CHAR" />
+	    <result column="version" property="version" jdbcType="INTEGER" />
+	    <collection property=""></collection>
+   </resultMap>
+  
+  <select id="findQuestionByUserType">
+  	  SELECT q.id,
+			 q.question_group,
+			 q.question_type,
+			 q.question_content,
+			 q.question_sort,
+			 q.version,
+			 i.question_id,
+			 i.item_no,
+			 i.item_content,
+			 i.item_sort,
+			 i.version
+	FROM us_t_question q
+	LEFT JOIN us_t_question_item i ON q.id = i.question_id AND i.is_delete = 0
+	WHERE q.is_delete = 0
+  </select>
 </mapper>

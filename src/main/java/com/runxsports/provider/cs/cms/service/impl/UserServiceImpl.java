@@ -110,4 +110,14 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	public User findByUserNo(String userNo) {
+		User user = this.userMapper.findByUserNo(userNo);
+		if(user == null) {
+			log.error("查询用户失败，参数有误！");
+            throw new CmsException(GlobalCallbackEnum.SC_FORBIDDEN);
+		}
+		return user;
+	}
+
 }
