@@ -2,15 +2,13 @@ package com.runxsports.provider.cs.cms.model.bo;
 
 import lombok.Data;
 
-import java.io.Serializable;
-
 /**
  * 用戶輸入對象
  * @author wangjf
  * 
  */
 @Data
-public class UserBO implements Serializable {
+public class UserBO extends BaseBO {
     /**
 	 * 
 	 */
@@ -20,4 +18,9 @@ public class UserBO implements Serializable {
 	 * 用戶ID
 	 */
 	private Long userId;
+	
+	/**
+	 * 用户类型
+	 */
+	private String userType;
 }
