@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
             throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
         }
 
-        PageHelper.startPage(currentPage + 1, pageSize);
+        PageHelper.startPage(currentPage, pageSize);
         User record = new User();
 		record.setUserType(userBO.getUserType());
 		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());

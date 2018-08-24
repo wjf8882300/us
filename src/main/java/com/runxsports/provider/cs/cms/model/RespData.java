@@ -1,5 +1,9 @@
 package com.runxsports.provider.cs.cms.model;
 
+import java.util.List;
+
+import com.github.pagehelper.PageInfo;
+
 /**
  * 响应数据
  * @author wangjf
@@ -15,6 +19,10 @@ public class RespData<T> {
 
 	/** 响应数据 */
 	private T data;
+	
+	private List<?> rows;
+	
+	private Long total;
 
 	public Integer getCode() {
 		return code;
@@ -48,6 +56,27 @@ public class RespData<T> {
 		this.code = code;
 		this.message = message;
 		this.data = data;
+		
+		if(data != null && data instanceof PageInfo) {
+			PageInfo<?> p = (PageInfo<?>)data;
+			this.rows = p.getList();
+			this.total = p.getTotal();
+		}
 	}
 
+	public List<?> getRows() {
+		return rows;
+	}
+
+	public void setRows(List<?> rows) {
+		rows = rows;
+	}
+
+	public Long getTotal() {
+		return total;
+	}
+
+	public void setTotal(Long total) {
+		total = total;
+	}
 }
