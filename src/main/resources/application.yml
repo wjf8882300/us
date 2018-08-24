@@ -3,9 +3,9 @@ spring:
     name: provider-cs-cms
   datasource:
       name: test
-      url: jdbc:mysql://localhost:3306/us?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true
+      url: jdbc:mysql://192.168.1.102:3306/us?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true
       username: root
-      password: wang9403
+      password: Xingyun*_001
       # 使用druid数据源
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.jdbc.Driver

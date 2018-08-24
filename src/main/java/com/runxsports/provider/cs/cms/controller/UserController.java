@@ -1,6 +1,8 @@
 package com.runxsports.provider.cs.cms.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +43,16 @@ public class UserController extends BaseController {
         return success();
     }
 	
+	/**
+	 * 登录根据学号或者工号查询
+	 * @param userNo
+	 * @return
+	 */
+	@GetMapping("byuserno/{userNo}")
+    public RespData<User> findByUserNo(@PathVariable("userNo")String userNo){
+		return success(this.userService.findByUserNo(userNo));
+	}
+		
 	@PostMapping("/queryAll")
     public RespData<PageInfo<User>> queryAllUser(@RequestBody UserBO userBO){
         return success(userService.queryAllUser(userBO));

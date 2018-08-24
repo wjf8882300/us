@@ -44,4 +44,17 @@
 		    t.last_update_date = now()
 		where t.is_delete = '0'
 	</update>
+	
+	<select id="findByUserNo" resultType="com.runxsports.provider.cs.cms.entity.User">
+		select us.id,
+			   us.user_type as userType ,
+		       us.user_name as userName,
+		       us.class_name as className,
+		       us.user_no as userNo,
+		       us.team_name as teamName,
+			   us.team_leader as teamLeader,
+			   us.teacher as teacher 
+		from us_t_user us 
+		where us.user_no = #{userNo}
+	</select>
 </mapper>

@@ -18,4 +18,40 @@
     <result column="version" property="version" jdbcType="INTEGER" />
     <result column="memo" property="memo" jdbcType="VARCHAR" />
   </resultMap>
+  
+  
+  <!--   <resultMap id="resultQuestion" type="com.runxsports.provider.cs.cms.model.vo.QuestionItemVO" >
+	    <id column="id" property="id" jdbcType="BIGINT" />
+	    <result column="question_group" property="questionGroup" jdbcType="CHAR" />
+	    <result column="question_type" property="questionType" jdbcType="CHAR" />
+	    <result column="question_content" property="questionContent" jdbcType="VARCHAR" />
+	    <result column="question_sort" property="questionSort" jdbcType="INTEGER" />
+	    <result column="version" property="version" jdbcType="INTEGER" />
+	    <collection property="items" ofType="com.runxsports.provider.cs.cms.entity.QuestionItem">
+	    	<id column="question_id" property="questionId"/>
+	    	<result column="item_no" property="itemNo"/>
+	    	<result column="item_content" property="itemContent"/>
+	    	<result column="item_sort" property="itemSort"/>
+	    	<result column="itemVersion" property="version"/>
+	    </collection>
+   </resultMap> -->
+  
+  <!-- 根据角色类型查询题目 -->
+<!--   <select id="findQuestionByUserType"  resultMap="resultQuestion">
+  	  SELECT q.id,
+			 q.question_group,
+			 q.question_type,
+			 q.question_content,
+			 q.question_sort,
+			 q.version,
+			 i.question_id,
+			 i.item_no,
+			 i.item_content,
+			 i.item_sort,
+			 i.version as itemVersion
+	FROM us_t_question q
+	LEFT JOIN us_t_question_item i ON q.id = i.question_id AND i.is_delete = 0
+	WHERE q.is_delete = 0
+	  and q.question_group = #{questionGroup}
+  </select> -->
 </mapper>

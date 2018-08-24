@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -115,6 +114,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public User findByUserNo(String userNo) {
+		User user = this.userMapper.findByUserNo(userNo);
+		if(user == null) {
+			log.error("查询用户失败，参数有误！");
+            throw new CmsException(GlobalCallbackEnum.SC_FORBIDDEN);
+		}
+		return user;
+	}
+	
 	public PageInfo<User> queryAllUser(UserBO userBO) {
 		
 		Integer currentPage = userBO.getStart();
