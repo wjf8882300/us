@@ -1,5 +1,6 @@
 package com.runxsports.provider.cs.cms.service;
 
+
 import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
 
 public interface QuestionService {
@@ -10,4 +11,5 @@ public interface QuestionService {
 	 * @return
 	 */
 	QuestionVO queryQuestion(String questionGroup);
+	
 }
