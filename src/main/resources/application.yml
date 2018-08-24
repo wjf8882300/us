@@ -28,9 +28,9 @@ spring:
       max-file-size: 5MB
   redis:
     #host: dev-redis-1.runx.vip
-    host: localhost
+    host: 121.43.151.100
     port: 6379
-    #password: 1E7ulA30zqzw
+    password: duanjudy@123
     timeout: 0
 
 us:
