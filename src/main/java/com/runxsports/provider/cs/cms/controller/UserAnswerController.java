@@ -3,10 +3,12 @@ package com.runxsports.provider.cs.cms.controller;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
 import com.runxsports.provider.cs.cms.model.RespData;
@@ -42,10 +44,10 @@ public class UserAnswerController  extends BaseController {
 	 * @param file
 	 * @return
 	 */
-	@PostMapping("/export")
-    public RespData<UserAnswerVO> export(@RequestParam String group,HttpServletResponse response){
-//		this.userAnswerService.save(answer);
-		return success();
+	@GetMapping("/export")
+	@ResponseBody
+    public void export(@RequestParam String group,HttpServletResponse response){
+		this.userAnswerService.export(group, response);
     }
 		
 		

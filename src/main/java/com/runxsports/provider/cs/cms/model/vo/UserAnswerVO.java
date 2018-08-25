@@ -1,10 +1,6 @@
 package com.runxsports.provider.cs.cms.model.vo;
 
 import java.io.Serializable;
-import java.util.List;
-
-import com.runxsports.provider.cs.cms.entity.UserAnswer;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,17 +26,17 @@ public class UserAnswerVO implements Serializable {
 	/**
 	 * 党支部
 	 */
-	private String teamLeader;
+	private String teamName;
 	
 	/**
-	 * 辅导员
+	 * 班级
 	 */
-	private String teacher;
+	private String className;
 	
 	/**
-	 * 
+	 * 成绩
 	 */
-	private List<UserAnswer> answerList;
+	private String  answer;
 	
 
 }

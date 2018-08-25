@@ -1,6 +1,8 @@
 package com.runxsports.provider.cs.cms.service;
 
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
 
 /**
@@ -17,5 +19,11 @@ public interface UserAnswerService {
 	 */
 	void save(UserAnswer answer);
 	
+	
+	/**
+	 * 根据类型导出数据信息
+	 * @param group
+	 */
+	void export(String group,HttpServletResponse response);
 
 }

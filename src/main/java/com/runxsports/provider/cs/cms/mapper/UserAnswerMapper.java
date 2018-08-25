@@ -1,19 +1,15 @@
 package com.runxsports.provider.cs.cms.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
+import com.runxsports.provider.cs.cms.model.vo.UserAnswerVO;
+
 import tk.mybatis.mapper.common.Mapper;
 
 public interface UserAnswerMapper extends Mapper<UserAnswer> {
-	
-	/**
-	 * 新增用户答题答案
-	 * @param answer
-	 * @return
-	 */
-	int save(@Param("t") UserAnswer answer);
-	
 	/**
 	 * 新增用户答题答案
 	 * @param answer
@@ -28,4 +24,10 @@ public interface UserAnswerMapper extends Mapper<UserAnswer> {
 	 */
 	int findByQuestion(@Param("t") UserAnswer answer);
 	
+	/**
+	 * 根据类型导出成绩
+	 * @param group
+	 * @return
+	 */
+	List<UserAnswerVO> queryByGroup(@Param("group") String group);
 }
