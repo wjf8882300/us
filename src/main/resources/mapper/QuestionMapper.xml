@@ -10,6 +10,8 @@
     <result column="question_type" property="questionType" jdbcType="CHAR" />
     <result column="question_content" property="questionContent" jdbcType="VARCHAR" />
     <result column="question_sort" property="questionSort" jdbcType="INTEGER" />
+    <result column="question_score" property="questionScore" jdbcType="INTEGER" />
+    <result column="question_desc" property="questionDesc" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="create_user" property="createUser" jdbcType="BIGINT" />
     <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
@@ -62,6 +64,8 @@
 							      question_type,
 							      question_content,
 							      question_sort,
+							      question_score,
+							      question_desc,
 							      create_date,
 							      last_update_date)
 		values
@@ -71,12 +75,19 @@
 			1,
 			#{item.questionContent},
 			#{item.questionSort},
+			#{item.questionScore},
+			#{item.questionDesc},
 			now(),
 			now())
 		</foreach>
   </insert>
   
   <update id="updateIsDel">
-  	  update us_t_question set is_delete = 1
+  	  update us_t_question 
+  	  set is_delete = 1,
+  	  version = version + 1,
+	  last_update_date = now()
+  	  where question_group = #{questionGroup}
+  	  and is_delete = 0
   </update>
 </mapper>

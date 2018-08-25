@@ -4,20 +4,25 @@ import lombok.Data;
 
 @Data
 public class ExcelQuestion {
-
-	/**
-	 * 题目类别:0-学生题/1-支部题/2-指导员题
-	 */
-	private String questionGroup;
 	
+	/**
+	 * 排序
+	 */
+	private Integer sort;
+
 	 /**
      * 题目内容
      */
     private String questionContent;
+    
+    /**
+	 * 考评分
+	 */
+	private Integer questionScore;
 
     /**
-     * 排序
+     * 描述
      */
-    private Integer questionSort;
+    private String questionDesc;
 
 }

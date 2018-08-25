@@ -1,11 +1,9 @@
 package com.runxsports.provider.cs.cms.model.bo;
 
-import java.io.Serializable;
-
 import lombok.Data;
 
 @Data
-public class QuestionBO implements Serializable {
+public class QuestionBO extends BaseBO {
 
 	/**
 	 * 
@@ -16,4 +14,9 @@ public class QuestionBO implements Serializable {
 	 * 用户编号
 	 */
 	private String userNo;
+	
+	/**
+	 * 问题类型
+	 */
+	private String questionGroup;
 }

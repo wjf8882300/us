@@ -15,6 +15,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.DeleteStatusEnum;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.GlobalCallbackEnum;
+import com.runxsports.provider.cs.cms.common.constant.enumerate.UserEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
 import com.runxsports.provider.cs.cms.common.util.CacheUtil;
@@ -95,7 +96,7 @@ public class UserServiceImpl implements UserService {
         	user.setId(IDUtil.nextId());
         	user.setUserName(u.getUserName());
         	user.setClassName(u.getClassName());
-        	//user.setUserType(userType);
+        	user.setUserType(UserEnum.Type.STUDENT.getString());
         	user.setPassword(u.getUserNo());
         	user.setTeacher(u.getTeacher());
         	user.setTeamLeader(u.getTeamLeader());
