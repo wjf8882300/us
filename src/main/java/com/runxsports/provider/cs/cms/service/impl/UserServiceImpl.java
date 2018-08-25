@@ -17,6 +17,7 @@ import com.runxsports.provider.cs.cms.common.constant.enumerate.DeleteStatusEnum
 import com.runxsports.provider.cs.cms.common.constant.enumerate.GlobalCallbackEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
+import com.runxsports.provider.cs.cms.common.util.CacheUtil;
 import com.runxsports.provider.cs.cms.common.util.ExcelReadHelper;
 import com.runxsports.provider.cs.cms.common.util.IDUtil;
 import com.runxsports.provider.cs.cms.common.util.ValidateUtils;
@@ -33,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UserServiceImpl implements UserService {
 	
+
 	@Autowired
 	private UserMapper userMapper;
 
@@ -120,6 +122,7 @@ public class UserServiceImpl implements UserService {
 			log.error("查询用户失败，参数有误！");
             throw new CmsException(GlobalCallbackEnum.SC_FORBIDDEN);
 		}
+		CacheUtil.put(user);
 		return user;
 	}
 	

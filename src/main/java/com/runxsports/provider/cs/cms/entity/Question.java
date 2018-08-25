@@ -71,7 +71,17 @@ public class Question {
      * 备注
      */
     private String memo;
+    
+    public Question() {
+    	super();
+    }
 
+    public Question(Long id,String questionGroup,String questionContent,Integer questionSort) {
+    	this.id = id;
+    	this.questionGroup = questionGroup;
+    	this.questionContent=questionContent;
+    	this.questionSort=questionSort;
+    }
     /**
      * @return id
      */
