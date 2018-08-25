@@ -28,7 +28,7 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 		int count = this.mapper.findByQuestion(answer);
 		//答过删除之前的答题
 		if(count > 0) {
-			this.mapper.delete(answer);
+			this.mapper.deleteByUserId(answer);
 		}
 		//判断是否新增成功，失败抛异常
 	    if(this.mapper.save(answer) == 0) {

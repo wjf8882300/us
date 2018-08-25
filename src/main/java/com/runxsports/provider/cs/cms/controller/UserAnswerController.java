@@ -1,17 +1,15 @@
 package com.runxsports.provider.cs.cms.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
-import com.runxsports.provider.cs.cms.common.exception.CmsException;
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
 import com.runxsports.provider.cs.cms.model.RespData;
-import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
 import com.runxsports.provider.cs.cms.model.vo.UserAnswerVO;
 import com.runxsports.provider.cs.cms.service.UserAnswerService;
 
@@ -37,6 +35,19 @@ public class UserAnswerController  extends BaseController {
 		this.userAnswerService.save(answer);
 		return success();
     }
+	
+	
+	/**
+	 * 查询答题情况
+	 * @param file
+	 * @return
+	 */
+	@PostMapping("/export")
+    public RespData<UserAnswerVO> export(@RequestParam String group,HttpServletResponse response){
+//		this.userAnswerService.save(answer);
+		return success();
+    }
+		
 		
 	/**
 	 * 查询答题情况

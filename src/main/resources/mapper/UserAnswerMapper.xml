@@ -20,7 +20,7 @@
   </resultMap>
   
   <select id="findByQuestion" resultType="java.lang.Integer">
-  	  select count(1) from us_t_user_answer u
+  	  select count(1) from us_t_user_answer 
   	  where question_id=#{t.questionId} 
   	    and user_id=#{t.userId} 
   	    and dest_user_id=#{t.destUserId}
@@ -32,12 +32,50 @@
 		values(#{t.questionId},#{t.userId},#{t.destUserId},#{t.answer},now(),#{t.destUserId},now(),#{t.destUserId},#{t.memo})
   </insert>
   
-  <delete id="delete">
+  <delete id="deleteByUserId">
   	 update from us_t_user_answer set is_delete =1 
   	 where question_id=#{t.questionId} 
   	  and  user_id=#{t.userId} 
   	  and  dest_user_id=#{t.destUserId}
-  </delete> 
-  
+  </delete>
+   
+  <!-- 根据角色查询评价信息 -->
+  <select id="queryByGroup">
+      <!-- 学生自评 -->
+     <if test="group == 0">
+   		select q.question_content,
+   		       a.answer,
+   		       a.create_date,
+   		       u.user_no,
+   		       u.user_name,
+   		       u.team_leader,
+   		       u.teacher
+		 from us_t_user_answer a
+		left join us_t_question q on a.question_id = q.id and q.is_delete = 0
+		left join us_t_user u on a.user_id = u.id and u.is_delete = 0
+	  	where u.user_type = #{group} and a.is_delete = 0 and a.user_id = a.dest_user_id
+     </if>
+  	  
+  	   <!-- 党支部评 -->
+     <if test="group == 1">
+  		select q.question_content,a.answer,a.create_date,u.user_no,u.user_name,
+		r.user_no,r.user_name,u.team_leader,u.teacher
+		 from us_t_user_answer a
+		left join us_t_question q on a.question_id = q.id 
+		left join us_t_user u on a.user_id = u.id and u.is_delete = 0
+		left join us_t_user r on a.dest_user_id = r.id and r.is_delete = 0
+	  	where u.user_type = #{group} and a.is_delete = 0  
+     </if>
+  	<!-- 党支部评 -->
+     <if test="group == 2">
+  		select q.question_content,a.answer,a.create_date,u.user_no,u.user_name,
+		r.user_no,r.user_name,u.team_leader,u.teacher
+		 from us_t_user_answer a
+		left join us_t_question q on a.question_id = q.id 
+		left join us_t_user u on a.user_id = u.id and u.is_delete = 0
+		left join us_t_user r on a.dest_user_id = r.id and r.is_delete = 0
+	  	where u.user_type = #{group} and a.is_delete = 0  
+     </if>
+  </select>
   
 </mapper>

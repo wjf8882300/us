@@ -19,7 +19,7 @@ public interface UserAnswerMapper extends Mapper<UserAnswer> {
 	 * @param answer
 	 * @return
 	 */
-	int delete(@Param("t") UserAnswer answer);
+	int deleteByUserId(@Param("t") UserAnswer answer);
 	
 	/**
 	 * 查询当前人是否答过当前的题目
