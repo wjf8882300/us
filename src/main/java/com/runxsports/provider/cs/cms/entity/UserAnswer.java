@@ -70,7 +70,7 @@ public class UserAnswer {
      * 备注
      */
     private String memo;
-
+    
     /**
      * @return id
      */

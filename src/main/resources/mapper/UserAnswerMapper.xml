@@ -27,10 +27,6 @@
   	    and is_delete = 0
   </select>
   
-   <insert id="save" parameterType="com.runxsports.provider.cs.cms.entity.UserAnswer">
-	  	insert into us_t_user_answer(question_id,user_id,dest_user_id,answer,create_date,create_user,last_update_date,last_update_user,memo)
-		values(#{t.questionId},#{t.userId},#{t.destUserId},#{t.answer},now(),#{t.destUserId},now(),#{t.destUserId},#{t.memo})
-  </insert>
   
   <delete id="deleteByUserId">
   	 update from us_t_user_answer set is_delete =1 
@@ -40,42 +36,34 @@
   </delete>
    
   <!-- 根据角色查询评价信息 -->
-  <select id="queryByGroup">
-      <!-- 学生自评 -->
-     <if test="group == 0">
-   		select q.question_content,
-   		       a.answer,
-   		       a.create_date,
-   		       u.user_no,
-   		       u.user_name,
-   		       u.team_leader,
-   		       u.teacher
-		 from us_t_user_answer a
-		left join us_t_question q on a.question_id = q.id and q.is_delete = 0
-		left join us_t_user u on a.user_id = u.id and u.is_delete = 0
-	  	where u.user_type = #{group} and a.is_delete = 0 and a.user_id = a.dest_user_id
-     </if>
-  	  
-  	   <!-- 党支部评 -->
-     <if test="group == 1">
-  		select q.question_content,a.answer,a.create_date,u.user_no,u.user_name,
-		r.user_no,r.user_name,u.team_leader,u.teacher
-		 from us_t_user_answer a
-		left join us_t_question q on a.question_id = q.id 
-		left join us_t_user u on a.user_id = u.id and u.is_delete = 0
-		left join us_t_user r on a.dest_user_id = r.id and r.is_delete = 0
-	  	where u.user_type = #{group} and a.is_delete = 0  
-     </if>
-  	<!-- 党支部评 -->
-     <if test="group == 2">
-  		select q.question_content,a.answer,a.create_date,u.user_no,u.user_name,
-		r.user_no,r.user_name,u.team_leader,u.teacher
-		 from us_t_user_answer a
-		left join us_t_question q on a.question_id = q.id 
-		left join us_t_user u on a.user_id = u.id and u.is_delete = 0
-		left join us_t_user r on a.dest_user_id = r.id and r.is_delete = 0
-	  	where u.user_type = #{group} and a.is_delete = 0  
-     </if>
+  <select id="queryByGroup" resultType="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO">
+  
+		  select  u.user_no as userNo,
+			       u.user_name as userName,
+			       u.team_name as teamName,
+			       u.class_name as className,
+			       sum(a.answer)as answer
+			from us_t_user_answer a
+			left join us_t_question q on a.question_id = q.id 
+			left join us_t_user u on a.user_id = u.id
+			<if test="group != 0 ">
+			left join us_t_user r on a.dest_user_id = r.id 
+			</if>
+			where 
+				 a.is_delete = 0  
+				and q.is_delete = 0
+				and u.is_delete = 0
+				<choose>
+					<when test="group == 0">
+						and a.user_id = a.dest_user_id
+						and u.user_type = #{group}
+					</when>
+					<otherwise>
+						and r.is_delete = 0
+						and r.user_type = #{group}
+					</otherwise>
+				</choose>
+				group by u.user_no 
   </select>
   
 </mapper>

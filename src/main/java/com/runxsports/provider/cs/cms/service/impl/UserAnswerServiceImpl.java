@@ -1,14 +1,23 @@
 package com.runxsports.provider.cs.cms.service.impl;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
 import com.runxsports.provider.cs.cms.common.util.CacheUtil;
+import com.runxsports.provider.cs.cms.common.util.ExcelExportUtils;
+import com.runxsports.provider.cs.cms.common.util.IDUtil;
 import com.runxsports.provider.cs.cms.entity.User;
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
 import com.runxsports.provider.cs.cms.mapper.UserAnswerMapper;
+import com.runxsports.provider.cs.cms.model.vo.UserAnswerVO;
 import com.runxsports.provider.cs.cms.service.UserAnswerService;
 
 /**
@@ -30,11 +39,29 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 		if(count > 0) {
 			this.mapper.deleteByUserId(answer);
 		}
+		answer.setId(IDUtil.nextId());
+		answer.setCreateDate(new Date());
+		answer.setLastUpdateDate(new Date());
+		answer.setIsDelete("0");
+		answer.setVersion(1);
 		//判断是否新增成功，失败抛异常
-	    if(this.mapper.save(answer) == 0) {
+	    if(this.mapper.insert(answer) == 0) {
 	    	throw new CmsException(CmsErrorCodeEnum.CMS9083004);
 	    } 
 	}
 
-
+	@Override
+	public void export(String group,HttpServletResponse response) {
+		if(StringUtils.isEmpty(group)) {
+			throw new CmsException(CmsErrorCodeEnum.CMS9083010);
+		}
+		List<UserAnswerVO> list = this.mapper.queryByGroup(group);
+		//excel标题
+	    String[] title = { "姓名", "学号/工号", "班级", "所在支部", "成绩"};
+	    String[] values= {"userName","userNo","className","teamName","answer"};
+	    //sheet名
+	    String sheetName = group.equals("0")? "党员自评":group.equals("1") ?"支部书记评价":"辅导员评价";
+	    sheetName += "成绩";
+	    ExcelExportUtils.exportExcelData(sheetName, title, values,list,response);
+	}
 }
