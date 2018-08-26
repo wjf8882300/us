@@ -20,6 +20,8 @@ public enum CmsErrorCodeEnum implements BaseCallbackEnum {
     CMS9083008(9083008, "导入失败，excel为空或者格式有误"),
     CMS9083009(9083009, "导入失败，上传文件为空"),
     CMS9083010(9083010, "请选择导出成绩类型"),
+    CMS9083011(9083011, "密码不能为空"),
+    CMS9083012(9083012, "密码不正确"),
     ;
 
     /**

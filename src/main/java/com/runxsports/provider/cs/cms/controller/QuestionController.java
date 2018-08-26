@@ -36,8 +36,8 @@ public class QuestionController extends BaseController {
 	 * @return
 	 */
 	@PostMapping("/query")
-    public RespData<QuestionVO> queryQuestion(@RequestParam String questionGroup){
-        return success(questionService.queryQuestion(questionGroup));
+    public RespData<QuestionVO> queryQuestion(@RequestBody QuestionBO questionBO){
+        return success(questionService.queryQuestion(questionBO.getQuestionGroup()));
     }
 	
 	/**

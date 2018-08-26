@@ -60,19 +60,19 @@ public class QuestionServiceImpl implements QuestionService {
 		Question record = new Question();
 		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
 		
-		record.setQuestionGroup(QuestionEnum.Group.STUDENT.toString());
+		record.setQuestionGroup(QuestionEnum.Group.STUDENT.getString());
 		List<Question> studentQuestionList = questionMapper.select(record);
 		if(studentQuestionList != null && studentQuestionList.size() > 0) {
 			redis.setObject(RedisConstant.PRFIX_QUESTION + record.getQuestionGroup(), new QuestionVO(studentQuestionList));
 		}
 
-		record.setQuestionGroup(QuestionEnum.Group.LEADER.toString());
+		record.setQuestionGroup(QuestionEnum.Group.LEADER.getString());
 		List<Question> leaderQuestionList = questionMapper.select(record);
 		if(leaderQuestionList != null && leaderQuestionList.size() > 0) {
 			redis.setObject(RedisConstant.PRFIX_QUESTION + record.getQuestionGroup(), new QuestionVO(leaderQuestionList));
 		}
 		
-		record.setQuestionGroup(QuestionEnum.Group.TEACHER.toString());
+		record.setQuestionGroup(QuestionEnum.Group.TEACHER.getString());
 		List<Question> teacherQuestionList = questionMapper.select(record);
 		if(teacherQuestionList != null && teacherQuestionList.size() > 0) {
 			redis.setObject(RedisConstant.PRFIX_QUESTION + record.getQuestionGroup(), new QuestionVO(teacherQuestionList));
@@ -135,6 +135,8 @@ public class QuestionServiceImpl implements QuestionService {
         	log.error("批量导入题目失败");
         	throw new CmsException(CmsErrorCodeEnum.CMS9083004);
         }
+        
+        init();
 		
 	}
 

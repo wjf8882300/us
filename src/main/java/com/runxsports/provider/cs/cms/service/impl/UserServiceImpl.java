@@ -25,7 +25,9 @@ import com.runxsports.provider.cs.cms.common.util.ValidateUtils;
 import com.runxsports.provider.cs.cms.entity.User;
 import com.runxsports.provider.cs.cms.mapper.UserMapper;
 import com.runxsports.provider.cs.cms.model.ExcelUser;
+import com.runxsports.provider.cs.cms.model.bo.LoginBO;
 import com.runxsports.provider.cs.cms.model.bo.UserBO;
+import com.runxsports.provider.cs.cms.model.vo.LoginVO;
 import com.runxsports.provider.cs.cms.model.vo.UserVO;
 import com.runxsports.provider.cs.cms.service.UserService;
 
@@ -145,6 +147,25 @@ public class UserServiceImpl implements UserService {
 		List<User> result = userMapper.select(record);
 		PageInfo<User> pageInfo = new PageInfo<User>(result);
 		return pageInfo;
+	}
+
+	@Override
+	public LoginVO login(LoginBO loginBO) {
+		ValidateUtils.notBlank(loginBO.getPassword(), CmsErrorCodeEnum.CMS9083011);
+		
+		LoginVO loginVO = new LoginVO();
+		
+		User record = new User();
+		record.setPassword(loginBO.getPassword());
+		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
+		User result = userMapper.selectOne(record);
+		if(result != null) {
+			loginVO.setUserType(result.getUserType());
+		} else {
+			throw new CmsException(CmsErrorCodeEnum.CMS9083012);
+		}
+		
+		return loginVO;
 	}
 
 }

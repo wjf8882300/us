@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.apache.commons.lang3.Validate;
 
 import com.runxsports.provider.cs.cms.common.constant.enumerate.GlobalCallbackEnum;
+import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
 
 /**
@@ -13,11 +14,19 @@ import com.runxsports.provider.cs.cms.common.exception.CmsException;
  */
 public class ValidateUtils {
 
-    public static <T extends CharSequence> void notBlank(final T chars, final GlobalCallbackEnum GlobalCallbackEnum) {
+    public static <T extends CharSequence> void notBlank(final T chars, final GlobalCallbackEnum globalCallbackEnum) {
         try {
             Validate.notBlank(chars);
         } catch (Exception e) {
-            throw new CmsException(GlobalCallbackEnum);
+            throw new CmsException(globalCallbackEnum);
+        }
+    }
+    
+    public static <T extends CharSequence> void notBlank(final T chars, final CmsErrorCodeEnum globalCallbackEnum) {
+        try {
+            Validate.notBlank(chars);
+        } catch (Exception e) {
+            throw new CmsException(globalCallbackEnum);
         }
     }
 
