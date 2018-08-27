@@ -60,7 +60,6 @@ public interface UserAnswerMapper extends Mapper<UserAnswer> {
 	int batchInsert(@Param("list")List<UserAnswer> list);
 	
 	
-	
 	/**
 	 * 查询学生未自评分数的新信息
 	 * @param userType
