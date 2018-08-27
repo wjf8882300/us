@@ -99,4 +99,26 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 		PageInfo<UserAnswerVO> pageInfo = new PageInfo<UserAnswerVO>(result);
 		return pageInfo;
 	}
+
+	@Override
+	public PageInfo<UserAnswerVO> queryNotScore(UserAnswerBO userAnswerBO) {
+		Integer currentPage = userAnswerBO.getStart();
+        Integer pageSize = userAnswerBO.getLength();
+        ValidateUtils.notBlank(String.valueOf(currentPage), GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        ValidateUtils.notBlank(String.valueOf(pageSize), GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        ValidateUtils.notBlank(userAnswerBO.getUserType(), GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        if (currentPage < 0 || pageSize <= 0) {
+            log.error("分页数据有误");
+            throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        }
+        PageHelper.startPage(currentPage, pageSize);
+        List<UserAnswerVO> result = null;
+        if(UserEnum.Type.STUDENT.getString().equals(userAnswerBO.getUserType())) {
+        	result = mapper.queryStudentNotScore();
+        } else {
+        	result = mapper.queryTeamNotScore(userAnswerBO.getUserType());
+        }
+		PageInfo<UserAnswerVO> pageInfo = new PageInfo<UserAnswerVO>(result);
+		return pageInfo;
+	}
 }

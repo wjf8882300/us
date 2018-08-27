@@ -128,5 +128,35 @@ public class UserAnswerController  extends BaseController {
     public RespData<PageInfo<UserAnswerVO>> queryAllTeacher(@RequestBody UserAnswerBO userAnswerBO){
 		return success(userAnswerService.queryAll(userAnswerBO));
     }
+	
+	/**
+	 * 查询学生未自评分
+	 * @param userAnswerBO
+	 * @return
+	 */
+	@PostMapping("/queryNotScoreStudent")
+    public RespData<PageInfo<UserAnswerVO>> queryNotScoreStudent(@RequestBody UserAnswerBO userAnswerBO){
+		return success(userAnswerService.queryNotScore(userAnswerBO));
+    }
+	
+	/**
+	 * 查询支部书记未给学生评分信息
+	 * @param userAnswerBO
+	 * @return
+	 */
+	@PostMapping("/queryNotScoreLeader")
+    public RespData<PageInfo<UserAnswerVO>> queryNotScoreLeader(@RequestBody UserAnswerBO userAnswerBO){
+		return success(userAnswerService.queryNotScore(userAnswerBO));
+    }
+	
+	/**
+	 * 查询辅导员未给学生评分信息
+	 * @param userAnswerBO
+	 * @return
+	 */
+	@PostMapping("/queryNotScoreTeacher")
+    public RespData<PageInfo<UserAnswerVO>> queryNotScoreTeacher(@RequestBody UserAnswerBO userAnswerBO){
+		return success(userAnswerService.queryNotScore(userAnswerBO));
+    }
 		
 }

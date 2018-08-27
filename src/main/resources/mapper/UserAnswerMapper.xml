@@ -19,14 +19,6 @@
     <result column="memo" property="memo" jdbcType="VARCHAR" />
   </resultMap>
   
-  <resultMap id="UserScoreMap" type="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO" >
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="class_name" property="className" jdbcType="VARCHAR" />
-    <result column="user_no" property="userNo" jdbcType="VARCHAR" />
-    <result column="team_name" property="teamName" jdbcType="VARCHAR" />
-    <result column="answer" property="answer" jdbcType="VARCHAR" />
-  </resultMap>
-  
   <select id="findByQuestion" resultType="java.lang.Integer">
   	  select count(1) from us_t_user_answer 
   	  where question_id=#{t.questionId} 
@@ -45,7 +37,6 @@
    
   <!-- 根据角色查询评价信息 -->
   <select id="queryByGroup" resultType="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO">
-  
 		  select  u.user_no as userNo,
 			       u.user_name as userName,
 			       u.team_name as teamName,
@@ -74,30 +65,39 @@
 				group by u.user_no 
   </select>
   
-  <!-- 查询学生评分 -->
-  <select id="queryStudentScore" resultMap="UserScoreMap">
-	select u.user_name, u.class_name, u.user_no,
-	       u.team_name, ua.answer
-	from us_t_user_answer ua, us_t_user u
-	where ua.user_id = u.id
-	and u.user_type = 0
-	and u.is_delete = 0
-	and ua.is_delete = 0
-  </select>
   
-  <!-- 根据用户类型查询评分（学生除外） -->
-  <select id="queryOtherScore" resultMap="UserScoreMap">
-  	select u.user_name, u.class_name, u.user_no,
-	       u.team_name, ua.answer
-	from us_t_user_answer ua, us_t_user u
-	where ua.dest_user_id = u.id
-	and ua.user_id in (
-		select s.id 
-		from us_t_user s
-		where s.user_type = #{userType}
-		and s.is_delete = 0
-	)
-	and u.is_delete = 0
-	and ua.is_delete = 0
+    <!-- 查询学生未自我评价人 -->
+  <select id = "queryStudentNotScore" resultType="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO">
+		  select 
+				 u.user_name as userName,
+				 u.class_name as className,
+				 u.user_no as userNo,
+				 u.team_name as teamName,
+				 u.teacher,
+				 u.team_leader as  teamLeader
+		  from us_t_user u 
+		where u.id not in (
+					select a.dest_user_id 
+					from us_t_user_answer a 
+					where a.is_delete=0 
+					and a.user_id=a.dest_user_id) 
+		and u.is_delete = 0 
+		and u.user_type = 0
+  </select>
+
+  <!--查询支部书记/辅导员没有评价的学生 -->
+  <select id = "queryTeamNotScore" resultType="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO">
+		select 
+				 u.user_name as userName,
+				 u.class_name as className,
+				 u.user_no as userNo,
+				 u.team_name as teamName,
+				 u.teacher,
+				 u.team_leader as  teamLeader
+		  from us_t_user u
+		where u.id not in (select w.user_id from us_t_user_answer w where w.dest_user_id = (select t.id from us_t_user t where t.user_type =#{userType} and t.is_delete = 0))
+		and u.is_delete = 0
+		<if test="userType == 2">and u.user_type in (0,1)</if>
+		<if test="userType == 1">and u.user_type =0 </if>
   </select>
 </mapper>
