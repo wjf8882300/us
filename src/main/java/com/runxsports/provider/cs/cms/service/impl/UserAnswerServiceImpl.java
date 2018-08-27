@@ -11,17 +11,13 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.runxsports.provider.cs.cms.common.constant.enumerate.DeleteStatusEnum;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.GlobalCallbackEnum;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.UserEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
-import com.runxsports.provider.cs.cms.common.util.CacheUtil;
 import com.runxsports.provider.cs.cms.common.util.ExcelExportUtils;
 import com.runxsports.provider.cs.cms.common.util.IDUtil;
 import com.runxsports.provider.cs.cms.common.util.ValidateUtils;
-import com.runxsports.provider.cs.cms.entity.Question;
-import com.runxsports.provider.cs.cms.entity.User;
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
 import com.runxsports.provider.cs.cms.mapper.UserAnswerMapper;
 import com.runxsports.provider.cs.cms.model.bo.UserAnswerBO;
@@ -68,10 +64,10 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 		}
 		List<UserAnswerVO> list = this.mapper.queryByGroup(group);
 		//excel标题
-	    String[] title = { "姓名", "学号/工号", "班级", "所在支部", "成绩"};
-	    String[] values= {"userName","userNo","className","teamName","answer"};
+	    String[] title = { "姓名", "学号", "班级", "所在支部","支部书记","辅导员","辅导员工号", "成绩"};
+	    String[] values= {"userName","userNo","className","teamName","teamLeader","teacher","teacherNo","answer"};
 	    //sheet名
-	    String sheetName = group.equals("0")? "党员自评":group.equals("1") ?"支部书记评价":"辅导员评价";
+	    String sheetName = group.equals(UserEnum.Type.STUDENT.getString())? "党员自评":group.equals(UserEnum.Type.LEADER.getString()) ?"支部书记评价":"辅导员评价";
 	    sheetName += "成绩";
 	    ExcelExportUtils.exportExcelData(sheetName, title, values,list,response);
 	}

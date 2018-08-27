@@ -19,6 +19,14 @@
     <result column="memo" property="memo" jdbcType="VARCHAR" />
   </resultMap>
   
+  <resultMap id="UserScoreMap" type="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO" >
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="user_no" property="userNo" jdbcType="VARCHAR" />
+    <result column="team_name" property="teamName" jdbcType="VARCHAR" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+  </resultMap>
+  
   <select id="findByQuestion" resultType="java.lang.Integer">
   	  select count(1) from us_t_user_answer 
   	  where question_id=#{t.questionId} 
@@ -37,11 +45,14 @@
    
   <!-- 根据角色查询评价信息 -->
   <select id="queryByGroup" resultType="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO">
-		  select  u.user_no as userNo,
+		  select   u.user_no as userNo,
 			       u.user_name as userName,
 			       u.team_name as teamName,
 			       u.class_name as className,
-			       sum(a.answer)as answer
+			       sum(a.answer)as answer,
+			       u.teacher,
+			       u.team_leader as  teamLeader,
+				   u.teacher_no as teacherNo
 			from us_t_user_answer a
 			left join us_t_question q on a.question_id = q.id 
 			left join us_t_user u on a.user_id = u.id
@@ -74,7 +85,8 @@
 				 u.user_no as userNo,
 				 u.team_name as teamName,
 				 u.teacher,
-				 u.team_leader as  teamLeader
+				 u.team_leader as  teamLeader,
+				 u.teacher_no as teacherNo
 		  from us_t_user u 
 		where u.id not in (
 					select a.dest_user_id 
@@ -93,9 +105,10 @@
 				 u.user_no as userNo,
 				 u.team_name as teamName,
 				 u.teacher,
-				 u.team_leader as  teamLeader
+				 u.team_leader as  teamLeader,
+				 u.teacher_no
 		  from us_t_user u
-		where u.id not in (select w.user_id from us_t_user_answer w where w.dest_user_id = (select t.id from us_t_user t where t.user_type =#{userType} and t.is_delete = 0))
+		where u.id not in (select w.user_id from us_t_user_answer w where w.dest_user_id in (select t.id from us_t_user t where t.user_type =#{userType} and t.is_delete = 0))
 		and u.is_delete = 0
 		<if test="userType == 2">and u.user_type in (0,1)</if>
 		<if test="userType == 1">and u.user_type =0 </if>

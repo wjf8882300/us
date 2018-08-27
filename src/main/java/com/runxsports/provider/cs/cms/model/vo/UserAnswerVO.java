@@ -43,5 +43,14 @@ public class UserAnswerVO implements Serializable {
 	 */
 	private String teacher;
 	
+	/**
+	 * 辅导员工号
+	 */
+	private String teacherNo;
+	
+	/**
+	 * 党支部书记
+	 */
+	private String teamLeader;
 
 }
