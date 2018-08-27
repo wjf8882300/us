@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.runxsports.provider.cs.cms.mapper.UserAttachmentMapper" >
+  <resultMap id="BaseResultMap" type="com.runxsports.provider.cs.cms.entity.UserAttachment" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="attachement_name" property="attachementName" jdbcType="VARCHAR" />
+    <result column="attachement_type" property="attachementType" jdbcType="CHAR" />
+    <result column="attachement_path" property="attachementPath" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="BIGINT" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="BIGINT" />
+    <result column="is_delete" property="isDelete" jdbcType="CHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

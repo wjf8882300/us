@@ -28,7 +28,17 @@ public class UsProperties {
 	@Data
 	public class UsFile {
 		/**
-	     * 模板上传路径
+	     * 基础路径
+	     */
+		private String basePath;
+		
+		/**
+	     * 模版上传路径
+	     */
+		private String templatePath;
+		
+		/**
+	     * 文件上传路径
 	     */
 	    private String uploadPath;
 	    
