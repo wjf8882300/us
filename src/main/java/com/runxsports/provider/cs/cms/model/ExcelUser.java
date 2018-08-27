@@ -29,9 +29,19 @@ public class ExcelUser {
      * 支部书记
      */
     private String teamLeader;
+    
+    /**
+     * 支部书记学号
+     */
+    private String teamLeaderNo;
 
     /**
      * 辅导员
      */
     private String teacher;
+    
+    /**
+     * 辅导员工号
+     */
+    private String teacherNo;
 }

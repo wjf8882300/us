@@ -30,6 +30,15 @@ public interface UserEnum {
 		public String getString(){
 			return this.key.toString();
 		}
+		
+		public static Type getEnum(Integer key) {
+	        for (Type tmp : Type.values()) {
+	            if (tmp.getKey().equals(key)) {
+	                return tmp;
+	            }
+	        }
+	        return null;
+	    }
 	}
 
 }

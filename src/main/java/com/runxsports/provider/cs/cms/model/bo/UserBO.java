@@ -23,4 +23,9 @@ public class UserBO extends BaseBO {
 	 * 用户类型
 	 */
 	private String userType;
+	
+	/**
+	 * 用户姓名
+	 */
+	private String userName;
 }

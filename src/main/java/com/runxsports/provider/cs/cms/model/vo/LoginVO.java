@@ -13,4 +13,8 @@ public class LoginVO implements Serializable {
 	
 	private String userType;
 
+	/**
+	 * 唯一识别号
+	 */
+	private String token;
 }

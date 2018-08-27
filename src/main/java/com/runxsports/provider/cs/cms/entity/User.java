@@ -96,6 +96,30 @@ public class User {
     private String memo;
 
     /**
+     * 支部书记学号
+     */
+    @Column(name = "team_leader_no")
+    private String teamLeaderNo;
+
+    /**
+     * 支部书记ID
+     */
+    @Column(name = "team_leader_id")
+    private Long teamLeaderId;
+
+    /**
+     * 辅导元工号
+     */
+    @Column(name = "teacher_no")
+    private String teacherNo;
+
+    /**
+     * 辅导员ID
+     */
+    @Column(name = "teacher_id")
+    private Long teacherId;
+
+    /**
      * @return id
      */
     public Long getId() {
@@ -381,5 +405,77 @@ public class User {
      */
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    /**
+     * 获取支部书记学号
+     *
+     * @return team_leader_no - 支部书记学号
+     */
+    public String getTeamLeaderNo() {
+        return teamLeaderNo;
+    }
+
+    /**
+     * 设置支部书记学号
+     *
+     * @param teamLeaderNo 支部书记学号
+     */
+    public void setTeamLeaderNo(String teamLeaderNo) {
+        this.teamLeaderNo = teamLeaderNo;
+    }
+
+    /**
+     * 获取支部书记ID
+     *
+     * @return team_leader_id - 支部书记ID
+     */
+    public Long getTeamLeaderId() {
+        return teamLeaderId;
+    }
+
+    /**
+     * 设置支部书记ID
+     *
+     * @param teamLeaderId 支部书记ID
+     */
+    public void setTeamLeaderId(Long teamLeaderId) {
+        this.teamLeaderId = teamLeaderId;
+    }
+
+    /**
+     * 获取辅导元工号
+     *
+     * @return teacher_no - 辅导元工号
+     */
+    public String getTeacherNo() {
+        return teacherNo;
+    }
+
+    /**
+     * 设置辅导元工号
+     *
+     * @param teacherNo 辅导元工号
+     */
+    public void setTeacherNo(String teacherNo) {
+        this.teacherNo = teacherNo;
+    }
+
+    /**
+     * 获取辅导员ID
+     *
+     * @return teacher_id - 辅导员ID
+     */
+    public Long getTeacherId() {
+        return teacherId;
+    }
+
+    /**
+     * 设置辅导员ID
+     *
+     * @param teacherId 辅导员ID
+     */
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
     }
 }

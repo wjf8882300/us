@@ -36,21 +36,23 @@
   </select>
   
   
-  <delete id="deleteByUserId">
+  <update id="deleteByUserId">
   	 update from us_t_user_answer set is_delete =1 
   	 where question_id=#{t.questionId} 
   	  and  user_id=#{t.userId} 
   	  and  dest_user_id=#{t.destUserId}
-  </delete>
+  </update>
    
   <!-- 根据角色查询评价信息 -->
   <select id="queryByGroup" resultType="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO">
-  
-		  select  u.user_no as userNo,
+		  select   u.user_no as userNo,
 			       u.user_name as userName,
 			       u.team_name as teamName,
 			       u.class_name as className,
-			       sum(a.answer)as answer
+			       sum(a.answer)as answer,
+			       u.teacher,
+			       u.team_leader as  teamLeader,
+				   u.teacher_no as teacherNo
 			from us_t_user_answer a
 			left join us_t_question q on a.question_id = q.id 
 			left join us_t_user u on a.user_id = u.id
@@ -74,7 +76,44 @@
 				group by u.user_no 
   </select>
   
-  <!-- 查询学生评分 -->
+  
+    <!-- 查询学生未自我评价人 -->
+  <select id = "queryStudentNotScore" resultType="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO">
+		  select 
+				 u.user_name as userName,
+				 u.class_name as className,
+				 u.user_no as userNo,
+				 u.team_name as teamName,
+				 u.teacher,
+				 u.team_leader as  teamLeader,
+				 u.teacher_no as teacherNo
+		  from us_t_user u 
+		where u.id not in (
+					select a.dest_user_id 
+					from us_t_user_answer a 
+					where a.is_delete=0 
+					and a.user_id=a.dest_user_id) 
+		and u.is_delete = 0 
+		and u.user_type = 0
+  </select>
+
+  <!--查询支部书记/辅导员没有评价的学生 -->
+  <select id = "queryTeamNotScore" resultType="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO">
+		select 
+				 u.user_name as userName,
+				 u.class_name as className,
+				 u.user_no as userNo,
+				 u.team_name as teamName,
+				 u.teacher,
+				 u.team_leader as  teamLeader,
+				 u.teacher_no
+		  from us_t_user u
+		where u.id not in (select w.user_id from us_t_user_answer w where w.dest_user_id in (select t.id from us_t_user t where t.user_type =#{userType} and t.is_delete = 0))
+		and u.is_delete = 0
+		<if test="userType == 2">and u.user_type in (0,1)</if>
+		<if test="userType == 1">and u.user_type =0 </if>
+  </select>
+    <!-- 查询学生评分 -->
   <select id="queryStudentScore" resultMap="UserScoreMap">
 	select u.user_name, u.class_name, u.user_no,
 	       u.team_name, ua.answer
@@ -100,4 +139,23 @@
 	and u.is_delete = 0
 	and ua.is_delete = 0
   </select>
+  
+  <update id="deleteByUserIdAndDestUserId">
+  	 update us_t_user_answer set is_delete =1 
+  	 where is_delete = 0
+  	  and  user_id=#{userId} 
+  	  and  dest_user_id=#{destUserId}
+  </update>
+  
+  	<!-- 批量插入答案信息 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into us_t_user_answer
+		(id,question_id,user_id,dest_user_id,answer,create_date,last_update_date,is_delete)
+		values
+		<foreach collection="list" separator="," open="" close=""
+			item="item">
+			(#{item.id}, #{item.questionId}, #{item.userId},
+			#{item.destUserId},#{item.answer},#{item.createDate},#{item.lastUpdateDate},'0')
+		</foreach>
+	</insert>
 </mapper>

@@ -37,7 +37,10 @@ us:
   file: 
     upload-path: /user/local/project/template/
     download-path: /user/local/project/download/
-
+  wechat: 
+    app-id: wx648f70aec1a36d27
+    app-secret: 99ec2ec8cd38c979a993c3785b5fc5cc
+  
 server:
   port: 9999
 

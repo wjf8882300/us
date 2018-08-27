@@ -15,4 +15,9 @@ public class LoginBO implements Serializable {
 	 * 登陆密码
 	 */
 	private String password;
+	
+	/**
+	 * 微信code
+	 */
+	private String code;
 }

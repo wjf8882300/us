@@ -44,4 +44,34 @@ public interface UserAnswerMapper extends Mapper<UserAnswer> {
 	 * @return
 	 */
 	List<UserAnswerVO> queryOtherScore(@Param("userType") String userType);
+	
+	/**
+	 * 删除历史答案
+	 * @param answer
+	 * @return
+	 */
+	int deleteByUserIdAndDestUserId(@Param("userId") Long userId, @Param("destUserId") Long destUserId);
+	
+	/**
+	 * 批量插入答案
+	 * @param list
+	 * @return
+	 */
+	int batchInsert(@Param("list")List<UserAnswer> list);
+	
+	
+	
+	/**
+	 * 查询学生未自评分数的新信息
+	 * @param userType
+	 * @return
+	 */
+	List<UserAnswerVO> queryStudentNotScore();
+	
+	/**
+	 * 查询党支部/辅导员未给学生打分的基本信息
+	 * @param group
+	 * @return
+	 */
+	List<UserAnswerVO> queryTeamNotScore(@Param("userType") String userType);
 }

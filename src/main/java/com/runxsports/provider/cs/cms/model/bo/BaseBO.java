@@ -19,5 +19,10 @@ public class BaseBO implements Serializable {/**
 	 * 分页条数
 	 */
 	private int length;
+	
+	/**
+	 * 令牌(表示用户身份)
+	 */
+	private String token;
 
 }

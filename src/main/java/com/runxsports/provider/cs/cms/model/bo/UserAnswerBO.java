@@ -1,7 +1,13 @@
 package com.runxsports.provider.cs.cms.model.bo;
 
-import lombok.Data;
+import java.util.List;
 
+import com.runxsports.provider.cs.cms.entity.UserAnswer;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class UserAnswerBO extends BaseBO {
 
@@ -13,4 +19,14 @@ public class UserAnswerBO extends BaseBO {
 	 * 用户类型
 	 */
 	private String userType;
+	
+	/**
+	 * 用户回答问题列表（微信前端提交时使用）
+	 */
+	List<UserAnswer> resultList;
+	
+	/**
+	 * 目标用户ID(为空时表示自己)
+	 */
+	private Long destUserId;
 }

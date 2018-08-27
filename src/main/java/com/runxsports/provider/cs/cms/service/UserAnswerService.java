@@ -1,6 +1,8 @@
 package com.runxsports.provider.cs.cms.service;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import com.github.pagehelper.PageInfo;
@@ -20,7 +22,7 @@ public interface UserAnswerService {
 	 * @param answer
 	 * @return
 	 */
-	void save(UserAnswer answer);
+	void save(UserAnswerBO userAnswerBO);
 	
 	
 	/**
@@ -35,4 +37,12 @@ public interface UserAnswerService {
 	 * @return
 	 */
 	PageInfo<UserAnswerVO> queryAll(UserAnswerBO userAnswerBO);
+	
+	
+	/**
+	 * 查询未评分数的学生信息
+	 * @param userType
+	 * @return
+	 */
+	PageInfo<UserAnswerVO> queryNotScore(UserAnswerBO userAnswerBO);
 }

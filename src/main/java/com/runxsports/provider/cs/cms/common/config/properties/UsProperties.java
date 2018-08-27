@@ -12,17 +12,42 @@ import lombok.Data;
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "us.file")
+@ConfigurationProperties(prefix = "us")
 public class UsProperties {
 
-
 	/**
-     * 模板上传路径
-     */
-    private String uploadPath;
-    
-    /**
-     * 文件下载路径
-     */
-    private String downloadPath;
+	 * 上传下载路径
+	 */
+	private UsFile file = new UsFile();
+	
+	/**
+	 * 微信
+	 */
+	private WeChat wechat = new WeChat();
+	
+	@Data
+	public class UsFile {
+		/**
+	     * 模板上传路径
+	     */
+	    private String uploadPath;
+	    
+	    /**
+	     * 文件下载路径
+	     */
+	    private String downloadPath;
+	}
+
+	@Data
+	public class WeChat {
+		/**
+	     * 模板上传路径
+	     */
+	    private String appId;
+	    
+	    /**
+	     * 文件下载路径
+	     */
+	    private String appSecret;
+	}
 }
