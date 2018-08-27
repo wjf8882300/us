@@ -101,36 +101,5 @@
 		<if test="userType == 1">and u.user_type =0 </if>
   </select>
   
-  <select id="queryStudentScore"  resultType="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO">
-  		  select u.user_name as userName,
-				 u.class_name as className,
-				 u.user_no as userNo,
-				 u.team_name as teamName,
-				 u.teacher,
-				 u.team_leader as  teamLeader,
-				 r.answer
-		  from us_t_user u
-		  left join us_t_user_answer  r on u.id = r.user_id
-			where r.is_delete =0 
-			and u.is_delete = 0
-		   and u.user_type =0
-			and r.user_id = r.dest_user_id 
-  		
-  </select>
-  
-    <select id="queryOtherScore"  resultType="com.runxsports.provider.cs.cms.model.vo.UserAnswerVO">
-  		 select  u.user_name as userName,
-				 u.class_name as className,
-				 u.user_no as userNo,
-				 u.team_name as teamName,
-				 u.teacher,
-				 u.team_leader as  teamLeader,
-				 r.answer
-		  from us_t_user u
-		  left join us_t_user_answer  r on r.dest_user_id = u.id
-			where r.is_delete =0 
-			and u.is_delete = 0
-		   and u.user_type = #{userType}
-  		
-  </select>
+
 </mapper>
