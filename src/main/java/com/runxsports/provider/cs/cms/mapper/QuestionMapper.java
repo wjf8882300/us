@@ -27,5 +27,5 @@ public interface QuestionMapper extends Mapper<Question> {
 	 * 删除之前的所有问题
 	 * @return
 	 */
-	int updateIsDel();
+	int updateIsDel(@Param("questionGroup") String questionGroup);
 }

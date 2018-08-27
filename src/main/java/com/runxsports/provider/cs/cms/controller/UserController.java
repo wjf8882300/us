@@ -14,7 +14,9 @@ import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
 import com.runxsports.provider.cs.cms.entity.User;
 import com.runxsports.provider.cs.cms.model.RespData;
+import com.runxsports.provider.cs.cms.model.bo.LoginBO;
 import com.runxsports.provider.cs.cms.model.bo.UserBO;
+import com.runxsports.provider.cs.cms.model.vo.LoginVO;
 import com.runxsports.provider.cs.cms.model.vo.UserVO;
 import com.runxsports.provider.cs.cms.service.UserService;
 
@@ -28,6 +30,11 @@ public class UserController extends BaseController {
 	
 	@Autowired
 	UserService userService;
+	
+	@PostMapping("/login")
+    public RespData<LoginVO> login(@RequestBody LoginBO loginBO){
+        return success(userService.login(loginBO));
+    }
 
 	@PostMapping("/query")
     public RespData<UserVO> queryUser(@RequestBody UserBO userBO){

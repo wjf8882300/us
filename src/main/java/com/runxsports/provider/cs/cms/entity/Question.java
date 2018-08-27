@@ -25,6 +25,18 @@ public class Question {
      */
     @Column(name = "question_content")
     private String questionContent;
+    
+    /**
+     * 题目分值
+     */
+    @Column(name = "question_score")
+    private Integer questionScore;
+    
+    /**
+     * 题目说明
+     */
+    @Column(name = "question_desc")
+    private String questionDesc;
 
     /**
      * 排序
@@ -293,4 +305,20 @@ public class Question {
     public void setMemo(String memo) {
         this.memo = memo;
     }
+
+	public Integer getQuestionScore() {
+		return questionScore;
+	}
+
+	public void setQuestionScore(Integer questionScore) {
+		this.questionScore = questionScore;
+	}
+
+	public String getQuestionDesc() {
+		return questionDesc;
+	}
+
+	public void setQuestionDesc(String questionDesc) {
+		this.questionDesc = questionDesc;
+	}
 }

@@ -46,6 +46,7 @@ mybatis:
 logging:
   level:
    com.runxsports.provider.cms.mapper: debug
+   tk.mybatis.mapper: debug
 
 management:
   health:

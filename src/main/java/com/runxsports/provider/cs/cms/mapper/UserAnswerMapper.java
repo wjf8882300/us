@@ -30,4 +30,18 @@ public interface UserAnswerMapper extends Mapper<UserAnswer> {
 	 * @return
 	 */
 	List<UserAnswerVO> queryByGroup(@Param("group") String group);
+	
+	/**
+	 * 根据用户类型查询评分
+	 * @param userType
+	 * @return
+	 */
+	List<UserAnswerVO> queryStudentScore();
+	
+	/**
+	 * 查询其他分数
+	 * @param group
+	 * @return
+	 */
+	List<UserAnswerVO> queryOtherScore(@Param("userType") String userType);
 }
