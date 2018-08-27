@@ -100,6 +100,31 @@
 		<if test="userType == 2">and u.user_type in (0,1)</if>
 		<if test="userType == 1">and u.user_type =0 </if>
   </select>
+    <!-- 查询学生评分 -->
+  <select id="queryStudentScore" resultMap="UserScoreMap">
+	select u.user_name, u.class_name, u.user_no,
+	       u.team_name, ua.answer
+	from us_t_user_answer ua, us_t_user u
+	where ua.user_id = u.id
+	and u.user_type = 0
+	and u.is_delete = 0
+	and ua.is_delete = 0
+  </select>
   
+  <!-- 根据用户类型查询评分（学生除外） -->
+  <select id="queryOtherScore" resultMap="UserScoreMap">
+  	select u.user_name, u.class_name, u.user_no,
+	       u.team_name, ua.answer
+	from us_t_user_answer ua, us_t_user u
+	where ua.dest_user_id = u.id
+	and ua.user_id in (
+		select s.id 
+		from us_t_user s
+		where s.user_type = #{userType}
+		and s.is_delete = 0
+	)
+	and u.is_delete = 0
+	and ua.is_delete = 0
+  </select>
 
 </mapper>
