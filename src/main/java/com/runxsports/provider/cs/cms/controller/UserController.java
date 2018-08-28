@@ -1,5 +1,7 @@
 package com.runxsports.provider.cs.cms.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,8 +73,8 @@ public class UserController extends BaseController {
 	 * @return List<User>
 	 */
 	@PostMapping("/queryByTeamLeaderNo")
-    public RespData<PageInfo<User>> queryByTeamLeaderNo(@RequestBody UserBO userBO){
-		userBO.setUserType(UserEnum.Type.STUDENT.getString());
+    public RespData<List<User>> queryByTeamLeaderNo(@RequestBody UserBO userBO){
+		userBO.setUserType(UserEnum.Type.LEADER.getString());
         return success(userService.queryUserByNo(userBO));
     }
 	/***
@@ -81,7 +83,7 @@ public class UserController extends BaseController {
 	 * @return List<User>
 	 */
 	@PostMapping("/queryByTeacherNo")
-    public RespData<PageInfo<User>> queryByTeacherNo(@RequestBody UserBO userBO){
+    public RespData<List<User>> queryByTeacherNo(@RequestBody UserBO userBO){
 		userBO.setUserType(UserEnum.Type.TEACHER.getString());
         return success(userService.queryUserByNo(userBO));
     }

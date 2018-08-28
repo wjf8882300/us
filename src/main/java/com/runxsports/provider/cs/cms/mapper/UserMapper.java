@@ -36,5 +36,11 @@ public interface UserMapper extends Mapper<User>, InsertListMapper<User> {
 	 * @param teamLeaderNo
 	 * @return List<User>
 	 */
-	List<User> queryUserByNo(@Param("No") String No,@Param("userType") String userType);
+	List<User> queryUserByNo(@Param("No") Long No,@Param("userType") String userType);
+	
+	/**
+	 * 设置支部书记和辅导员id
+	 * @return
+	 */
+	int updateLeaderId();
 }

@@ -1,5 +1,7 @@
 package com.runxsports.provider.cs.cms.service;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.entity.User;
@@ -52,5 +54,5 @@ public interface UserService {
 	 * @param teamLeaderNo
 	 * @return List<User>
 	 */
-	PageInfo<User> queryUserByNo(UserBO userBO);
+	List<User> queryUserByNo(UserBO userBO);
 }

@@ -174,6 +174,12 @@ public class UserServiceImpl implements UserService {
         	log.error("批量插入用户信息失败");
         	throw new CmsException(CmsErrorCodeEnum.CMS9083004);
         }
+        
+        int count = this.userMapper.updateLeaderId();
+        if(count == 0) {
+        	log.error("设置辅导员编号和支部书记编号错误");
+        	throw new CmsException(CmsErrorCodeEnum.CMS9083003);
+        }
 	}
 
 	@Override
@@ -263,28 +269,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public PageInfo<User> queryUserByNo(UserBO userBO) {
-		Integer currentPage = userBO.getStart();
-        Integer pageSize = userBO.getLength();
-        ValidateUtils.notBlank(String.valueOf(currentPage), GlobalCallbackEnum.PARAMETER_ILLEGAL);
-        ValidateUtils.notBlank(String.valueOf(pageSize), GlobalCallbackEnum.PARAMETER_ILLEGAL);
-        if (currentPage < 0 || pageSize <= 0) {
-            log.error("分页数据有误");
-            throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
-        }
-
-        PageHelper.startPage(currentPage, pageSize);
-        User record = new User();
-        if(StringUtils.isNotEmpty(userBO.getUserName())) {
-        	record.setUserName(userBO.getUserName());
-        }
-        if(StringUtils.isNotEmpty(userBO.getUserType())) {
-        	record.setUserType(userBO.getUserType());
-        }
-		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
-		List<User> result = userMapper.queryUserByNo(userBO.getTeamNo(),userBO.getUserType());
-		PageInfo<User> pageInfo = new PageInfo<User>(result);
-		return pageInfo;
+	public List<User> queryUserByNo(UserBO userBO){
+		AccessTokenVo accessTokenVo = weChatService.getCacheAccessToken(userBO.getToken());
+		return  userMapper.queryUserByNo(accessTokenVo.getUserId(),userBO.getUserType());
 	}
 
 }

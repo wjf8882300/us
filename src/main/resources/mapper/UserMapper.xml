@@ -77,8 +77,17 @@
 				 u.teacher_no as teacherNo,
 				 u.teacher 
 		 from us_t_user u 
-		 where 1=1
-		 <if test="userType == 1">and u.team_leader_no=#{No}</if>
-		 <if test="userType == 2">and u.teacher_no=#{No}</if> 
+		 where u.is_delete = 0
+		 <if test="userType==1">and u.team_leader_id=#{No}</if>
+		 <if test="userType==2">and u.teacher_id=#{No}</if> 
 	</select>
+	
+	<update id = "updateLeaderId">
+			update us_t_user r 
+			left join us_t_user a on r.team_leader_no =a.user_no
+			left join us_t_user b on r.teacher_no = b.user_no
+			set r.team_leader_id = a.id,r.teacher_id=b.id
+			where (r.team_leader_id is null or r.teacher_id is null)
+			 and r.is_delete = 0
+	</update>
 </mapper>
