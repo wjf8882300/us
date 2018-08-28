@@ -159,9 +159,4 @@ public class QuestionServiceImpl implements QuestionService {
 		PageInfo<Question> pageInfo = new PageInfo<Question>(result);
 		return pageInfo;
 	}
-
-	@Override
-	public List<QuestionVO> queryQuestionByNo(String userType) {
-		return  questionMapper.queryQuestionByType(userType);
-	}
 }
