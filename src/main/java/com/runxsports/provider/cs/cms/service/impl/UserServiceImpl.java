@@ -221,6 +221,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public LoginVO login(LoginBO loginBO) {
+		ValidateUtils.notBlank(loginBO.getUserType(), CmsErrorCodeEnum.CMS9083017);
 		ValidateUtils.notBlank(loginBO.getPassword(), CmsErrorCodeEnum.CMS9083011);
 		ValidateUtils.notBlank(loginBO.getCode(), CmsErrorCodeEnum.CMS9083013);
 
@@ -228,6 +229,7 @@ public class UserServiceImpl implements UserService {
 		
 		// 登录校验
 		User record = new User();
+		record.setUserType(loginBO.getUserType());
 		record.setPassword(loginBO.getPassword());
 		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
 		User result = userMapper.selectOne(record);
@@ -271,7 +273,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> queryUserByNo(UserBO userBO){
 		AccessTokenVo accessTokenVo = weChatService.getCacheAccessToken(userBO.getToken());
-		return  userMapper.queryUserByNo(accessTokenVo.getUserId(),userBO.getUserType());
+		User record = new User();
+		if(UserEnum.Type.LEADER.getString().equals(userBO.getUserType())) {
+			record.setTeamLeaderId(accessTokenVo.getUserId());
+		} else if(UserEnum.Type.TEACHER.getString().equals(userBO.getUserType())) {
+			record.setTeacherId(accessTokenVo.getUserId());
+		}
+		record.setUserType(UserEnum.Type.STUDENT.getString());
+		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
+		List<User> result = userMapper.select(record);
+		return  result;
 	}
 
 }

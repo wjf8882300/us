@@ -26,6 +26,7 @@ public enum CmsErrorCodeEnum implements BaseCallbackEnum {
     CMS9083014(9083014, "获取微信用户信息失败"),
     CMS9083015(9083015, "用户未登录或者登录已过期"),
     CMS9083016(9083016, "上传文件失败，无法创建文件"),
+    CMS9083017(9083017, "类型不能为空"),
     ;
 
     /**
