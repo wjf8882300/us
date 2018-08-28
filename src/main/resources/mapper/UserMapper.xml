@@ -66,4 +66,19 @@
 		from us_t_user us 
 		where us.user_no = #{userNo}
 	</select>
+	
+	<!-- 查詢支部书记下的学生 -->
+	<select id="queryUserByNo" resultType="com.runxsports.provider.cs.cms.entity.User" >
+		select   u.user_name as userName,
+				 u.class_name as className,
+				 u.user_no as userNo,
+				 u.team_name as teamName,
+				 u.team_leader as teamLeader,
+				 u.teacher_no as teacherNo,
+				 u.teacher 
+		 from us_t_user u 
+		 where 1=1
+		 <if test="userType == 1">and u.team_leader_no=#{No}</if>
+		 <if test="userType == 2">and u.teacher_no=#{No}</if> 
+	</select>
 </mapper>

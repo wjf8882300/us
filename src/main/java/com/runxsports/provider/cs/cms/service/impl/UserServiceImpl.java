@@ -6,15 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -263,6 +260,31 @@ public class UserServiceImpl implements UserService {
 		});
 		
 		return loginVO;
+	}
+
+	@Override
+	public PageInfo<User> queryUserByNo(UserBO userBO) {
+		Integer currentPage = userBO.getStart();
+        Integer pageSize = userBO.getLength();
+        ValidateUtils.notBlank(String.valueOf(currentPage), GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        ValidateUtils.notBlank(String.valueOf(pageSize), GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        if (currentPage < 0 || pageSize <= 0) {
+            log.error("分页数据有误");
+            throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        }
+
+        PageHelper.startPage(currentPage, pageSize);
+        User record = new User();
+        if(StringUtils.isNotEmpty(userBO.getUserName())) {
+        	record.setUserName(userBO.getUserName());
+        }
+        if(StringUtils.isNotEmpty(userBO.getUserType())) {
+        	record.setUserType(userBO.getUserType());
+        }
+		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
+		List<User> result = userMapper.queryUserByNo(userBO.getTeamNo(),userBO.getUserType());
+		PageInfo<User> pageInfo = new PageInfo<User>(result);
+		return pageInfo;
 	}
 
 }

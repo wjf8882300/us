@@ -1,7 +1,6 @@
 package com.runxsports.provider.cs.cms.service;
 
 import org.springframework.web.multipart.MultipartFile;
-
 import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.entity.User;
 import com.runxsports.provider.cs.cms.model.bo.LoginBO;
@@ -47,4 +46,11 @@ public interface UserService {
 	 * @return
 	 */
 	LoginVO login(LoginBO loginBO);
+	
+	/***
+	 * 查询支部书记下的学生
+	 * @param teamLeaderNo
+	 * @return List<User>
+	 */
+	PageInfo<User> queryUserByNo(UserBO userBO);
 }

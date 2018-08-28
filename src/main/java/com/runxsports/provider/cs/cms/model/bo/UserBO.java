@@ -1,6 +1,7 @@
 package com.runxsports.provider.cs.cms.model.bo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 用戶輸入對象
@@ -8,6 +9,7 @@ import lombok.Data;
  * 
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class UserBO extends BaseBO {
     /**
 	 * 
@@ -28,4 +30,9 @@ public class UserBO extends BaseBO {
 	 * 用户姓名
 	 */
 	private String userName;
+	
+	/**
+	 * 支部书记/辅导员编号
+	 */
+	private String teamNo;
 }

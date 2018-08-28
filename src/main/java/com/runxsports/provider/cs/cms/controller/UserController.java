@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.github.pagehelper.PageInfo;
+import com.runxsports.provider.cs.cms.common.constant.enumerate.UserEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
 import com.runxsports.provider.cs.cms.entity.User;
@@ -63,5 +63,26 @@ public class UserController extends BaseController {
 	@PostMapping("/queryAll")
     public RespData<PageInfo<User>> queryAllUser(@RequestBody UserBO userBO){
         return success(userService.queryAllUser(userBO));
+    }
+	
+	/***
+	 * 查询支部书记下的学生
+	 * @param userBO
+	 * @return List<User>
+	 */
+	@PostMapping("/queryByTeamLeaderNo")
+    public RespData<PageInfo<User>> queryByTeamLeaderNo(@RequestBody UserBO userBO){
+		userBO.setUserType(UserEnum.Type.STUDENT.getString());
+        return success(userService.queryUserByNo(userBO));
+    }
+	/***
+	 * 查询辅导员下的学生
+	 * @param userBO
+	 * @return List<User>
+	 */
+	@PostMapping("/queryByTeacherNo")
+    public RespData<PageInfo<User>> queryByTeacherNo(@RequestBody UserBO userBO){
+		userBO.setUserType(UserEnum.Type.TEACHER.getString());
+        return success(userService.queryUserByNo(userBO));
     }
 }
