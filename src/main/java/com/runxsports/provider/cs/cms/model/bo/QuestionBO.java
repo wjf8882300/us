@@ -1,8 +1,10 @@
 package com.runxsports.provider.cs.cms.model.bo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class QuestionBO extends BaseBO {
 
 	/**
@@ -19,4 +21,10 @@ public class QuestionBO extends BaseBO {
 	 * 问题类型
 	 */
 	private String questionGroup;
+	
+	/**
+	 * 用户类型
+	 */
+	private String userType;
+	
 }

@@ -1,8 +1,8 @@
 package com.runxsports.provider.cs.cms.service;
 
 
+import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.entity.Question;
 import com.runxsports.provider.cs.cms.model.bo.QuestionBO;
@@ -33,4 +33,11 @@ public interface QuestionService {
 	 * @return
 	 */
 	PageInfo<Question> queryAllQuestion(QuestionBO questionBO);
+	
+	/**
+	 * 查询支部书记/辅导员题目
+	 * @param questionBO
+	 * @return
+	 */
+	List<QuestionVO> queryQuestionByNo(String userType);
 }

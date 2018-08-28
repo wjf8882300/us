@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.runxsports.provider.cs.cms.entity.Question;
+import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
 
 import tk.mybatis.mapper.common.Mapper;
 
@@ -28,4 +29,11 @@ public interface QuestionMapper extends Mapper<Question> {
 	 * @return
 	 */
 	int updateIsDel(@Param("questionGroup") String questionGroup);
+	
+	/**
+	 * 查询支部书记/辅导员题目
+	 * @param userType
+	 * @return
+	 */
+	List<QuestionVO> queryQuestionByType(@Param("userType") String userType);
 }

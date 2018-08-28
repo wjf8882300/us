@@ -1,5 +1,7 @@
 package com.runxsports.provider.cs.cms.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageInfo;
+import com.runxsports.provider.cs.cms.common.constant.enumerate.UserEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
 import com.runxsports.provider.cs.cms.entity.Question;
@@ -61,6 +64,27 @@ public class QuestionController extends BaseController {
 		}
 		questionService.importQuestion(file, questionGroup);
         return success();
+    }
+	
+	/**
+	 * 查询辅导员题目
+	 * @param file
+	 * @return
+	 */
+	@PostMapping("/queryByTeamLeaderNO")
+    public RespData<List<QuestionVO>> queryByTeamLeaderNO(){
+		return success(this.questionService.queryQuestionByNo(UserEnum.Type.LEADER.getString()));
+    }
+		
+	
+	/**
+	 * 查询辅导员题目
+	 * @param file
+	 * @return
+	 */
+	@PostMapping("/queryByTeacherNo")
+    public RespData<List<QuestionVO>> queryByTeacherNo(){
+		return success(this.questionService.queryQuestionByNo(UserEnum.Type.TEACHER.getString()));
     }
 		
 }

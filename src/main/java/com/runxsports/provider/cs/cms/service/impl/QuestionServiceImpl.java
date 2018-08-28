@@ -16,26 +16,22 @@ import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.runxsports.provider.cs.cms.common.constant.CommonConstant;
 import com.runxsports.provider.cs.cms.common.constant.RedisConstant;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.DeleteStatusEnum;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.GlobalCallbackEnum;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.QuestionEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
-import com.runxsports.provider.cs.cms.common.util.CacheUtil;
 import com.runxsports.provider.cs.cms.common.util.ExcelReadHelper;
 import com.runxsports.provider.cs.cms.common.util.IDUtil;
 import com.runxsports.provider.cs.cms.common.util.RedisUtil;
 import com.runxsports.provider.cs.cms.common.util.ValidateUtils;
 import com.runxsports.provider.cs.cms.entity.Question;
-import com.runxsports.provider.cs.cms.entity.User;
 import com.runxsports.provider.cs.cms.mapper.QuestionMapper;
 import com.runxsports.provider.cs.cms.model.ExcelQuestion;
 import com.runxsports.provider.cs.cms.model.bo.QuestionBO;
 import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
 import com.runxsports.provider.cs.cms.service.QuestionService;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -162,5 +158,10 @@ public class QuestionServiceImpl implements QuestionService {
 		List<Question> result = questionMapper.select(record);
 		PageInfo<Question> pageInfo = new PageInfo<Question>(result);
 		return pageInfo;
+	}
+
+	@Override
+	public List<QuestionVO> queryQuestionByNo(String userType) {
+		return  questionMapper.queryQuestionByType(userType);
 	}
 }

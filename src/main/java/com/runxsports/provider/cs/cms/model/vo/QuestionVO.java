@@ -17,7 +17,36 @@ public class QuestionVO implements Serializable {
 
 	private List<Question> questionList;
 	
+	/**
+	 * 主键id
+	 */
+	private Long id;
+	
+	/**
+	 * 题目内容
+	 */
+	private String questionContent;
+	
+	/**
+	 * 排序
+	 */
+	private Integer questionSort;
+	
+	/**
+	 * 评分
+	 */
+	private Integer questionScore;
+	
+	/**
+	 * 说明
+	 */
+	private String questionDesc;
+	
 	public QuestionVO(List<Question> questionList) {
 		this.questionList = questionList;
+	}
+	
+	public QuestionVO(){
+
 	}
 }

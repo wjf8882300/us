@@ -90,4 +90,16 @@
   	  where question_group = #{questionGroup}
   	  and is_delete = 0
   </update>
+  
+  <select id="queryQuestionByType" resultType="com.runxsports.provider.cs.cms.model.vo.QuestionVO">
+  	select q.id,
+  		   q.question_content as questionContent,
+  		   q.question_sort as questionSort,
+  		   q.question_score as questionScore,
+  		   q.question_desc as questionDesc 
+      from us_t_question q 
+	 where q.is_delete = 0
+	   and q.question_group =#{userType}
+	   order by q.question_sort asc
+  </select>
 </mapper>
