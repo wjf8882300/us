@@ -163,10 +163,10 @@
   <update id="deleteByDestUserId">
 	  	 update us_t_user_answer set is_delete =1 
 	  	 where is_delete = 0
-	  	  and  dest_user_id=#{destUserId}
-	  	  and  user_id in 
+	  	  and  user_id  =#{userId}
+	  	  and  dest_user_id in
 	  	  <foreach collection="list" item="item" open="(" close=")" separator=",">
-	  	  		#{item.userId}
+	  	  		#{item.destUserId}
 	  	  </foreach>
   </update>
   

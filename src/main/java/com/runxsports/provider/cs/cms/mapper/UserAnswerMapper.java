@@ -79,5 +79,5 @@ public interface UserAnswerMapper extends Mapper<UserAnswer> {
 	 * @param answer
 	 * @return
 	 */
-	int deleteByDestUserId(@Param("list")List<UserAnswer> list,@Param("destUserId") Long destUserId);
+	int deleteByDestUserId(@Param("list")List<UserAnswer> list,@Param("userId") Long userId);
 }

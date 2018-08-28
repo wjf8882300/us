@@ -144,15 +144,15 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 		if(resultList == null || resultList.size() == 0) {
 			throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
 		}
-		Long destUserId = accessTokenVo.getUserId();
+		Long userId = accessTokenVo.getUserId();
 		for(UserAnswer answer : resultList) {
 			answer.setId(IDUtil.nextId());
-			answer.setDestUserId(destUserId);
+			answer.setUserId(userId);
 			answer.setCreateDate(new Date());
 			answer.setLastUpdateDate(new Date());
 		}
 		//批量删除之前已打分，并且本次重复打分的信息
-		this.mapper.deleteByDestUserId(resultList,destUserId);
+		this.mapper.deleteByDestUserId(resultList,userId);
 		//批量新增打分信息
 		int rows = mapper.batchInsert(resultList);
 		if(rows != resultList.size()) {
