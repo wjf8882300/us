@@ -11,6 +11,12 @@ public class LoginBO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 用户类型
+	 */
+	private String userType;
+	
 	/**
 	 * 登陆密码
 	 */
