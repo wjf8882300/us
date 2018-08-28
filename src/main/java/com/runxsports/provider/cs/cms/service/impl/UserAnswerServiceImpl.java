@@ -136,4 +136,28 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 		PageInfo<UserAnswerVO> pageInfo = new PageInfo<UserAnswerVO>(result);
 		return pageInfo;
 	}
+
+	@Override
+	public void saveAnswer(UserAnswerBO userAnswerBO) {
+		AccessTokenVo accessTokenVo = weChatService.getCacheAccessToken(userAnswerBO.getToken());
+		List<UserAnswer> resultList = userAnswerBO.getResultList();
+		if(resultList == null || resultList.size() == 0) {
+			throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
+		}
+		Long destUserId = accessTokenVo.getUserId();
+		for(UserAnswer answer : resultList) {
+			answer.setId(IDUtil.nextId());
+			answer.setDestUserId(destUserId);
+			answer.setCreateDate(new Date());
+			answer.setLastUpdateDate(new Date());
+		}
+		//批量删除之前已打分，并且本次重复打分的信息
+		this.mapper.deleteByDestUserId(resultList,destUserId);
+		//批量新增打分信息
+		int rows = mapper.batchInsert(resultList);
+		if(rows != resultList.size()) {
+			throw new CmsException(CmsErrorCodeEnum.CMS9083004);
+		}
+		
+	}
 }

@@ -2,11 +2,8 @@ package com.runxsports.provider.cs.cms.service;
 
 
 
-import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
 import com.github.pagehelper.PageInfo;
-import com.runxsports.provider.cs.cms.entity.UserAnswer;
 import com.runxsports.provider.cs.cms.model.bo.UserAnswerBO;
 import com.runxsports.provider.cs.cms.model.vo.UserAnswerVO;
 
@@ -45,4 +42,11 @@ public interface UserAnswerService {
 	 * @return
 	 */
 	PageInfo<UserAnswerVO> queryNotScore(UserAnswerBO userAnswerBO);
+	
+	/**
+	 * 
+	 * @param userAnswerBO
+	 * @return
+	 */
+	void saveAnswer(UserAnswerBO userAnswerBO);
 }

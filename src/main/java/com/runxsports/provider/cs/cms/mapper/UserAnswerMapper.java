@@ -73,4 +73,11 @@ public interface UserAnswerMapper extends Mapper<UserAnswer> {
 	 * @return
 	 */
 	List<UserAnswerVO> queryTeamNotScore(@Param("userType") String userType);
+	
+	/**
+	 * 刪除重复打分记录
+	 * @param answer
+	 * @return
+	 */
+	int deleteByDestUserId(@Param("list")List<UserAnswer> list,@Param("destUserId") Long destUserId);
 }

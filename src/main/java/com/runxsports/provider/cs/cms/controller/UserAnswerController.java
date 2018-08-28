@@ -159,5 +159,25 @@ public class UserAnswerController  extends BaseController {
 		return success(userAnswerService.queryNotScore(userAnswerBO));
     }
 	
-		
+	/**
+	 * 新增党支部答题
+	 * @param file
+	 * @return
+	 */
+	@PostMapping("/saveTeamLeader")
+    public RespData<UserAnswerVO> saveTeamLeader(@RequestBody UserAnswerBO userAnswerBO){
+		this.userAnswerService.saveAnswer(userAnswerBO);
+		return success();
+    }
+	
+	/**
+	 * 新增辅导员答题
+	 * @param file
+	 * @return
+	 */
+	@PostMapping("/saveTeacher")
+    public RespData<UserAnswerVO> saveTeacher(@RequestBody UserAnswerBO userAnswerBO){
+		this.userAnswerService.saveAnswer(userAnswerBO);
+		return success();
+    }
 }
