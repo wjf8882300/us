@@ -55,4 +55,11 @@ public interface UserService {
 	 * @return List<User>
 	 */
 	List<User> queryUserByNo(UserBO userBO);
+	
+	/**
+	 * 申请接入
+	 * @param loginBO
+	 * @return
+	 */
+	LoginVO apply(LoginBO loginBO);
 }

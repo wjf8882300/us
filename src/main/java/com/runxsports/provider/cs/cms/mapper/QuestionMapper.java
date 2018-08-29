@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.runxsports.provider.cs.cms.entity.Question;
+import com.runxsports.provider.cs.cms.model.bo.QuestionBO;
+import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
 
 import tk.mybatis.mapper.common.Mapper;
 
@@ -28,5 +30,19 @@ public interface QuestionMapper extends Mapper<Question> {
 	 * @return
 	 */
 	int updateIsDel(@Param("questionGroup") String questionGroup);
+	
+	/**
+	 * 通过类型查下问题
+	 * @param questionGroup
+	 * @return
+	 */
+	List<Question> queryByQuestionGroup(@Param("questionGroup") String questionGroup);
+	
+	/**
+	 * 查询题目信息
+	 * @param bo
+	 * @return
+	 */
+	List<QuestionVO> queryALl(@Param("bo") QuestionBO bo);
 	
 }

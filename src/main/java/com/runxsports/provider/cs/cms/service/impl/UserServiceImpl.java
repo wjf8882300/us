@@ -22,8 +22,10 @@ import com.runxsports.provider.cs.cms.common.constant.enumerate.UserEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
 import com.runxsports.provider.cs.cms.common.util.CacheUtil;
+import com.runxsports.provider.cs.cms.common.util.DesUtil;
 import com.runxsports.provider.cs.cms.common.util.ExcelReadHelper;
 import com.runxsports.provider.cs.cms.common.util.IDUtil;
+import com.runxsports.provider.cs.cms.common.util.MD5Util;
 import com.runxsports.provider.cs.cms.common.util.ValidateUtils;
 import com.runxsports.provider.cs.cms.entity.User;
 import com.runxsports.provider.cs.cms.entity.UserLogin;
@@ -127,7 +129,7 @@ public class UserServiceImpl implements UserService {
         	user.setUserName(u.getUserName());
         	user.setClassName(u.getClassName());
         	user.setUserType(UserEnum.Type.STUDENT.getString());
-        	user.setPassword(u.getUserNo());
+        	user.setPassword(MD5Util.MD5Encode(u.getUserNo()));
         	user.setTeacher(u.getTeacher());
         	user.setTeamLeader(u.getTeamLeader());
         	user.setTeamLeaderNo(u.getTeamLeaderNo());
@@ -146,7 +148,7 @@ public class UserServiceImpl implements UserService {
         		leader.setUserType(UserEnum.Type.LEADER.getString());
         		leader.setUserName(u.getTeamLeader());
         		leader.setUserNo(u.getTeamLeaderNo());
-        		leader.setPassword(u.getTeamLeaderNo());
+        		leader.setPassword(MD5Util.MD5Encode(u.getTeamLeaderNo()));
         		leader.setTeamName(u.getTeamName());
         		leader.setCreateDate(new Date());
         		leader.setLastUpdateDate(new Date());
@@ -161,7 +163,7 @@ public class UserServiceImpl implements UserService {
         		teacher.setUserType(UserEnum.Type.TEACHER.getString());
         		teacher.setUserName(u.getTeacher());
         		teacher.setUserNo(u.getTeacherNo());
-        		teacher.setPassword(u.getTeacherNo());
+        		teacher.setPassword(MD5Util.MD5Encode(u.getTeacherNo()));
         		teacher.setCreateDate(new Date());
         		teacher.setLastUpdateDate(new Date());
         		teacherMap.put(u.getTeacherNo(), teacher);
@@ -223,14 +225,16 @@ public class UserServiceImpl implements UserService {
 	public LoginVO login(LoginBO loginBO) {
 		ValidateUtils.notBlank(loginBO.getUserType(), CmsErrorCodeEnum.CMS9083017);
 		ValidateUtils.notBlank(loginBO.getPassword(), CmsErrorCodeEnum.CMS9083011);
-		ValidateUtils.notBlank(loginBO.getCode(), CmsErrorCodeEnum.CMS9083013);
+		ValidateUtils.notBlank(loginBO.getToken(), CmsErrorCodeEnum.CMS9083013);
 
 		LoginVO loginVO = new LoginVO();
+		
+		String password = DesUtil.strDec(loginBO.getPassword(), loginBO.getToken(), null, null);
 		
 		// 登录校验
 		User record = new User();
 		record.setUserType(loginBO.getUserType());
-		record.setPassword(loginBO.getPassword());
+		record.setPassword(password);
 		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
 		User result = userMapper.selectOne(record);
 		if(result != null) {
@@ -240,11 +244,9 @@ public class UserServiceImpl implements UserService {
 		}
 
 		// 生成token
-		AccessTokenVo token = new AccessTokenVo();
+		AccessTokenVo token = weChatService.getCacheAccessToken(loginBO.getToken());
 		token.setUserId(result.getId());
-		
-		String userToken = weChatService.cacheAccessToken(token);
-		loginVO.setToken(userToken);
+		weChatService.cacheAccessToken(token);
 		
 		// 存储登录信息
 		executor.execute(new Runnable() {
@@ -253,12 +255,9 @@ public class UserServiceImpl implements UserService {
 			public void run() {
 				// 获取用户token
 				try {
-					AccessTokenVo token = weChatService.getAccessToken(loginBO.getCode());
-					token.setUserId(result.getId());
-
 					UserLogin userLogin = new UserLogin();
 					userLogin.setId(IDUtil.nextId());
-					userLogin.setUserId(result.getId());
+					userLogin.setUserId(token.getUserId());
 					userLogin.setOpenId(token.getOpenId());
 					userLoginMapper.insertSelective(userLogin);
 				} catch (Exception e) {
@@ -283,6 +282,15 @@ public class UserServiceImpl implements UserService {
 		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
 		List<User> result = userMapper.select(record);
 		return  result;
+	}
+
+	@Override
+	public LoginVO apply(LoginBO loginBO) {
+		AccessTokenVo accessToken = weChatService.getAccessToken(loginBO.getCode());
+		String token = weChatService.cacheAccessToken(accessToken);
+		LoginVO loginVO = new LoginVO();
+		loginVO.setToken(token);
+		return loginVO;
 	}
 
 }

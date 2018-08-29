@@ -78,7 +78,7 @@ public class WeChatServiceImpl implements WeChatService {
 	@Override
 	public String cacheAccessToken(AccessTokenVo accessToken) {
 		// 把用户的ID进行转储
-		String userToken = MD5Util.MD5Encode(accessToken.getUserId().toString());
+		String userToken = MD5Util.MD5Encode(accessToken.getSessionKey() + accessToken.getOpenId());
 		String value = JSON.toJSONString(accessToken);
 		redisClient.setKey(RedisConstant.PREFIX_USER + userToken, value, RedisConstant.TIME_OUT, RedisConstant.TIME_UNIT);
 		return Base64.encodeBase64String(userToken.getBytes(Charset.forName("UTF-8")));

@@ -1,11 +1,9 @@
 package com.runxsports.provider.cs.cms.model.bo;
 
-import java.io.Serializable;
-
 import lombok.Data;
 
 @Data
-public class LoginBO implements Serializable {
+public class LoginBO extends BaseBO {
 
 	/**
 	 * 

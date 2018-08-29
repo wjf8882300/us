@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2018/8/27 15:53:01                           */
+/* Created on:     2018/8/29 17:45:05                           */
 /*==============================================================*/
 
 
@@ -97,7 +97,11 @@ create table us_t_user
    user_no              varchar(50) comment '学号',
    team_name            varchar(50) comment '所在支部',
    team_leader          varchar(50) comment '支部书记',
+   team_leader_no       varchar(50) comment 'team_leader_no',
+   team_leader_id       bigint(20) comment '支部书记ID',
    teacher              varchar(50) comment '辅导员',
+   teacher_no           varchar(50) comment '辅导元工号',
+   teacher_id           bigint(20) comment '辅导员ID',
    create_date          datetime not null default CURRENT_TIMESTAMP comment '创建时间',
    create_user          bigint comment '创建人',
    last_update_date     datetime not null default CURRENT_TIMESTAMP comment '更新时间',

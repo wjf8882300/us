@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,25 +52,19 @@ public class QuestionServiceImpl implements QuestionService {
 	public void init() {
 		
 		// 启动时缓存题目
-		Question record = new Question();
-		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
-		
-		record.setQuestionGroup(QuestionEnum.Group.STUDENT.getString());
-		List<Question> studentQuestionList = questionMapper.select(record);
+		List<Question> studentQuestionList = questionMapper.queryByQuestionGroup(QuestionEnum.Group.STUDENT.getString());
 		if(studentQuestionList != null && studentQuestionList.size() > 0) {
-			redis.setObject(RedisConstant.PRFIX_QUESTION + record.getQuestionGroup(), new QuestionVO(studentQuestionList));
+			redis.setObject(RedisConstant.PRFIX_QUESTION + QuestionEnum.Group.STUDENT.getString(), new QuestionVO(studentQuestionList));
 		}
 
-		record.setQuestionGroup(QuestionEnum.Group.LEADER.getString());
-		List<Question> leaderQuestionList = questionMapper.select(record);
+		List<Question> leaderQuestionList = questionMapper.queryByQuestionGroup(QuestionEnum.Group.LEADER.getString());
 		if(leaderQuestionList != null && leaderQuestionList.size() > 0) {
-			redis.setObject(RedisConstant.PRFIX_QUESTION + record.getQuestionGroup(), new QuestionVO(leaderQuestionList));
+			redis.setObject(RedisConstant.PRFIX_QUESTION + QuestionEnum.Group.LEADER.getString(), new QuestionVO(leaderQuestionList));
 		}
-		
-		record.setQuestionGroup(QuestionEnum.Group.TEACHER.getString());
-		List<Question> teacherQuestionList = questionMapper.select(record);
+
+		List<Question> teacherQuestionList = questionMapper.queryByQuestionGroup(QuestionEnum.Group.TEACHER.getString());
 		if(teacherQuestionList != null && teacherQuestionList.size() > 0) {
-			redis.setObject(RedisConstant.PRFIX_QUESTION + record.getQuestionGroup(), new QuestionVO(teacherQuestionList));
+			redis.setObject(RedisConstant.PRFIX_QUESTION + QuestionEnum.Group.TEACHER.getString(), new QuestionVO(teacherQuestionList));
 		}
 	}
 
@@ -149,14 +142,14 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         PageHelper.startPage(currentPage, pageSize);
-        Question record = new Question();
-        if(StringUtils.isNotEmpty(questionBO.getQuestionGroup())) {
-        	record.setQuestionGroup(questionBO.getQuestionGroup());
-        }
-		
-		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
-		List<Question> result = questionMapper.select(record);
-		PageInfo<Question> pageInfo = new PageInfo<Question>(result);
+//        Question record = new Question();
+//        if(StringUtils.isNotEmpty(questionBO.getQuestionGroup())) {
+//        	record.setQuestionGroup(questionBO.getQuestionGroup());
+//        }
+//		
+//		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
+		List<QuestionVO> result = questionMapper.queryALl(questionBO);
+		PageInfo<QuestionVO> pageInfo = new PageInfo<QuestionVO>(result);
 		return pageInfo;
 	}
 }
