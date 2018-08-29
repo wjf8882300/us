@@ -1,8 +1,11 @@
 package com.runxsports.provider.cs.cms.service;
 
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageInfo;
+import com.runxsports.provider.cs.cms.entity.Question;
 import com.runxsports.provider.cs.cms.model.bo.QuestionBO;
 import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
 
@@ -13,7 +16,7 @@ public interface QuestionService {
 	 * @param questionGroup
 	 * @return
 	 */
-	QuestionVO queryQuestion(String questionGroup);
+	List<Question> queryQuestion(String questionGroup);
 	
 	
 	/**

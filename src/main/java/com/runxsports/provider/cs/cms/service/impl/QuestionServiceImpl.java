@@ -16,7 +16,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.runxsports.provider.cs.cms.common.constant.RedisConstant;
-import com.runxsports.provider.cs.cms.common.constant.enumerate.DeleteStatusEnum;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.GlobalCallbackEnum;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.QuestionEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
@@ -31,6 +30,7 @@ import com.runxsports.provider.cs.cms.model.ExcelQuestion;
 import com.runxsports.provider.cs.cms.model.bo.QuestionBO;
 import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
 import com.runxsports.provider.cs.cms.service.QuestionService;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -54,24 +54,24 @@ public class QuestionServiceImpl implements QuestionService {
 		// 启动时缓存题目
 		List<Question> studentQuestionList = questionMapper.queryByQuestionGroup(QuestionEnum.Group.STUDENT.getString());
 		if(studentQuestionList != null && studentQuestionList.size() > 0) {
-			redis.setObject(RedisConstant.PRFIX_QUESTION + QuestionEnum.Group.STUDENT.getString(), new QuestionVO(studentQuestionList));
+			redis.setObject(RedisConstant.PRFIX_QUESTION + QuestionEnum.Group.STUDENT.getString(), studentQuestionList);
 		}
 
 		List<Question> leaderQuestionList = questionMapper.queryByQuestionGroup(QuestionEnum.Group.LEADER.getString());
 		if(leaderQuestionList != null && leaderQuestionList.size() > 0) {
-			redis.setObject(RedisConstant.PRFIX_QUESTION + QuestionEnum.Group.LEADER.getString(), new QuestionVO(leaderQuestionList));
+			redis.setObject(RedisConstant.PRFIX_QUESTION + QuestionEnum.Group.LEADER.getString(), leaderQuestionList);
 		}
 
 		List<Question> teacherQuestionList = questionMapper.queryByQuestionGroup(QuestionEnum.Group.TEACHER.getString());
 		if(teacherQuestionList != null && teacherQuestionList.size() > 0) {
-			redis.setObject(RedisConstant.PRFIX_QUESTION + QuestionEnum.Group.TEACHER.getString(), new QuestionVO(teacherQuestionList));
+			redis.setObject(RedisConstant.PRFIX_QUESTION + QuestionEnum.Group.TEACHER.getString(), teacherQuestionList);
 		}
 	}
 
 	@Override
-	public QuestionVO queryQuestion(String questionGroup) {
+	public List<Question> queryQuestion(String questionGroup) {
 		
-		return redis.getObject(RedisConstant.PRFIX_QUESTION + questionGroup, QuestionVO.class);
+		return redis.getList(RedisConstant.PRFIX_QUESTION + questionGroup, Question.class);
 		
  	}
 

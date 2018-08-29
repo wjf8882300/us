@@ -246,6 +246,7 @@ public class UserServiceImpl implements UserService {
 		// 生成token
 		AccessTokenVo token = weChatService.getCacheAccessToken(loginBO.getToken());
 		token.setUserId(result.getId());
+		token.setUserType(loginBO.getUserType());
 		weChatService.cacheAccessToken(token);
 		
 		// 存储登录信息
@@ -273,9 +274,9 @@ public class UserServiceImpl implements UserService {
 	public List<User> queryUserByNo(UserBO userBO){
 		AccessTokenVo accessTokenVo = weChatService.getCacheAccessToken(userBO.getToken());
 		User record = new User();
-		if(UserEnum.Type.LEADER.getString().equals(userBO.getUserType())) {
+		if(UserEnum.Type.LEADER.getString().equals(accessTokenVo.getUserType())) {
 			record.setTeamLeaderId(accessTokenVo.getUserId());
-		} else if(UserEnum.Type.TEACHER.getString().equals(userBO.getUserType())) {
+		} else if(UserEnum.Type.TEACHER.getString().equals(accessTokenVo.getUserType())) {
 			record.setTeacherId(accessTokenVo.getUserId());
 		}
 		record.setUserType(UserEnum.Type.STUDENT.getString());

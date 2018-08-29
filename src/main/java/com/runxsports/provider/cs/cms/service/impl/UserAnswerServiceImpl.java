@@ -21,7 +21,6 @@ import com.runxsports.provider.cs.cms.common.util.ValidateUtils;
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
 import com.runxsports.provider.cs.cms.mapper.UserAnswerMapper;
 import com.runxsports.provider.cs.cms.model.bo.UserAnswerBO;
-import com.runxsports.provider.cs.cms.model.vo.AccessTokenVo;
 import com.runxsports.provider.cs.cms.model.vo.UserAnswerVO;
 import com.runxsports.provider.cs.cms.service.UserAnswerService;
 import com.runxsports.provider.cs.cms.service.WeChatService;
@@ -44,31 +43,21 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 	private WeChatService weChatService;
 
 	@Override
-	public void save(UserAnswerBO userAnswerBO) {
+	public void save(List<UserAnswer> resultList, Long userId) {
 		
-		AccessTokenVo accessTokenVo = weChatService.getCacheAccessToken(userAnswerBO.getToken());
-	
-		List<UserAnswer> resultList = userAnswerBO.getResultList();
 		if(resultList == null || resultList.size() == 0) {
 			throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
 		}
-		
-		Long userId = accessTokenVo.getUserId();
-		Long destUserId = userAnswerBO.getDestUserId();
-		// 目标用户为空表示自己
-		if(destUserId == null || destUserId == 0) {
-			destUserId = userId;
-		}
-		
+				
 		for(UserAnswer answer : resultList) {
 			answer.setId(IDUtil.nextId());
 			answer.setUserId(userId);
-			answer.setDestUserId(destUserId);
+			answer.setDestUserId(userId);
 			answer.setCreateDate(new Date());
 			answer.setLastUpdateDate(new Date());
 		}
 
-		mapper.deleteByUserIdAndDestUserId(userId, destUserId);
+		mapper.deleteByUserIdAndDestUserId(userId, userId);
 
 		int rows = mapper.batchInsert(resultList);
 		if(rows != resultList.size()) {
@@ -138,13 +127,10 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 	}
 
 	@Override
-	public void saveAnswer(UserAnswerBO userAnswerBO) {
-		AccessTokenVo accessTokenVo = weChatService.getCacheAccessToken(userAnswerBO.getToken());
-		List<UserAnswer> resultList = userAnswerBO.getResultList();
+	public void saveAnswer(List<UserAnswer> resultList, Long userId) {
 		if(resultList == null || resultList.size() == 0) {
 			throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
 		}
-		Long userId = accessTokenVo.getUserId();
 		for(UserAnswer answer : resultList) {
 			answer.setId(IDUtil.nextId());
 			answer.setUserId(userId);
@@ -157,7 +143,6 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 		int rows = mapper.batchInsert(resultList);
 		if(rows != resultList.size()) {
 			throw new CmsException(CmsErrorCodeEnum.CMS9083004);
-		}
-		
+		}	
 	}
 }

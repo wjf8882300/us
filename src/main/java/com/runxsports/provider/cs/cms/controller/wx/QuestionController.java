@@ -1,34 +1,37 @@
 package com.runxsports.provider.cs.cms.controller.wx;
 
 
-import java.nio.charset.Charset;
+import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSON;
-import com.runxsports.provider.cs.cms.common.util.DesUtil;
+import com.runxsports.provider.cs.cms.common.util.CryptUtil;
 import com.runxsports.provider.cs.cms.controller.BaseController;
+import com.runxsports.provider.cs.cms.entity.Question;
 import com.runxsports.provider.cs.cms.model.RespData;
 import com.runxsports.provider.cs.cms.model.bo.QuestionBO;
-import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
+import com.runxsports.provider.cs.cms.model.vo.AccessTokenVo;
 import com.runxsports.provider.cs.cms.service.QuestionService;
+import com.runxsports.provider.cs.cms.service.WeChatService;
 
 /**
  * 问卷问题管理
  * @author wangjf
  *
  */
-@RestController
-@RequestMapping("/question")
+@RestController("WxQuestionController")
+@RequestMapping("/wx/question")
 public class QuestionController extends BaseController {
 	
 	@Autowired
 	QuestionService questionService;
+	
+	@Autowired
+	private WeChatService weChatService;
 	
 	/**
 	 * 根据问题类别查询问题
@@ -37,9 +40,8 @@ public class QuestionController extends BaseController {
 	 */
 	@PostMapping("/query")
     public RespData<String> queryQuestionForEncryt(@RequestBody QuestionBO questionBO){
-		QuestionVO questionVO = questionService.queryQuestion(questionBO.getQuestionGroup());
-		String questionJson = JSON.toJSONString(questionVO);
-		String base64 = Base64.encodeBase64String(questionJson.getBytes(Charset.forName("UTF-8")));
-        return success(DesUtil.strEnc(base64, questionBO.getToken(), null, null));
+		AccessTokenVo token = weChatService.getCacheAccessToken(questionBO.getToken());
+		List<Question> questionList = questionService.queryQuestion(token.getUserType());
+        return success(CryptUtil.encrypt(questionList, questionBO.getToken(), "id", "questionContent", "questionScore"));
     }		
 }

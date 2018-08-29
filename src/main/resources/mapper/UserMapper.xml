@@ -84,10 +84,12 @@
 	
 	<update id = "updateLeaderId">
 			update us_t_user r 
-			left join us_t_user a on r.team_leader_no =a.user_no
+			left join us_t_user a on r.team_leader_no = a.user_no
 			left join us_t_user b on r.teacher_no = b.user_no
 			set r.team_leader_id = a.id,r.teacher_id=b.id
 			where (r.team_leader_id is null or r.teacher_id is null)
-			 and r.is_delete = 0
+			 and r.is_delete = 0 
+			 and a.is_delete = 0
+			 and b.is_delete = 0
 	</update>
 </mapper>

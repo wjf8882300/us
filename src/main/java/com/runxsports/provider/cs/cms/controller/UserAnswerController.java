@@ -30,18 +30,7 @@ public class UserAnswerController  extends BaseController {
 	
 	@Autowired
 	UserAnswerService userAnswerService;
-	
-	/**
-	 * 新增答题
-	 * @param file
-	 * @return
-	 */
-	@PostMapping("/save")
-    public RespData<UserAnswerVO> save(@RequestBody UserAnswerBO userAnswerBO){
-		this.userAnswerService.save(userAnswerBO);
-		return success();
-    }
-	
+
 	
 	/**
 	 * 查询答题情况
@@ -157,27 +146,5 @@ public class UserAnswerController  extends BaseController {
 	@PostMapping("/queryNotScoreTeacher")
     public RespData<PageInfo<UserAnswerVO>> queryNotScoreTeacher(@RequestBody UserAnswerBO userAnswerBO){
 		return success(userAnswerService.queryNotScore(userAnswerBO));
-    }
-	
-	/**
-	 * 新增党支部答题
-	 * @param file
-	 * @return
-	 */
-	@PostMapping("/saveTeamLeader")
-    public RespData<UserAnswerVO> saveTeamLeader(@RequestBody UserAnswerBO userAnswerBO){
-		this.userAnswerService.saveAnswer(userAnswerBO);
-		return success();
-    }
-	
-	/**
-	 * 新增辅导员答题
-	 * @param file
-	 * @return
-	 */
-	@PostMapping("/saveTeacher")
-    public RespData<UserAnswerVO> saveTeacher(@RequestBody UserAnswerBO userAnswerBO){
-		this.userAnswerService.saveAnswer(userAnswerBO);
-		return success();
     }
 }

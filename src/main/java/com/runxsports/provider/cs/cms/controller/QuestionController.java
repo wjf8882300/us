@@ -1,6 +1,8 @@
 package com.runxsports.provider.cs.cms.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
+import com.runxsports.provider.cs.cms.entity.Question;
 import com.runxsports.provider.cs.cms.model.RespData;
 import com.runxsports.provider.cs.cms.model.bo.QuestionBO;
 import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
@@ -34,7 +38,7 @@ public class QuestionController extends BaseController {
 	 * @return
 	 */
 	@PostMapping("/query")
-    public RespData<QuestionVO> queryQuestion(@RequestBody QuestionBO questionBO){
+    public RespData<List<Question>> queryQuestion(@RequestBody QuestionBO questionBO){
         return success(questionService.queryQuestion(questionBO.getQuestionGroup()));
     }
 	

@@ -34,6 +34,11 @@ public class AccessTokenVo implements Serializable {
 	 * 用户ID  
 	 */
 	private Long userId;
+	
+	/**
+	 * 用户类型
+	 */
+	private String userType;
 
 	public String getSessionKey() {
 		return sessionKey;
@@ -65,5 +70,13 @@ public class AccessTokenVo implements Serializable {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 }
