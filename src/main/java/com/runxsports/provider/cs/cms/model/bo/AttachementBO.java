@@ -1,8 +1,10 @@
 package com.runxsports.provider.cs.cms.model.bo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class AttachementBO extends BaseBO{/**
 	 * 
 	 */
@@ -17,4 +19,9 @@ public class AttachementBO extends BaseBO{/**
 	 * 上传文件名称
 	 */
 	private String attachementName;
+	
+	/**
+	 * 搜索
+	 */
+	private String username;
 }

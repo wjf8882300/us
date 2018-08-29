@@ -5,17 +5,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.common.config.properties.UsProperties;
+import com.runxsports.provider.cs.cms.common.constant.enumerate.GlobalCallbackEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
 import com.runxsports.provider.cs.cms.common.util.FileUtil;
 import com.runxsports.provider.cs.cms.common.util.IDUtil;
+import com.runxsports.provider.cs.cms.common.util.ValidateUtils;
 import com.runxsports.provider.cs.cms.entity.UserAttachment;
 import com.runxsports.provider.cs.cms.mapper.UserAttachmentMapper;
 import com.runxsports.provider.cs.cms.model.bo.AttachementBO;
@@ -23,7 +26,6 @@ import com.runxsports.provider.cs.cms.model.vo.AccessTokenVo;
 import com.runxsports.provider.cs.cms.model.vo.AttachementVO;
 import com.runxsports.provider.cs.cms.service.AttachementService;
 import com.runxsports.provider.cs.cms.service.WeChatService;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -104,6 +106,22 @@ public class AttachementServiceImpl implements AttachementService {
 		}
 
 		return attachementVO;
+	}
+
+	@Override
+	public PageInfo<UserAttachment> queryUserAttach(AttachementBO attachementBO) {
+		Integer currentPage = attachementBO.getStart();
+        Integer pageSize = attachementBO.getLength();
+        ValidateUtils.notBlank(String.valueOf(currentPage), GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        ValidateUtils.notBlank(String.valueOf(pageSize), GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        if (currentPage < 0 || pageSize <= 0) {
+            log.error("分页数据有误");
+            throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
+        }
+        PageHelper.startPage(currentPage, pageSize);
+		List<UserAttachment> result = this.userAttachmentMapper.queryUserAttach(attachementBO.getUsername());
+		PageInfo<UserAttachment> pageInfo = new PageInfo<UserAttachment>(result);
+		return pageInfo;
 	}
 
 }
