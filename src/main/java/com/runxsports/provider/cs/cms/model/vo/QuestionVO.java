@@ -28,6 +28,11 @@ public class QuestionVO implements Serializable {
 	private String questionContent;
 	
 	/**
+	 * 题目内容
+	 */
+	private String questionGroup;
+	
+	/**
 	 * 排序
 	 */
 	private Integer questionSort;

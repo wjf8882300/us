@@ -3,7 +3,6 @@ package com.runxsports.provider.cs.cms.service;
 
 import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageInfo;
-import com.runxsports.provider.cs.cms.entity.Question;
 import com.runxsports.provider.cs.cms.model.bo.QuestionBO;
 import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
 
@@ -31,6 +30,6 @@ public interface QuestionService {
 	 * @param questionType
 	 * @return
 	 */
-	PageInfo<Question> queryAllQuestion(QuestionBO questionBO);
+	PageInfo<QuestionVO> queryAllQuestion(QuestionBO questionBO);
 	
 }

@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
-import com.runxsports.provider.cs.cms.entity.Question;
 import com.runxsports.provider.cs.cms.model.RespData;
 import com.runxsports.provider.cs.cms.model.bo.QuestionBO;
 import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
@@ -46,7 +44,7 @@ public class QuestionController extends BaseController {
 	 * @return
 	 */
 	@PostMapping("/queryAll")
-    public RespData<PageInfo<Question>> queryAllQuestion(@RequestBody QuestionBO questionBO){
+    public RespData<PageInfo<QuestionVO>> queryAllQuestion(@RequestBody QuestionBO questionBO){
         return success(questionService.queryAllQuestion(questionBO));
     }
 	

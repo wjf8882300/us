@@ -130,7 +130,7 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public PageInfo<Question> queryAllQuestion(QuestionBO questionBO) {
+	public PageInfo<QuestionVO> queryAllQuestion(QuestionBO questionBO) {
 		
 		Integer currentPage = questionBO.getStart();
         Integer pageSize = questionBO.getLength();
