@@ -58,6 +58,24 @@
   </select> -->
   
   
+   <select id="queryALl"  resultType="com.runxsports.provider.cs.cms.model.vo.QuestionVO">
+  	  SELECT q.id,
+			 (case q.question_group when 0 then '学生自评题' when 1 then '党支部题'  else '辅导员题' end) as questionGroup,
+			 q.question_content as questionContent,
+			 q.question_sort as questionSort,
+			 q.question_desc as questionDesc,
+			 q.question_score as questionScore
+	FROM us_t_question q
+	WHERE q.is_delete = 0
+	<if test="keys != null and keys != ''">
+		and (q.question_content like concat('%',#{bo.keys},'%')  
+			or q.question_desc like concat('%',#{bo.keys},'%'))
+	</if>
+	<if test="bo.questionGroup != null and bo.questionGroup != ''">
+		and q.question_group = #{bo.questionGroup}
+	</if>	
+  </select> 
+  
   <insert id="batchSave" parameterType="java.util.List">  	
 		insert into us_t_question(id,
 							      question_group,

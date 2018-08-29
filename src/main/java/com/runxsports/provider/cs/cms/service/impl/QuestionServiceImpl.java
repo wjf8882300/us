@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -137,7 +136,7 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public PageInfo<Question> queryAllQuestion(QuestionBO questionBO) {
+	public PageInfo<QuestionVO> queryAllQuestion(QuestionBO questionBO) {
 		
 		Integer currentPage = questionBO.getStart();
         Integer pageSize = questionBO.getLength();
@@ -149,14 +148,14 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         PageHelper.startPage(currentPage, pageSize);
-        Question record = new Question();
-        if(StringUtils.isNotEmpty(questionBO.getQuestionGroup())) {
-        	record.setQuestionGroup(questionBO.getQuestionGroup());
-        }
-		
-		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
-		List<Question> result = questionMapper.select(record);
-		PageInfo<Question> pageInfo = new PageInfo<Question>(result);
+//        Question record = new Question();
+//        if(StringUtils.isNotEmpty(questionBO.getQuestionGroup())) {
+//        	record.setQuestionGroup(questionBO.getQuestionGroup());
+//        }
+//		
+//		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
+		List<QuestionVO> result = questionMapper.queryALl(questionBO);
+		PageInfo<QuestionVO> pageInfo = new PageInfo<QuestionVO>(result);
 		return pageInfo;
 	}
 }
