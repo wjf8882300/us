@@ -52,5 +52,10 @@ public class UserAnswerVO implements Serializable {
 	 * 党支部书记
 	 */
 	private String teamLeader;
+	
+	/**
+	 * 题号
+	 */
+	private Integer questionSort;
 
 }

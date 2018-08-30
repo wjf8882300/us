@@ -21,6 +21,7 @@ import com.runxsports.provider.cs.cms.common.util.ValidateUtils;
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
 import com.runxsports.provider.cs.cms.mapper.UserAnswerMapper;
 import com.runxsports.provider.cs.cms.model.bo.UserAnswerBO;
+import com.runxsports.provider.cs.cms.model.bo.UserBO;
 import com.runxsports.provider.cs.cms.model.vo.UserAnswerVO;
 import com.runxsports.provider.cs.cms.service.UserAnswerService;
 import com.runxsports.provider.cs.cms.service.WeChatService;
@@ -66,16 +67,16 @@ public class UserAnswerServiceImpl implements UserAnswerService{
 	}
 
 	@Override
-	public void export(String group,HttpServletResponse response) {
-		if(StringUtils.isEmpty(group)) {
+	public void export(UserBO userBO,HttpServletResponse response) {
+		if(StringUtils.isEmpty(userBO.getUserType())) {
 			throw new CmsException(CmsErrorCodeEnum.CMS9083010);
 		}
-		List<UserAnswerVO> list = this.mapper.queryByGroup(group);
+		List<UserAnswerVO> list = this.mapper.queryByGroup(userBO);
 		//excel标题
 	    String[] title = { "姓名", "学号", "班级", "所在支部","支部书记","辅导员","辅导员工号", "成绩"};
 	    String[] values= {"userName","userNo","className","teamName","teamLeader","teacher","teacherNo","answer"};
 	    //sheet名
-	    String sheetName = group.equals(UserEnum.Type.STUDENT.getString())? "党员自评":group.equals(UserEnum.Type.LEADER.getString()) ?"支部书记评价":"辅导员评价";
+	    String sheetName = userBO.getUserType().equals(UserEnum.Type.STUDENT.getString())? "党员自评":userBO.getUserType().equals(UserEnum.Type.LEADER.getString()) ?"支部书记评价":"辅导员评价";
 	    sheetName += "成绩";
 	    ExcelExportUtils.exportExcelData(sheetName, title, values,list,response);
 	}

@@ -25,6 +25,7 @@
     <result column="user_no" property="userNo" jdbcType="VARCHAR" />
     <result column="team_name" property="teamName" jdbcType="VARCHAR" />
     <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="question_sort" property="questionSort" jdbcType="INTEGER" />
   </resultMap>
   
   <select id="findByQuestion" resultType="java.lang.Integer">
@@ -49,30 +50,35 @@
 			       u.user_name as userName,
 			       u.team_name as teamName,
 			       u.class_name as className,
-			       sum(a.answer)as answer,
+			       IFNULL(sum(a.answer),0) as answer,
 			       u.teacher,
 			       u.team_leader as  teamLeader,
 				   u.teacher_no as teacherNo
-			from us_t_user_answer a
-			left join us_t_question q on a.question_id = q.id 
-			left join us_t_user u on a.user_id = u.id
-			<if test="group != 0 ">
-			left join us_t_user r on a.dest_user_id = r.id 
-			</if>
+			from us_t_user u
+			inner join us_t_user_answer a on a.dest_user_id = u.id 
+			inner join us_t_question q on a.question_id = q.id 
 			where 
 				 a.is_delete = 0  
 				and q.is_delete = 0
 				and u.is_delete = 0
-				<choose>
-					<when test="group == 0">
-						and a.user_id = a.dest_user_id
-						and u.user_type = #{group}
-					</when>
-					<otherwise>
-						and r.is_delete = 0
-						and r.user_type = #{group}
-					</otherwise>
-				</choose>
+				and a.user_id in (
+					select id
+					from us_t_user
+					where is_delete = 0  
+					and user_type = #{record.userType}
+				)
+				<if test="record.userName != null and record.userName != '' ">
+					and user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+				</if>
+				<if test="record.userNo != null and record.userNo != '' ">
+					and user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+				</if>
+				<if test="record.teamName != null and record.teamName != '' ">
+					and team_name = #{record.teamName}
+				</if>
+				<if test="record.className != null and record.className != '' ">
+					and class_name = #{record.className}
+				</if>
 				group by u.user_no 
   </select>
   
@@ -116,25 +122,22 @@
     <!-- 查询学生评分 -->
   <select id="queryStudentScore" resultMap="UserScoreMap">
 	select u.user_name, u.class_name, u.user_no,
-	       u.team_name, ua.answer
-	from us_t_user_answer ua, us_t_user u
-	where ua.user_id = u.id
+	       u.team_name, ua.answer, q.question_sort
+	from us_t_user_answer ua, us_t_user u, us_t_question q
+	where ua.user_id = u.id and ua.question_id = q.id
 	and u.user_type = 0
 	and u.is_delete = 0
 	and ua.is_delete = 0
-	<if test="record.userName != nul and record.userName != '' ">
+	<if test="record.userName != null and record.userName != '' ">
 		and user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
 	</if>
-	<if test="record.userNo != nul and record.userNo != '' ">
+	<if test="record.userNo != null and record.userNo != '' ">
 		and user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
 	</if>
-	<if test="record.userType != nul and record.userType != '' ">
-		and user_type = #{record.userType}
-	</if>
-	<if test="record.teamName != nul and record.teamName != '' ">
+	<if test="record.teamName != null and record.teamName != '' ">
 		and team_name = #{record.teamName}
 	</if>
-	<if test="record.className != nul and record.className != '' ">
+	<if test="record.className != null and record.className != '' ">
 		and class_name = #{record.className}
 	</if>
   </select>
@@ -142,13 +145,13 @@
   <!-- 根据用户类型查询评分（学生除外） -->
   <select id="queryOtherScore" resultMap="UserScoreMap">
   	select u.user_name, u.class_name, u.user_no,
-	       u.team_name, ua.answer
-	from us_t_user_answer ua, us_t_user u
-	where ua.dest_user_id = u.id
+	       u.team_name, ua.answer, q.question_sort
+	from us_t_user_answer ua, us_t_user u, us_t_question q
+	where ua.dest_user_id = u.id and ua.question_id = q.id
 	and ua.user_id in (
 		select s.id 
 		from us_t_user s
-		where s.user_type = #{userType}
+		where s.user_type = #{record.userType}
 		and s.is_delete = 0
 	)
 	and u.is_delete = 0
@@ -158,9 +161,6 @@
 	</if>
 	<if test="record.userNo != null and record.userNo != '' ">
 		and user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
-	</if>
-	<if test="record.userType != null and record.userType != '' ">
-		and user_type = #{record.userType}
 	</if>
 	<if test="record.teamName != null and record.teamName != '' ">
 		and team_name = #{record.teamName}

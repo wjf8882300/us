@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
 import com.runxsports.provider.cs.cms.model.bo.UserAnswerBO;
+import com.runxsports.provider.cs.cms.model.bo.UserBO;
 import com.runxsports.provider.cs.cms.model.vo.UserAnswerVO;
 
 import tk.mybatis.mapper.common.Mapper;
@@ -30,7 +31,7 @@ public interface UserAnswerMapper extends Mapper<UserAnswer> {
 	 * @param group
 	 * @return
 	 */
-	List<UserAnswerVO> queryByGroup(@Param("group") String group);
+	List<UserAnswerVO> queryByGroup(@Param("record") UserBO userBO);
 	
 	/**
 	 * 根据用户类型查询评分

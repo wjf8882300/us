@@ -16,6 +16,7 @@ import com.runxsports.provider.cs.cms.common.constant.enumerate.UserEnum;
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
 import com.runxsports.provider.cs.cms.model.RespData;
 import com.runxsports.provider.cs.cms.model.bo.UserAnswerBO;
+import com.runxsports.provider.cs.cms.model.bo.UserBO;
 import com.runxsports.provider.cs.cms.model.vo.UserAnswerVO;
 import com.runxsports.provider.cs.cms.service.UserAnswerService;
 
@@ -39,9 +40,9 @@ public class UserAnswerController  extends BaseController {
 	 */
 	@GetMapping("/export")
 	@ResponseBody
-    public void export(@RequestParam String group,HttpServletResponse response){
-		this.userAnswerService.export(group, response);
-    }
+    public void export(@RequestParam UserBO userBO, HttpServletResponse response){
+		this.userAnswerService.export(userBO, response);
+    }	
 	
 	/**
 	 * 查询答题情况
@@ -50,8 +51,9 @@ public class UserAnswerController  extends BaseController {
 	 */
 	@GetMapping("/exportAllStudent")
 	@ResponseBody
-    public void exportAllStudent(HttpServletResponse response){
-		this.userAnswerService.export(UserEnum.Type.STUDENT.getString(), response);
+    public void exportAllStudent(UserBO userBO, HttpServletResponse response){
+		userBO.setUserType(UserEnum.Type.STUDENT.getString());
+		this.userAnswerService.export(userBO, response);
     }
 	
 	/**
@@ -61,8 +63,9 @@ public class UserAnswerController  extends BaseController {
 	 */
 	@GetMapping("/exportAllLeader")
 	@ResponseBody
-    public void exportAllLeader(HttpServletResponse response){
-		this.userAnswerService.export(UserEnum.Type.LEADER.getString(), response);
+    public void exportAllLeader(UserBO userBO, HttpServletResponse response){
+		userBO.setUserType(UserEnum.Type.LEADER.getString());
+		this.userAnswerService.export(userBO, response);
     }
 	
 	/**
@@ -72,10 +75,10 @@ public class UserAnswerController  extends BaseController {
 	 */
 	@GetMapping("/exportAllTeacher")
 	@ResponseBody
-    public void exportAllTeacher(HttpServletResponse response){
-		this.userAnswerService.export(UserEnum.Type.TEACHER.getString(), response);
+    public void exportAllTeacher(UserBO userBO, HttpServletResponse response){
+		userBO.setUserType(UserEnum.Type.TEACHER.getString());
+		this.userAnswerService.export(userBO, response);
     }
-		
 		
 	/**
 	 * 查询答题情况

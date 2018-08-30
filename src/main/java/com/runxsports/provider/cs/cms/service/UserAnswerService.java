@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
 import com.runxsports.provider.cs.cms.model.bo.UserAnswerBO;
+import com.runxsports.provider.cs.cms.model.bo.UserBO;
 import com.runxsports.provider.cs.cms.model.vo.UserAnswerVO;
 
 /**
@@ -29,7 +30,7 @@ public interface UserAnswerService {
 	 * 根据类型导出数据信息
 	 * @param group
 	 */
-	void export(String group,HttpServletResponse response);
+	void export(UserBO userBO,HttpServletResponse response);
 
 	/**
 	 * 查询所有数据
