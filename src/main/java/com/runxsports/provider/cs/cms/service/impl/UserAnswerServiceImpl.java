@@ -96,9 +96,9 @@ public class UserAnswerServiceImpl implements UserAnswerService{
         PageHelper.startPage(currentPage, pageSize);
         List<UserAnswerVO> result = null;
         if(UserEnum.Type.STUDENT.getString().equals(userAnswerBO.getUserType())) {
-        	result = mapper.queryStudentScore();
+        	result = mapper.queryStudentScore(userAnswerBO);
         } else {
-        	result = mapper.queryOtherScore(userAnswerBO.getUserType());
+        	result = mapper.queryOtherScore(userAnswerBO);
         }
 		PageInfo<UserAnswerVO> pageInfo = new PageInfo<UserAnswerVO>(result);
 		return pageInfo;

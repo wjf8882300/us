@@ -142,12 +142,6 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         PageHelper.startPage(currentPage, pageSize);
-//        Question record = new Question();
-//        if(StringUtils.isNotEmpty(questionBO.getQuestionGroup())) {
-//        	record.setQuestionGroup(questionBO.getQuestionGroup());
-//        }
-//		
-//		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
 		List<QuestionVO> result = questionMapper.queryALl(questionBO);
 		PageInfo<QuestionVO> pageInfo = new PageInfo<QuestionVO>(result);
 		return pageInfo;

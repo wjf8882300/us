@@ -122,6 +122,21 @@
 	and u.user_type = 0
 	and u.is_delete = 0
 	and ua.is_delete = 0
+	<if test="record.userName != nul and record.userName != '' ">
+		and user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+	</if>
+	<if test="record.userNo != nul and record.userNo != '' ">
+		and user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+	</if>
+	<if test="record.userType != nul and record.userType != '' ">
+		and user_type = #{record.userType}
+	</if>
+	<if test="record.teamName != nul and record.teamName != '' ">
+		and team_name = #{record.teamName}
+	</if>
+	<if test="record.className != nul and record.className != '' ">
+		and class_name = #{record.className}
+	</if>
   </select>
   
   <!-- 根据用户类型查询评分（学生除外） -->
@@ -138,6 +153,21 @@
 	)
 	and u.is_delete = 0
 	and ua.is_delete = 0
+	<if test="record.userName != nul and record.userName != '' ">
+		and user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+	</if>
+	<if test="record.userNo != nul and record.userNo != '' ">
+		and user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+	</if>
+	<if test="record.userType != nul and record.userType != '' ">
+		and user_type = #{record.userType}
+	</if>
+	<if test="record.teamName != nul and record.teamName != '' ">
+		and team_name = #{record.teamName}
+	</if>
+	<if test="record.className != nul and record.className != '' ">
+		and class_name = #{record.className}
+	</if>
   </select>
   
   <update id="deleteByUserIdAndDestUserId">

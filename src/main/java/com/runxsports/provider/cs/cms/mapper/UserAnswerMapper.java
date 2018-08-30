@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
+import com.runxsports.provider.cs.cms.model.bo.UserAnswerBO;
 import com.runxsports.provider.cs.cms.model.vo.UserAnswerVO;
 
 import tk.mybatis.mapper.common.Mapper;
@@ -36,14 +37,14 @@ public interface UserAnswerMapper extends Mapper<UserAnswer> {
 	 * @param userType
 	 * @return
 	 */
-	List<UserAnswerVO> queryStudentScore();
+	List<UserAnswerVO> queryStudentScore(@Param("record")UserAnswerBO userAnswerBO);
 	
 	/**
 	 * 查询其他分数
 	 * @param group
 	 * @return
 	 */
-	List<UserAnswerVO> queryOtherScore(@Param("userType") String userType);
+	List<UserAnswerVO> queryOtherScore(@Param("record")UserAnswerBO userAnswerBO);
 	
 	/**
 	 * 删除历史答案

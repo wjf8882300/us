@@ -43,4 +43,23 @@ public interface UserMapper extends Mapper<User>, InsertListMapper<User> {
 	 * @return
 	 */
 	int updateLeaderId();
+	
+	/**
+	 * 查询支部
+	 * @return
+	 */
+	List<User> queryTeam();
+	
+	/**
+	 * 查询班级
+	 * @return
+	 */
+	List<User> queryClass();
+	
+	/**
+	 * 查询用户
+	 * @param record
+	 * @return
+	 */
+	List<User> queryAll(@Param("record")User record);
 }

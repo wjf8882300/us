@@ -1,5 +1,7 @@
 package com.runxsports.provider.cs.cms.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,4 +59,22 @@ public class UserController extends BaseController {
     public RespData<PageInfo<User>> queryAllUser(@RequestBody UserBO userBO){
         return success(userService.queryAllUser(userBO));
     }
+	
+	/**
+	 * 查询班级
+	 * @return
+	 */
+	@PostMapping("/queryClass")
+	public RespData<List<User>> queryClass() {
+		return success(userService.queryClass());
+	}
+	
+	/**
+	 * 查询支部
+	 * @return
+	 */
+	@PostMapping("/queryTeam")
+	public RespData<List<User>> queryTeam() {
+		return success(userService.queryTeam());
+	}
 }

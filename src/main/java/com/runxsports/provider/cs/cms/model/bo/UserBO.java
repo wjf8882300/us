@@ -35,4 +35,19 @@ public class UserBO extends BaseBO {
 	 * 支部书记/辅导员编号
 	 */
 	private String teamNo;
+	
+	/**
+	 * 支部名称
+	 */
+	private String teamName;
+	
+	/**
+	 * 班级名称
+	 */
+	private String className;
+	
+	/**
+	 * 学号
+	 */
+	private String userNo;
 }

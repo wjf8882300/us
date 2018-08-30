@@ -62,4 +62,16 @@ public interface UserService {
 	 * @return
 	 */
 	LoginVO apply(LoginBO loginBO);
+	
+	/**
+	 * 查询班级
+	 * @return
+	 */
+	List<User> queryClass();
+	
+	/**
+	 * 查询班级
+	 * @return
+	 */
+	List<User> queryTeam();
 }

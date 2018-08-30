@@ -9,16 +9,12 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserAnswerBO extends BaseBO {
+public class UserAnswerBO extends UserBO {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	/**
-	 * 用户类型
-	 */
-	private String userType;
 	
 	/**
 	 * 用户回答问题列表（微信前端提交时使用）

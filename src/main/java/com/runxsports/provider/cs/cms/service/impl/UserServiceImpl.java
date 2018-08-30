@@ -208,12 +208,11 @@ public class UserServiceImpl implements UserService {
 
         PageHelper.startPage(currentPage, pageSize);
         User record = new User();
-        if(StringUtils.isNotEmpty(userBO.getUserName())) {
-        	record.setUserName(userBO.getUserName());
-        }
-        if(StringUtils.isNotEmpty(userBO.getUserType())) {
-        	record.setUserType(userBO.getUserType());
-        }
+        record.setUserName(userBO.getUserName());
+        record.setUserType(userBO.getUserType());
+        record.setTeamName(userBO.getTeamName());
+        record.setClassName(userBO.getClassName());
+        record.setUserNo(userBO.getUserNo());
 		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
 		List<User> result = userMapper.select(record);
 		result.forEach((t)->{ t.setUserType(UserEnum.Type.getEnum(Integer.parseInt(t.getUserType())).getValue());});
@@ -292,6 +291,18 @@ public class UserServiceImpl implements UserService {
 		LoginVO loginVO = new LoginVO();
 		loginVO.setToken(token);
 		return loginVO;
+	}
+
+	@Override
+	public List<User> queryClass() {
+		
+		return userMapper.queryClass();
+	}
+
+	@Override
+	public List<User> queryTeam() {
+		
+		return userMapper.queryTeam();
 	}
 
 }

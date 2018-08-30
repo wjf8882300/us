@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: provider-cs-cms
+  datasource:
+      name: test
+      url: jdbc:mysql://47.92.193.39:3306/us?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true
+      username: root
+      password: Jing@9403!
+      # 使用druid数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+  redis:
+    #host: dev-redis-1.runx.vip
+    host: 47.92.193.39
+    port: 6379
+    password: Jing@9403!
+    timeout: 0
+
+us:
+  file: 
+    base-path: /user/local/project/
+    template-path: template/
+    upload-path: upload/
+    download-path: download/
+  wechat: 
+    app-id: wx648f70aec1a36d27
+    app-secret: 99ec2ec8cd38c979a993c3785b5fc5cc
+  
+server:
+  port: 9999
+
+mybatis:
+    mapper-locations: classpath*:mapper/*.xml
+logging:
+  level:
+   com.runxsports.provider.cms.mapper: debug
+   tk.mybatis.mapper: debug
+
+management:
+  health:
+    redis:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: info,health,shutdown
+      base-path: /
+  endpoint:
+    shutdown:
+      enabled: true
