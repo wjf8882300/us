@@ -214,7 +214,7 @@ public class UserServiceImpl implements UserService {
         record.setClassName(userBO.getClassName());
         record.setUserNo(userBO.getUserNo());
 		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
-		List<User> result = userMapper.select(record);
+		List<User> result = userMapper.queryAll(record);
 		result.forEach((t)->{ t.setUserType(UserEnum.Type.getEnum(Integer.parseInt(t.getUserType())).getValue());});
 		PageInfo<User> pageInfo = new PageInfo<User>(result);
 		return pageInfo;

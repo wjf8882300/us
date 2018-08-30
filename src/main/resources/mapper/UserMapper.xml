@@ -94,8 +94,8 @@
 	</update>
 	
 	<!-- 查询支部 -->
-	<select id="queryTeam" resultType="com.runxsports.provider.cs.cms.entity.User" >
-		select  distinct u.team_name
+	<select id="queryTeam" resultMap="BaseResultMap">
+		select  distinct u.team_name as team_name  
 		 from us_t_user u 
 		 where u.is_delete = 0
 		 and u.team_name is not null
@@ -103,8 +103,8 @@
 	</select>
 	
 	<!-- 查询班级 -->
-	<select id="queryClass" resultType="com.runxsports.provider.cs.cms.entity.User" >
-		select  distinct u.class_name
+	<select id="queryClass" resultMap="BaseResultMap">
+		select  distinct u.class_name as class_name
 		 from us_t_user u 
 		 where u.is_delete = 0
 		 and u.class_name is not null
@@ -112,28 +112,28 @@
 	</select>
 	
 	<!-- 查询所有信息 -->
-	<select id="queryAll">
+	<select id="queryAll"  resultMap="BaseResultMap">
 		select id, user_type, user_name,
 		password,class_name,user_no,
 		team_name,team_leader,teacher,
 		team_leader_id, teacher_id,
 		team_leader_no, teacher_no, 
 		create_date,last_update_date,is_delete,version,memo
-		from us_t_user
+		from us_t_user u
 		where u.is_delete = 0
-		<if test="record.userName != nul and record.userName != '' ">
+		<if test="record.userName != null and record.userName != '' ">
 			and user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
 		</if>
-		<if test="record.userNo != nul and record.userNo != '' ">
+		<if test="record.userNo != null and record.userNo != '' ">
 			and user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
 		</if>
-		<if test="record.userType != nul and record.userType != '' ">
+		<if test="record.userType != null and record.userType != '' ">
 			and user_type = #{record.userType}
 		</if>
-		<if test="record.teamName != nul and record.teamName != '' ">
+		<if test="record.teamName != null and record.teamName != '' ">
 			and team_name = #{record.teamName}
 		</if>
-		<if test="record.className != nul and record.className != '' ">
+		<if test="record.className != null and record.className != '' ">
 			and class_name = #{record.className}
 		</if>
 	</select>
