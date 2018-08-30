@@ -27,4 +27,7 @@ public class QuestionBO extends BaseBO {
 	 */
 	private String userType;
 	
+	
+	private String keys;
+	
 }

@@ -67,7 +67,7 @@
 			 q.question_score as questionScore
 	FROM us_t_question q
 	WHERE q.is_delete = 0
-	<if test="keys != null and keys != ''">
+	<if test="bo.keys != null and bo.keys != ''">
 		and (q.question_content like concat('%',#{bo.keys},'%')  
 			or q.question_desc like concat('%',#{bo.keys},'%'))
 	</if>
