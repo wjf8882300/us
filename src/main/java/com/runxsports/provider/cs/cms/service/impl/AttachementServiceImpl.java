@@ -109,7 +109,7 @@ public class AttachementServiceImpl implements AttachementService {
 	}
 
 	@Override
-	public PageInfo<UserAttachment> queryUserAttach(AttachementBO attachementBO) {
+	public PageInfo<AttachementVO> queryUserAttach(AttachementBO attachementBO) {
 		Integer currentPage = attachementBO.getStart();
         Integer pageSize = attachementBO.getLength();
         ValidateUtils.notBlank(String.valueOf(currentPage), GlobalCallbackEnum.PARAMETER_ILLEGAL);
@@ -119,8 +119,9 @@ public class AttachementServiceImpl implements AttachementService {
             throw new CmsException(GlobalCallbackEnum.PARAMETER_ILLEGAL);
         }
         PageHelper.startPage(currentPage, pageSize);
-		List<UserAttachment> result = this.userAttachmentMapper.queryUserAttach(attachementBO.getUsername());
-		PageInfo<UserAttachment> pageInfo = new PageInfo<UserAttachment>(result);
+		List<AttachementVO> result = this.userAttachmentMapper.queryUserAttach(attachementBO.getUsername());
+//        List<AttachementVO> result = this.userAttachmentMapper.queryAll(attachementBO.getUsername());
+		PageInfo<AttachementVO> pageInfo = new PageInfo<AttachementVO>(result);
 		return pageInfo;
 	}
 

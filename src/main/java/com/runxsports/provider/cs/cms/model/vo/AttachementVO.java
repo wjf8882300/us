@@ -1,7 +1,9 @@
 package com.runxsports.provider.cs.cms.model.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
+import com.runxsports.provider.cs.cms.entity.UserAttachment;
 
 import lombok.Data;
 
@@ -15,6 +17,11 @@ public class AttachementVO implements Serializable {/**
 	 * 上传路径
 	 */
 	private String attachementPath;
+	
+    /**
+     * 编号
+     */
+    private Long id;
 	
     /**
      * 用户编号
@@ -55,5 +62,7 @@ public class AttachementVO implements Serializable {/**
      * 附件名称
      */
     private String attachementName;
+    
+    private List<UserAttachment> attachment;
 
 }

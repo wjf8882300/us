@@ -6,11 +6,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.github.pagehelper.PageInfo;
-import com.runxsports.provider.cs.cms.entity.UserAttachment;
 import com.runxsports.provider.cs.cms.model.RespData;
 import com.runxsports.provider.cs.cms.model.bo.AttachementBO;
+import com.runxsports.provider.cs.cms.model.vo.AttachementVO;
 import com.runxsports.provider.cs.cms.service.AttachementService;
 
 /**
@@ -31,7 +30,7 @@ public class AttachementController extends BaseController{
 	 * @return
 	 */
 	@PostMapping(value = {"/query"})
-	public RespData<PageInfo<UserAttachment>> queryUserAttach(@RequestBody AttachementBO attachementBO){
+	public RespData<PageInfo<AttachementVO>> queryUserAttach(@RequestBody AttachementBO attachementBO){
 		return success(this.attachementService.queryUserAttach(attachementBO));
 	}
 }

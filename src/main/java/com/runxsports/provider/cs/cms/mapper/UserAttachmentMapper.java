@@ -5,9 +5,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.runxsports.provider.cs.cms.entity.UserAttachment;
+import com.runxsports.provider.cs.cms.model.vo.AttachementVO;
+
 import tk.mybatis.mapper.common.Mapper;
 
 public interface UserAttachmentMapper extends Mapper<UserAttachment> {
 	
-	List<UserAttachment> queryUserAttach(@Param("username") String username);
+	List<AttachementVO> queryUserAttach(@Param("username") String username);
+	
+	
+	List<AttachementVO> queryAll(@Param("username") String username);
 }

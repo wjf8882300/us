@@ -38,4 +38,39 @@
 		</if>
 	
     </select>
+    
+     <resultMap id="queryResultMap" type="com.runxsports.provider.cs.cms.model.vo.AttachementVO" >
+		    <id column="id" property="id" jdbcType="BIGINT" />
+		    <result column="userName" property="userName" />
+		    <result column="userNo" property="userNo" />
+		    <result column="teamName" property="teamName" />
+		    <result column="teamLeader" property="teamLeader"/>
+		    <result column="teacher" property="teacher"/>
+		    <collection property="attachment" ofType="com.runxsports.provider.cs.cms.entity.UserAttachment">
+		    		<id column="aid" property="id"/>
+		    		<result column="attachementPath" property="attachementPath"/>
+		    		<result column="attachementName" property="attachementName"/>
+		    </collection>
+  </resultMap>
+    
+    <select id="queryAll" resultMap="queryResultMap">
+    	    	select 
+    			u.id,
+		 		a.id as aid,
+				u.user_name as userName,
+				u.class_name as className,
+				u.user_no as userNo,
+				u.team_name as teamName,
+				u.team_leader as  teamLeader,
+				u.teacher as teacher,
+				a.attachement_name as attachementName,
+				a.attachement_path as attachementPath
+		from us_t_user_attachment a 
+		left join us_t_user u on a.user_id = u.id
+		where a.is_delete = 0 and u.is_delete = 0
+		<if test="username != null and username != ''">
+			and (u.user_name like concat('%',#{username},'%')  
+				or u.user_no like concat('%',#{username},'%'))
+		</if>
+    </select>
 </mapper>
