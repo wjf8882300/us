@@ -20,7 +20,8 @@
   </resultMap>
   
     <select id="queryUserAttach" resultType="com.runxsports.provider.cs.cms.model.vo.AttachementVO">
-    	select  a.user_id as userId,
+    	select  a.id as id,
+    			a.user_id as userId,
 				u.user_name as userName,
 				u.class_name as className,
 				u.user_no as userNo,
