@@ -10,11 +10,14 @@ public class LoginVO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private String userType;
 
 	/**
 	 * 唯一识别号
 	 */
 	private String token;
+	
+	/**
+	 * 加密算法，1-不启用/0-启用
+	 */
+	private Integer algorithm;
 }

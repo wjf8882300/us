@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
+import com.runxsports.provider.cs.cms.common.config.ParamConfig;
 import com.runxsports.provider.cs.cms.common.util.CryptUtil;
 import com.runxsports.provider.cs.cms.controller.BaseController;
 import com.runxsports.provider.cs.cms.model.RespData;
@@ -42,6 +43,6 @@ public class QuestionController extends BaseController {
 		AccessTokenVo token = weChatService.getCacheAccessToken(questionBO.getToken());
 		questionBO.setQuestionGroup(token.getUserType());
 		PageInfo<QuestionVO> questionList = questionService.queryQuestion(questionBO);
-        return success(CryptUtil.encrypt(questionList, questionBO.getToken()));
+		return success(CryptUtil.encrypt(questionList, questionBO.getToken(), ParamConfig.isEncrypt(token.getAlgorithm())));        
     }		
 }

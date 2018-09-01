@@ -1,6 +1,5 @@
 package com.runxsports.provider.cs.cms.common.constant.enumerate;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -8,20 +7,20 @@ import lombok.Getter;
  * @author wangjf
  *
  */
-public enum DeleteStatusEnum {
+public enum StatusEnum {
 
 	/**
 	 * 启用状态
 	 */
-	ENABLED(0, "未删除"),
-	UNABLED(1, "已删除");
+	ENABLED(0, "启用"),
+	UNABLED(1, "禁用");
 
 	@Getter
 	private Integer key;
 	@Getter
 	private String value;
 	
-	DeleteStatusEnum(Integer key, String value) {
+	StatusEnum(Integer key, String value) {
 		this.key = key;
 		this.value = value;
 	}

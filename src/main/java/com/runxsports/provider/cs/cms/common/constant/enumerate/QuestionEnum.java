@@ -32,8 +32,8 @@ public interface QuestionEnum {
 			return this.key.toString();
 		}
 		
-		public static Type getEnum(Integer key) {
-	        for (Type tmp : Type.values()) {
+		public static Group getEnum(Integer key) {
+	        for (Group tmp : Group.values()) {
 	            if (tmp.getKey().equals(key)) {
 	                return tmp;
 	            }

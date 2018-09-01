@@ -54,14 +54,13 @@ public class CryptUtil {
 	 * @param filter 显示需要暂时的字段
 	 * @return
 	 */
-	public static <T> String encrypt(T data, String token, String... keys) {
+	public static <T> String encrypt(T data, String token, Boolean isEncrypt, String... keys) {
 				
-		String questionJson = JSON.toJSONString(data, getInstance(), filter(keys),
-				SerializerFeature.DisableCircularReferenceDetect,
-                SerializerFeature.WriteMapNullValue,
-                SerializerFeature.WriteNullNumberAsZero,
-                SerializerFeature.WriteNullStringAsEmpty);
-		String base64 = Base64.encodeBase64String(questionJson.getBytes(Charset.forName("UTF-8")));
+		String jsonString = toJSONString(data, keys);
+		if(!isEncrypt) {
+			return jsonString;
+		}
+		String base64 = Base64.encodeBase64String(jsonString.getBytes(Charset.forName("UTF-8")));
         return DesUtil.strEnc(base64, token, null, null);
 	}
 	
@@ -72,14 +71,13 @@ public class CryptUtil {
 	 * @param token
 	 * @return
 	 */
-	public static <T> String encryptList(List<T> data, String token, String... keys) {
+	public static <T> String encryptList(List<T> data, String token, Boolean isEncrypt, String... keys) {
 		
-		String questionJson = JSON.toJSONString(data, getInstance(), filter(keys),
-				SerializerFeature.DisableCircularReferenceDetect,
-                SerializerFeature.WriteMapNullValue,
-                SerializerFeature.WriteNullNumberAsZero,
-                SerializerFeature.WriteNullStringAsEmpty);
-		String base64 = Base64.encodeBase64String(questionJson.getBytes(Charset.forName("UTF-8")));
+		String jsonString = toJSONString(data, keys);
+		if(!isEncrypt) {
+			return jsonString;
+		}
+		String base64 = Base64.encodeBase64String(jsonString.getBytes(Charset.forName("UTF-8")));
         return DesUtil.strEnc(base64, token, null, null);
 	}
 	
@@ -90,10 +88,13 @@ public class CryptUtil {
 	 * @param clazz
 	 * @return
 	 */
-	public static <T> T decrypt(String data, String token, Class<T> clazz) {
+	public static <T> T decrypt(String data, String token, Boolean isEncrypt, Class<T> clazz) {
+		if(!isEncrypt) {
+			return parseObject(data, clazz);	
+		}
 		String plainData = DesUtil.strDec(data, token, null, null);
 		String decoderData = new String(Base64.decodeBase64(plainData), Charset.forName("UTF-8"));
-		return JSON.parseObject(decoderData, clazz);		
+		return parseObject(decoderData, clazz);		
 	}
 	
 	/**
@@ -103,9 +104,60 @@ public class CryptUtil {
 	 * @param clazz
 	 * @return
 	 */
-	public static <T> List<T> decryptList(String data, String token, Class<T> clazz) {
+	public static <T> List<T> decryptList(String data, String token, Boolean isEncrypt, Class<T> clazz) {
+		if(!isEncrypt) {
+			return parseArray(data, clazz);	
+		}
 		String plainData = DesUtil.strDec(data, token, null, null);
 		String decoderData = new String(Base64.decodeBase64(plainData), Charset.forName("UTF-8"));
-		return JSONArray.parseArray(decoderData, clazz);		
+		return parseArray(decoderData, clazz);		
+	}
+	
+	/**
+	 * 转为json字符串
+	 * @param data
+	 * @param keys
+	 * @return
+	 */
+	public static <T> String toJSONString(T data, String... keys) {
+		return JSON.toJSONString(data, getInstance(), filter(keys),
+				SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteNullNumberAsZero,
+                SerializerFeature.WriteNullStringAsEmpty);
+	}
+	
+	/**
+	 * 转为json字符串
+	 * @param data
+	 * @param keys
+	 * @return
+	 */
+	public static <T> String toJSONString(List<T> data, String... keys) {
+		return JSON.toJSONString(data, getInstance(), filter(keys),
+				SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteNullNumberAsZero,
+                SerializerFeature.WriteNullStringAsEmpty);
+	}
+	
+	/**
+	 * json转换为对象
+	 * @param data
+	 * @param clazz
+	 * @return
+	 */
+	public static <T> T parseObject(String data, Class<T> clazz) {
+		return JSON.parseObject(data, clazz);		
+	}
+	
+	/**
+	 * json转换为list
+	 * @param data
+	 * @param clazz
+	 * @return
+	 */
+	public static <T> List<T> parseArray(String data, Class<T> clazz) {
+		return JSONArray.parseArray(data, clazz);			
 	}
 }

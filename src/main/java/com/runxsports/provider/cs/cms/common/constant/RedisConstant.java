@@ -23,6 +23,16 @@ public class RedisConstant {
     public static final String CACHE_QUESTION = "cs-question";
     
     /**
+     * 缓存空间名称
+     */
+    public static final String CACHE_PARAM = "cs-param";
+    
+    /**
+     * 缓存用户
+     */
+    public static final String CACHE_USER = "cs-user";
+    
+    /**
      * 缓存管理器名称
      */
     public static final String CACHE_MANAGER_NAME = "redis";

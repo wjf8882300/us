@@ -6,18 +6,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.runxsports.provider.cs.cms.common.constant.enumerate.DeleteStatusEnum;
+import com.runxsports.provider.cs.cms.common.config.ParamConfig;
+import com.runxsports.provider.cs.cms.common.constant.RedisConstant;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.GlobalCallbackEnum;
+import com.runxsports.provider.cs.cms.common.constant.enumerate.StatusEnum;
 import com.runxsports.provider.cs.cms.common.constant.enumerate.UserEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsErrorCodeEnum;
 import com.runxsports.provider.cs.cms.common.exception.CmsException;
@@ -72,7 +79,7 @@ public class UserServiceImpl implements UserService {
 		
 		User record = new User();
 		record.setId(userBO.getUserId());
-		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
+		record.setIsDelete(StatusEnum.ENABLED.getString());
 		User result = userMapper.selectOne(record);
 		if(result != null) {
 			userVO.setUserType(result.getUserType());
@@ -82,6 +89,7 @@ public class UserServiceImpl implements UserService {
 		return userVO;
 	}
 
+	@Caching(evict = { @CacheEvict(value = RedisConstant.CACHE_USER, allEntries = true, cacheManager=RedisConstant.CACHE_MANAGER_NAME) })
 	@Transactional
 	@Override
 	public void importUser(MultipartFile file) {
@@ -213,7 +221,7 @@ public class UserServiceImpl implements UserService {
         record.setTeamName(userBO.getTeamName());
         record.setClassName(userBO.getClassName());
         record.setUserNo(userBO.getUserNo());
-		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
+		record.setIsDelete(StatusEnum.ENABLED.getString());
 		List<User> result = userMapper.queryAll(record);
 		result.forEach((t)->{ t.setUserType(UserEnum.Type.getEnum(Integer.parseInt(t.getUserType())).getValue());});
 		PageInfo<User> pageInfo = new PageInfo<User>(result);
@@ -234,18 +242,15 @@ public class UserServiceImpl implements UserService {
 		User record = new User();
 		record.setUserType(loginBO.getUserType());
 		record.setPassword(password);
-		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
+		record.setIsDelete(StatusEnum.ENABLED.getString());
 		User result = userMapper.selectOne(record);
-		if(result != null) {
-			loginVO.setUserType(result.getUserType());
-		} else {
+		if(result == null) {
 			throw new CmsException(CmsErrorCodeEnum.CMS9083012);
 		}
-
 		// 生成token
 		AccessTokenVo token = weChatService.getCacheAccessToken(loginBO.getToken());
 		token.setUserId(result.getId());
-		token.setUserType(loginBO.getUserType());
+		token.setUserType(result.getUserType());
 		weChatService.cacheAccessToken(token);
 		
 		// 存储登录信息
@@ -269,17 +274,17 @@ public class UserServiceImpl implements UserService {
 		return loginVO;
 	}
 
+	@Cacheable(value=RedisConstant.CACHE_USER, key="#userBO.userId", cacheManager=RedisConstant.CACHE_MANAGER_NAME)
 	@Override
 	public List<User> queryUserByNo(UserBO userBO){
-		AccessTokenVo accessTokenVo = weChatService.getCacheAccessToken(userBO.getToken());
 		User record = new User();
-		if(UserEnum.Type.LEADER.getString().equals(accessTokenVo.getUserType())) {
-			record.setTeamLeaderId(accessTokenVo.getUserId());
-		} else if(UserEnum.Type.TEACHER.getString().equals(accessTokenVo.getUserType())) {
-			record.setTeacherId(accessTokenVo.getUserId());
+		if(UserEnum.Type.LEADER.getString().equals(userBO.getUserType())) {
+			record.setTeamLeaderId(userBO.getUserId());
+		} else if(UserEnum.Type.TEACHER.getString().equals(userBO.getUserType())) {
+			record.setTeacherId(userBO.getUserId());
 		}
 		record.setUserType(UserEnum.Type.STUDENT.getString());
-		record.setIsDelete(DeleteStatusEnum.ENABLED.getString());
+		record.setIsDelete(StatusEnum.ENABLED.getString());
 		List<User> result = userMapper.select(record);
 		return  result;
 	}
@@ -287,9 +292,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public LoginVO apply(LoginBO loginBO) {
 		AccessTokenVo accessToken = weChatService.getAccessToken(loginBO.getCode());
+		accessToken.setAlgorithm(ParamConfig.getEncrypt());
 		String token = weChatService.cacheAccessToken(accessToken);
 		LoginVO loginVO = new LoginVO();
 		loginVO.setToken(token);
+		loginVO.setAlgorithm(accessToken.getAlgorithm());
 		return loginVO;
 	}
 

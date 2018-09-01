@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.runxsports.provider.cs.cms.common.config.ParamConfig;
 import com.runxsports.provider.cs.cms.common.util.CryptUtil;
 import com.runxsports.provider.cs.cms.controller.BaseController;
 import com.runxsports.provider.cs.cms.entity.UserAnswer;
@@ -40,8 +41,9 @@ public class UserAnswerController  extends BaseController {
 	 */
 	@PostMapping("/save")
     public RespData<UserAnswerVO> save(@RequestBody AnswerBO answerBO){
-		List<UserAnswer> resultList = CryptUtil.decryptList(answerBO.getResult(), answerBO.getToken(), UserAnswer.class);
 		AccessTokenVo token = weChatService.getCacheAccessToken(answerBO.getToken());
+		List<UserAnswer> resultList = CryptUtil.decryptList(answerBO.getResult(), answerBO.getToken(), ParamConfig.isEncrypt(token.getAlgorithm()), UserAnswer.class);
+		
 		this.userAnswerService.save(resultList, token.getUserId());
 		return success();
     }
@@ -53,8 +55,8 @@ public class UserAnswerController  extends BaseController {
 	 */
 	@PostMapping("/saveTeam")
     public RespData<UserAnswerVO> saveTeam(@RequestBody AnswerBO answerBO){
-		List<UserAnswer> resultList = CryptUtil.decryptList(answerBO.getResult(), answerBO.getToken(), UserAnswer.class);
 		AccessTokenVo token = weChatService.getCacheAccessToken(answerBO.getToken());
+		List<UserAnswer> resultList = CryptUtil.decryptList(answerBO.getResult(), answerBO.getToken(), ParamConfig.isEncrypt(token.getAlgorithm()), UserAnswer.class);
 		this.userAnswerService.saveAnswer(resultList, token.getUserId());
 		return success();
     }

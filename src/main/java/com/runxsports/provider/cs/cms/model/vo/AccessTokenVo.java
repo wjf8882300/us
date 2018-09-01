@@ -39,7 +39,12 @@ public class AccessTokenVo implements Serializable {
 	 * 用户类型
 	 */
 	private String userType;
-
+	
+	/**
+	 * 加密算法，1-不启用/0-启用
+	 */
+	private Integer algorithm;
+	
 	public String getSessionKey() {
 		return sessionKey;
 	}
@@ -78,5 +83,13 @@ public class AccessTokenVo implements Serializable {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	public Integer getAlgorithm() {
+		return algorithm;
+	}
+
+	public void setAlgorithm(Integer algorithm) {
+		this.algorithm = algorithm;
 	}
 }

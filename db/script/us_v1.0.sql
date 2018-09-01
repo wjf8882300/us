@@ -1,8 +1,10 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2018/8/29 17:45:05                           */
+/* Created on:     2018/9/2 0:17:54                             */
 /*==============================================================*/
 
+
+drop table if exists com_t_param;
 
 drop table if exists us_t_question;
 
@@ -23,6 +25,31 @@ drop table if exists us_t_user_attachment;
 drop index IX_USER_LOGIN_USER_ID on us_t_user_login;
 
 drop table if exists us_t_user_login;
+
+/*==============================================================*/
+/* Table: com_t_param                                           */
+/*==============================================================*/
+create table com_t_param
+(
+   id                   bigint(20) not null,
+   parameter_type       varchar(50) comment '参数类型',
+   parameter_name       varchar(50) not null comment '参数名',
+   parameter_value      varchar(500) not null comment '参数值',
+   create_date          datetime not null default CURRENT_TIMESTAMP comment '创建时间',
+   create_user          bigint comment '创建人',
+   last_update_date     datetime not null default CURRENT_TIMESTAMP comment '更新时间',
+   last_update_user     bigint comment '更新人',
+   is_delete            char(1) not null default '0' comment '是否删除
+            0-未删除/1-已删除',
+   version              int not null default 0 comment '版本号',
+   memo                 varchar(255) comment '备注',
+   primary key (id)
+)
+ENGINE = InnoDB
+CHARSET = utf8
+COLLATE = utf8_general_ci;
+
+alter table com_t_param comment '基础参数表';
 
 /*==============================================================*/
 /* Table: us_t_question                                         */

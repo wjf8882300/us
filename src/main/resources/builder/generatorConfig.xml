@@ -18,13 +18,8 @@
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://47.92.193.39:3306/us?useUnicode=true&amp;characterEncoding=UTF8"
                         userId="root"
-                        password="Wang@9403!">
+                        password="Feng@9403!">
         </jdbcConnection>
-        <!--<jdbcConnection driverClass="com.mysql.jdbc.Driver"-->
-                        <!--connectionURL="jdbc:mysql://dev-mysql.runxsports.com:3306/kefu_cs?useUnicode=true&amp;characterEncoding=UTF8"-->
-                        <!--userId="dev-runx-admin"-->
-                        <!--password="O21I0r5CtOGD">-->
-        <!--</jdbcConnection>-->
 
         <javaModelGenerator targetPackage="${targetModelPackage}" targetProject="${targetJavaProject}"/>
 
@@ -42,6 +37,8 @@
 		<table tableName="us_t_user_login" domainObjectName="UserLogin" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
 		 -->
 		 
-		 <table tableName="us_t_user_attachment" domainObjectName="UserAttachment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
+		 <!-- <table tableName="us_t_user_attachment" domainObjectName="UserAttachment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/> -->
+		 
+		 <table tableName="com_t_param" domainObjectName="Param" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
     </context>
 </generatorConfiguration>

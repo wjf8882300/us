@@ -1,11 +1,17 @@
 package com.runxsports.provider.cs.cms.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "us_t_user")
-public class User {
-    @Id
+public class User implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5677718334419929190L;
+
+	@Id
     private Long id;
 
     /**
