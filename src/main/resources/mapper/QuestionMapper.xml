@@ -58,13 +58,13 @@
   </select> -->
   
   
-   <select id="queryALl"  resultType="com.runxsports.provider.cs.cms.model.vo.QuestionVO">
+   <select id="queryALl" resultMap="BaseResultMap">
   	  SELECT q.id,
-			 (case q.question_group when 0 then '学生自评题' when 1 then '党支部题'  else '辅导员题' end) as questionGroup,
-			 q.question_content as questionContent,
-			 q.question_sort as questionSort,
-			 q.question_desc as questionDesc,
-			 q.question_score as questionScore
+			 q.question_group,
+			 q.question_content,
+			 q.question_sort,
+			 q.question_desc,
+			 q.question_score
 	FROM us_t_question q
 	WHERE q.is_delete = 0
 	<if test="bo.keys != null and bo.keys != ''">
@@ -109,8 +109,10 @@
   	  and is_delete = 0
   </update>
   
-  <select id="queryByQuestionGroup" resultMap="BaseResultMap">
-  	select id, question_content, question_score
+  <select id="queryByQuestionGroup" resultType="com.runxsports.provider.cs.cms.model.vo.QuestionVO">
+  	select id, 
+  		   question_content as questionContent, 
+  		   question_score as questionScore
   	from us_t_question
   	where question_group = #{questionGroup}
   	and is_delete = 0

@@ -16,4 +16,14 @@ public class RedisConstant {
 	
 	public static final Long TIME_OUT =1L;
     public static final TimeUnit TIME_UNIT =TimeUnit.DAYS;
+    
+    /**
+     * 缓存空间名称
+     */
+    public static final String CACHE_QUESTION = "cs-question";
+    
+    /**
+     * 缓存管理器名称
+     */
+    public static final String CACHE_MANAGER_NAME = "redis";
 }

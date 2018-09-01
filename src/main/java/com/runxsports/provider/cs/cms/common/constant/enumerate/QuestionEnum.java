@@ -1,5 +1,6 @@
 package com.runxsports.provider.cs.cms.common.constant.enumerate;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,9 +16,9 @@ public interface QuestionEnum {
 		/**
 		 * 类别
 		 */
-		STUDENT(0, "学生"),
-		LEADER(1, "支部书记"),
-		TEACHER(2, "辅导员");
+		STUDENT(0, "学生自评题"),
+		LEADER(1, "支部书记题"),
+		TEACHER(2, "辅导员题");
 
 		@Getter
 		private Integer key;
@@ -30,6 +31,15 @@ public interface QuestionEnum {
 		public String getString(){
 			return this.key.toString();
 		}
+		
+		public static Type getEnum(Integer key) {
+	        for (Type tmp : Type.values()) {
+	            if (tmp.getKey().equals(key)) {
+	                return tmp;
+	            }
+	        }
+	        return null;
+	    }
 	}
 	
 	@AllArgsConstructor

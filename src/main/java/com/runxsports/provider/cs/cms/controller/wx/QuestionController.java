@@ -1,20 +1,19 @@
 package com.runxsports.provider.cs.cms.controller.wx;
 
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.common.util.CryptUtil;
 import com.runxsports.provider.cs.cms.controller.BaseController;
-import com.runxsports.provider.cs.cms.entity.Question;
 import com.runxsports.provider.cs.cms.model.RespData;
 import com.runxsports.provider.cs.cms.model.bo.QuestionBO;
 import com.runxsports.provider.cs.cms.model.vo.AccessTokenVo;
+import com.runxsports.provider.cs.cms.model.vo.QuestionVO;
 import com.runxsports.provider.cs.cms.service.QuestionService;
 import com.runxsports.provider.cs.cms.service.WeChatService;
 
@@ -41,7 +40,8 @@ public class QuestionController extends BaseController {
 	@PostMapping("/query")
     public RespData<String> queryQuestionForEncryt(@RequestBody QuestionBO questionBO){
 		AccessTokenVo token = weChatService.getCacheAccessToken(questionBO.getToken());
-		List<Question> questionList = questionService.queryQuestion(token.getUserType());
-        return success(CryptUtil.encrypt(questionList, questionBO.getToken(), "id", "questionContent", "questionScore"));
+		questionBO.setQuestionGroup(token.getUserType());
+		PageInfo<QuestionVO> questionList = questionService.queryQuestion(questionBO);
+        return success(CryptUtil.encrypt(questionList, questionBO.getToken()));
     }		
 }

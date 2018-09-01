@@ -1,8 +1,6 @@
 package com.runxsports.provider.cs.cms.service;
 
 
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageInfo;
 import com.runxsports.provider.cs.cms.entity.Question;
@@ -16,7 +14,7 @@ public interface QuestionService {
 	 * @param questionGroup
 	 * @return
 	 */
-	List<Question> queryQuestion(String questionGroup);
+	PageInfo<QuestionVO> queryQuestion(QuestionBO questionBO);
 	
 	
 	/**
@@ -33,6 +31,6 @@ public interface QuestionService {
 	 * @param questionType
 	 * @return
 	 */
-	PageInfo<QuestionVO> queryAllQuestion(QuestionBO questionBO);
+	PageInfo<Question> queryAllQuestion(QuestionBO questionBO);
 	
 }

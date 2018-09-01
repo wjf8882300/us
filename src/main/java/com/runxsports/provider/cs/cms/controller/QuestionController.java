@@ -1,8 +1,5 @@
 package com.runxsports.provider.cs.cms.controller;
 
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,16 +28,6 @@ public class QuestionController extends BaseController {
 	
 	@Autowired
 	QuestionService questionService;
-
-	/**
-	 * 根据问题类别查询问题
-	 * @param questionGroup
-	 * @return
-	 */
-	@PostMapping("/query")
-    public RespData<List<Question>> queryQuestion(@RequestBody QuestionBO questionBO){
-        return success(questionService.queryQuestion(questionBO.getQuestionGroup()));
-    }
 	
 	/**
 	 * 根据问题类别查询问题
@@ -48,7 +35,7 @@ public class QuestionController extends BaseController {
 	 * @return
 	 */
 	@PostMapping("/queryAll")
-    public RespData<PageInfo<QuestionVO>> queryAllQuestion(@RequestBody QuestionBO questionBO){
+    public RespData<PageInfo<Question>> queryAllQuestion(@RequestBody QuestionBO questionBO){
         return success(questionService.queryAllQuestion(questionBO));
     }
 	

@@ -36,13 +36,13 @@ public interface QuestionMapper extends Mapper<Question> {
 	 * @param questionGroup
 	 * @return
 	 */
-	List<Question> queryByQuestionGroup(@Param("questionGroup") String questionGroup);
+	List<QuestionVO> queryByQuestionGroup(@Param("questionGroup") String questionGroup);
 	
 	/**
 	 * 查询题目信息
 	 * @param bo
 	 * @return
 	 */
-	List<QuestionVO> queryALl(@Param("bo") QuestionBO bo);
+	List<Question> queryALl(@Param("bo") QuestionBO bo);
 	
 }
