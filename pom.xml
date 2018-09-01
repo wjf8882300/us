@@ -10,7 +10,7 @@
 	</parent>
 	
 	<groupId>com.tonggu</groupId>
-	<artifactId>provider-cs-cms</artifactId>
+	<artifactId>provider-us</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0.0</version>
 
