@@ -32,9 +32,9 @@
     
         <!--***************************************** generatorConfig.xml 配置************************************** -->
         <targetJavaProject>${basedir}/src/main/java</targetJavaProject>
-        <targetMapperPackage>com.tonggu.provider.cs.cms.mapper</targetMapperPackage>
+        <targetMapperPackage>com.tonggu.provider.us.mapper</targetMapperPackage>
         <!--model-->
-        <targetModelPackage>com.tonggu.provider.cs.cms.entity</targetModelPackage>
+        <targetModelPackage>com.tonggu.provider.us.entity</targetModelPackage>
         <!-- XML生成路径 -->
         <targetResourcesProject>${basedir}/src/main/resources</targetResourcesProject>
         <!--包名称-->

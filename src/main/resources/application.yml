@@ -1,6 +1,6 @@
 spring:
   application:
-    name: provider-cs-cms
+    name: provider-us
   datasource:
       name: test
       url: jdbc:mysql://47.92.193.39:3306/us?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true

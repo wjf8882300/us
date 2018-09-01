@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tonggu.provider.cs.cms.mapper.QuestionMapper" >
-  <resultMap id="BaseResultMap" type="com.tonggu.provider.cs.cms.entity.Question" >
+<mapper namespace="com.tonggu.provider.us.mapper.QuestionMapper" >
+  <resultMap id="BaseResultMap" type="com.tonggu.provider.us.entity.Question" >
     <!--
       WARNING - @mbg.generated
     -->
@@ -22,14 +22,14 @@
   </resultMap>
   
   
-  <!--   <resultMap id="resultQuestion" type="com.tonggu.provider.cs.cms.model.vo.QuestionItemVO" >
+  <!--   <resultMap id="resultQuestion" type="com.tonggu.provider.us.model.vo.QuestionItemVO" >
 	    <id column="id" property="id" jdbcType="BIGINT" />
 	    <result column="question_group" property="questionGroup" jdbcType="CHAR" />
 	    <result column="question_type" property="questionType" jdbcType="CHAR" />
 	    <result column="question_content" property="questionContent" jdbcType="VARCHAR" />
 	    <result column="question_sort" property="questionSort" jdbcType="INTEGER" />
 	    <result column="version" property="version" jdbcType="INTEGER" />
-	    <collection property="items" ofType="com.tonggu.provider.cs.cms.entity.QuestionItem">
+	    <collection property="items" ofType="com.tonggu.provider.us.entity.QuestionItem">
 	    	<id column="question_id" property="questionId"/>
 	    	<result column="item_no" property="itemNo"/>
 	    	<result column="item_content" property="itemContent"/>
@@ -109,7 +109,7 @@
   	  and is_delete = 0
   </update>
   
-  <select id="queryByQuestionGroup" resultType="com.tonggu.provider.cs.cms.model.vo.QuestionVO">
+  <select id="queryByQuestionGroup" resultType="com.tonggu.provider.us.model.vo.QuestionVO">
   	select id, 
   		   question_content as questionContent, 
   		   question_score as questionScore

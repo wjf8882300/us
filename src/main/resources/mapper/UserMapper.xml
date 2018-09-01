@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tonggu.provider.cs.cms.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.tonggu.provider.cs.cms.entity.User">
+<mapper namespace="com.tonggu.provider.us.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.tonggu.provider.us.entity.User">
     <!--
       WARNING - @mbg.generated
     -->
@@ -54,7 +54,7 @@
 		where t.is_delete = '0'
 	</update>
 	
-	<select id="findByUserNo" resultType="com.tonggu.provider.cs.cms.entity.User">
+	<select id="findByUserNo" resultType="com.tonggu.provider.us.entity.User">
 		select us.id,
 			   us.user_type as userType ,
 		       us.user_name as userName,
@@ -68,7 +68,7 @@
 	</select>
 	
 	<!-- 查詢支部书记下的学生 -->
-	<select id="queryUserByNo" resultType="com.tonggu.provider.cs.cms.entity.User" >
+	<select id="queryUserByNo" resultType="com.tonggu.provider.us.entity.User" >
 		select   u.user_name as userName,
 				 u.class_name as className,
 				 u.user_no as userNo,

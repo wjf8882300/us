@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tonggu.provider.cs.cms.mapper.UserAnswerMapper" >
-  <resultMap id="BaseResultMap" type="com.tonggu.provider.cs.cms.entity.UserAnswer" >
+<mapper namespace="com.tonggu.provider.us.mapper.UserAnswerMapper" >
+  <resultMap id="BaseResultMap" type="com.tonggu.provider.us.entity.UserAnswer" >
     <!--
       WARNING - @mbg.generated
     -->
@@ -19,7 +19,7 @@
     <result column="memo" property="memo" jdbcType="VARCHAR" />
   </resultMap>
   
-  <resultMap id="UserScoreMap" type="com.tonggu.provider.cs.cms.model.vo.UserAnswerVO" >
+  <resultMap id="UserScoreMap" type="com.tonggu.provider.us.model.vo.UserAnswerVO" >
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="class_name" property="className" jdbcType="VARCHAR" />
     <result column="user_no" property="userNo" jdbcType="VARCHAR" />
@@ -45,7 +45,7 @@
   </update>
    
   <!-- 根据角色查询评价信息 -->
-  <select id="queryByGroup" resultType="com.tonggu.provider.cs.cms.model.vo.UserAnswerVO">
+  <select id="queryByGroup" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
 		  select   u.user_no as userNo,
 			       u.user_name as userName,
 			       u.team_name as teamName,
@@ -84,7 +84,7 @@
   
   
     <!-- 查询学生未自我评价人 -->
-  <select id = "queryStudentNotScore" resultType="com.tonggu.provider.cs.cms.model.vo.UserAnswerVO">
+  <select id = "queryStudentNotScore" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
 		  select 
 				 u.user_name as userName,
 				 u.class_name as className,
@@ -104,7 +104,7 @@
   </select>
 
   <!--查询支部书记/辅导员没有评价的学生 -->
-  <select id = "queryTeamNotScore" resultType="com.tonggu.provider.cs.cms.model.vo.UserAnswerVO">
+  <select id = "queryTeamNotScore" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
 		select 
 				 u.user_name as userName,
 				 u.class_name as className,
