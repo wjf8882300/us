@@ -50,7 +50,6 @@ public class UserAnswerController  extends BaseController {
 	 * @return
 	 */
 	@GetMapping("/exportAllStudent")
-	@ResponseBody
     public void exportAllStudent(UserBO userBO, HttpServletResponse response){
 		userBO.setUserType(UserEnum.Type.STUDENT.getString());
 		this.userAnswerService.export(userBO, response);

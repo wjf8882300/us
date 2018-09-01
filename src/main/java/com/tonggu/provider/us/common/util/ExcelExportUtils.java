@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletResponse;
@@ -74,9 +73,10 @@ public class ExcelExportUtils {
 	public  static void outExcel(HttpServletResponse response,HSSFWorkbook workbook,String fileName) {
 		OutputStream ouputStream = null;
         try {
+        	response.reset(); 
         	response.setContentType("application/ms-excel;charset=UTF-8");  
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(fileName, "UTF-8")+new Date().getTime()+".xls");
-        	ouputStream = response.getOutputStream(); 
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));
+            ouputStream = response.getOutputStream(); 
 			workbook.write(ouputStream);
 			ouputStream.flush();
 			ouputStream.close();
