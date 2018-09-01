@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.runxsports.provider.cs.cms.mapper.UserAttachmentMapper" >
-  <resultMap id="BaseResultMap" type="com.runxsports.provider.cs.cms.entity.UserAttachment" >
+<mapper namespace="com.tonggu.provider.cs.cms.mapper.UserAttachmentMapper" >
+  <resultMap id="BaseResultMap" type="com.tonggu.provider.cs.cms.entity.UserAttachment" >
     <!--
       WARNING - @mbg.generated
     -->
@@ -19,7 +19,7 @@
     <result column="memo" property="memo" jdbcType="VARCHAR" />
   </resultMap>
   
-    <select id="queryUserAttach" resultType="com.runxsports.provider.cs.cms.model.vo.AttachementVO">
+    <select id="queryUserAttach" resultType="com.tonggu.provider.cs.cms.model.vo.AttachementVO">
     	select  a.id as id,
     			a.user_id as userId,
 				u.user_name as userName,
@@ -40,14 +40,14 @@
 	
     </select>
     
-     <resultMap id="queryResultMap" type="com.runxsports.provider.cs.cms.model.vo.AttachementVO" >
+     <resultMap id="queryResultMap" type="com.tonggu.provider.cs.cms.model.vo.AttachementVO" >
 		    <id column="id" property="id" jdbcType="BIGINT" />
 		    <result column="userName" property="userName" />
 		    <result column="userNo" property="userNo" />
 		    <result column="teamName" property="teamName" />
 		    <result column="teamLeader" property="teamLeader"/>
 		    <result column="teacher" property="teacher"/>
-		    <collection property="attachment" ofType="com.runxsports.provider.cs.cms.entity.UserAttachment">
+		    <collection property="attachment" ofType="com.tonggu.provider.cs.cms.entity.UserAttachment">
 		    		<id column="aid" property="id"/>
 		    		<result column="attachementPath" property="attachementPath"/>
 		    		<result column="attachementName" property="attachementName"/>

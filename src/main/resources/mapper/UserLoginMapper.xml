@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.runxsports.provider.cs.cms.mapper.UserLoginMapper" >
-  <resultMap id="BaseResultMap" type="com.runxsports.provider.cs.cms.entity.UserLogin" >
+<mapper namespace="com.tonggu.provider.cs.cms.mapper.UserLoginMapper" >
+  <resultMap id="BaseResultMap" type="com.tonggu.provider.cs.cms.entity.UserLogin" >
     <!--
       WARNING - @mbg.generated
     -->

@@ -9,7 +9,7 @@
 	    <version>2.0.1.RELEASE</version>
 	</parent>
 	
-	<groupId>com.runxsports</groupId>
+	<groupId>com.tonggu</groupId>
 	<artifactId>provider-cs-cms</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0.0</version>
@@ -26,15 +26,15 @@
 		<jdom.version>1.1</jdom.version>
 		<dozer.version>5.5.1</dozer.version>
         <mapper.version>3.4.0</mapper.version>
-		<com.runxsports.version>1.0.0</com.runxsports.version>
+		<com.tonggu.version>1.0.0</com.tonggu.version>
 		<tk.mybatis.version>1.2.4</tk.mybatis.version>
 		<pagehelper.version>1.2.3</pagehelper.version>
     
         <!--***************************************** generatorConfig.xml 配置************************************** -->
         <targetJavaProject>${basedir}/src/main/java</targetJavaProject>
-        <targetMapperPackage>com.runxsports.provider.cs.cms.mapper</targetMapperPackage>
+        <targetMapperPackage>com.tonggu.provider.cs.cms.mapper</targetMapperPackage>
         <!--model-->
-        <targetModelPackage>com.runxsports.provider.cs.cms.entity</targetModelPackage>
+        <targetModelPackage>com.tonggu.provider.cs.cms.entity</targetModelPackage>
         <!-- XML生成路径 -->
         <targetResourcesProject>${basedir}/src/main/resources</targetResourcesProject>
         <!--包名称-->
