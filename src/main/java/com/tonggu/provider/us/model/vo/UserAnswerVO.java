@@ -1,6 +1,8 @@
 package com.tonggu.provider.us.model.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -57,5 +59,10 @@ public class UserAnswerVO implements Serializable {
 	 * 题号
 	 */
 	private Integer questionSort;
+	
+	/**
+	 * 新增時間
+	 */
+	private Date createDate;
 
 }

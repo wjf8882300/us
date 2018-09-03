@@ -29,7 +29,8 @@
 				u.team_leader as  teamLeader,
 				u.teacher as teacher,
 				a.attachement_name as attachementName,
-				a.attachement_path as attachementPath
+				a.attachement_path as attachementPath,
+				a.create_date as createDate
 		from us_t_user_attachment a 
 		left join us_t_user u on a.user_id = u.id
 		where a.is_delete = 0 and u.is_delete = 0

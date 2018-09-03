@@ -5,7 +5,7 @@ spring:
       name: test
       url: jdbc:mysql://47.92.193.39:3306/us?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true
       username: root
-      password: Feng@9403!
+      password: Duan@9403!
       # 使用druid数据源
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.jdbc.Driver
@@ -30,7 +30,7 @@ spring:
     #host: dev-redis-1.runx.vip
     host: 47.92.193.39
     port: 6379
-    password: Feng@9403!
+    password: Duan@9403!
     timeout: 0
 
 us:

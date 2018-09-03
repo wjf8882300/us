@@ -64,7 +64,8 @@
 			 q.question_content,
 			 q.question_sort,
 			 q.question_desc,
-			 q.question_score
+			 q.question_score,
+			 q.create_date
 	FROM us_t_question q
 	WHERE q.is_delete = 0
 	<if test="bo.keys != null and bo.keys != ''">

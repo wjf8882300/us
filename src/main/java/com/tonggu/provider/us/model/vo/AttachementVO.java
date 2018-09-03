@@ -1,6 +1,7 @@
 package com.tonggu.provider.us.model.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import com.tonggu.provider.us.entity.UserAttachment;
@@ -64,5 +65,7 @@ public class AttachementVO implements Serializable {/**
     private String attachementName;
     
     private List<UserAttachment> attachment;
+    
+    private Date createDate;
 
 }

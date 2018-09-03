@@ -26,6 +26,7 @@
     <result column="team_name" property="teamName" jdbcType="VARCHAR" />
     <result column="answer" property="answer" jdbcType="VARCHAR" />
     <result column="question_sort" property="questionSort" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
   </resultMap>
   
   <select id="findByQuestion" resultType="java.lang.Integer">
@@ -101,6 +102,18 @@
 					and a.user_id=a.dest_user_id) 
 		and u.is_delete = 0 
 		and u.user_type = 0
+			<if test="record.userName != null and record.userName != '' ">
+					and u.user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+				</if>
+				<if test="record.userNo != null and record.userNo != '' ">
+					and  u.user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+				</if>
+				<if test="record.teamName != null and record.teamName != '' ">
+					and u.team_name = #{record.teamName}
+				</if>
+				<if test="record.className != null and record.className != '' ">
+					and u.class_name = #{record.className}
+				</if>
   </select>
 
   <!--查询支部书记/辅导员没有评价的学生 -->
@@ -116,13 +129,30 @@
 		  from us_t_user u
 		where u.id not in (select w.user_id from us_t_user_answer w where w.dest_user_id in (select t.id from us_t_user t where t.user_type =#{userType} and t.is_delete = 0))
 		and u.is_delete = 0
-		<if test="userType == 2">and u.user_type in (0,1)</if>
-		<if test="userType == 1">and u.user_type =0 </if>
+		<if test="record.userType != null and record.userType != '' and record.userType != '2'">
+			and u.user_type in (0,1)
+		</if>
+		<if test="record.userType != null and record.userType != '' and record.userType != '1'">
+			and u.user_type =0 
+		</if>
+		<if test="record.userName != null and record.userName != '' ">
+			and u.user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+		</if>
+		<if test="record.userNo != null and record.userNo != '' ">
+			and  u.user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+		</if>
+		<if test="record.teamName != null and record.teamName != '' ">
+			and u.team_name = #{record.teamName}
+		</if>
+		<if test="record.className != null and record.className != '' ">
+			and u.class_name = #{record.className}
+		</if>
   </select>
     <!-- 查询学生评分 -->
   <select id="queryStudentScore" resultMap="UserScoreMap">
 	select u.user_name, u.class_name, u.user_no,
-	       u.team_name, ua.answer, q.question_sort
+	       u.team_name, ua.answer, q.question_sort,
+	       ua.create_date
 	from us_t_user_answer ua, us_t_user u, us_t_question q
 	where ua.user_id = u.id and ua.question_id = q.id
 	and u.user_type = 0
@@ -145,7 +175,8 @@
   <!-- 根据用户类型查询评分（学生除外） -->
   <select id="queryOtherScore" resultMap="UserScoreMap">
   	select u.user_name, u.class_name, u.user_no,
-	       u.team_name, ua.answer, q.question_sort
+	       u.team_name, ua.answer, q.question_sort,
+	       ua.create_date
 	from us_t_user_answer ua, us_t_user u, us_t_question q
 	where ua.dest_user_id = u.id and ua.question_id = q.id
 	and ua.user_id in (

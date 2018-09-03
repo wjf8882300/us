@@ -67,14 +67,14 @@ public interface UserAnswerMapper extends Mapper<UserAnswer> {
 	 * @param userType
 	 * @return
 	 */
-	List<UserAnswerVO> queryStudentNotScore();
+	List<UserAnswerVO> queryStudentNotScore(@Param("record")UserAnswerBO userAnswerBO);
 	
 	/**
 	 * 查询党支部/辅导员未给学生打分的基本信息
 	 * @param group
 	 * @return
 	 */
-	List<UserAnswerVO> queryTeamNotScore(@Param("userType") String userType);
+	List<UserAnswerVO> queryTeamNotScore(@Param("userType") String userType,@Param("record")UserAnswerBO userAnswerBO);
 	
 	/**
 	 * 刪除重复打分记录
