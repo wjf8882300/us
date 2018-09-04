@@ -116,8 +116,10 @@ public class UserAnswerServiceImpl implements UserAnswerService{
         List<UserAnswerVO> result = null;
         if(UserEnum.Type.STUDENT.getString().equals(userAnswerBO.getUserType())) {
         	result = mapper.queryStudentNotScore(userAnswerBO);
-        } else {
-        	result = mapper.queryTeamNotScore(userAnswerBO.getUserType(),userAnswerBO);
+        } else if(UserEnum.Type.LEADER.getString().equals(userAnswerBO.getUserType())){
+        	result = mapper.queryTeamNotScore(userAnswerBO);
+        }else {
+        	result = mapper.queryTeacherNotScore(userAnswerBO);
         }
 		PageInfo<UserAnswerVO> pageInfo = new PageInfo<UserAnswerVO>(result);
 		return pageInfo;
