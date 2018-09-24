@@ -49,10 +49,13 @@ server:
 mybatis:
     mapper-locations: classpath*:mapper/*.xml
 logging:
+  path: logs
+  file: us.log
   level:
-   com.tonggu.provider.cms.mapper: debug
-   tk.mybatis.mapper: debug
-
+   com.tonggu: info
+   tk.mybatis.mapper: ERROR
+   org.springframework.web: WARN
+   org.apache: INFO
 management:
   health:
     redis:

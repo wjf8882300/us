@@ -83,6 +83,20 @@
 				group by u.user_no 
   </select>
   
+  <sql id="queryCondition">
+  	  <if test="record.userName != null and record.userName != '' ">
+		  and u.user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+	 </if>
+	 <if test="record.userNo != null and record.userNo != '' ">
+		  and  u.user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+	 </if>
+	 <if test="record.teamName != null and record.teamName != '' ">
+		  and u.team_name = #{record.teamName}
+	 </if>
+	 <if test="record.className != null and record.className != '' ">
+		  and u.class_name = #{record.className}
+	 </if>
+  </sql>
   
     <!-- 查询学生未自我评价人 -->
   <select id = "queryStudentNotScore" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
@@ -102,51 +116,46 @@
 					and a.user_id=a.dest_user_id) 
 		and u.is_delete = 0 
 		and u.user_type = 0
-			<if test="record.userName != null and record.userName != '' ">
-					and u.user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
-				</if>
-				<if test="record.userNo != null and record.userNo != '' ">
-					and  u.user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
-				</if>
-				<if test="record.teamName != null and record.teamName != '' ">
-					and u.team_name = #{record.teamName}
-				</if>
-				<if test="record.className != null and record.className != '' ">
-					and u.class_name = #{record.className}
-				</if>
+		<include refid="queryCondition" />
+  </select>
+  
+  <select id="queryTeamNotScore" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
+  		select 
+				 u.user_name as userName,
+				 u.class_name as className,
+				 u.user_no as userNo,
+				 u.team_name as teamName,
+				 u.team_leader as  teamLeader,
+				 u.teacher,
+				 u.teacher_no
+		from us_t_user u
+		where (u.id,u.team_leader_no) not in (select w.dest_user_id,t.user_no from us_t_user_answer w 
+					left join us_t_user t on w.user_id = t.id 
+					where t.user_type =1 and t.is_delete = 0 and w.is_delete = 0 group by w.dest_user_id)
+		and u.is_delete = 0
+		and u.user_type in (0)
+		and u.team_leader_no is not null
+		<include refid="queryCondition" />
   </select>
 
   <!--查询支部书记/辅导员没有评价的学生 -->
-  <select id = "queryTeamNotScore" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
+  <select id = "queryTeacherNotScore" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
 		select 
 				 u.user_name as userName,
 				 u.class_name as className,
 				 u.user_no as userNo,
 				 u.team_name as teamName,
-				 u.teacher,
 				 u.team_leader as  teamLeader,
+				  u.teacher,
 				 u.teacher_no
 		  from us_t_user u
-		where u.id not in (select w.user_id from us_t_user_answer w where w.dest_user_id in (select t.id from us_t_user t where t.user_type =#{userType} and t.is_delete = 0))
+		where (u.id,u.teacher_no) not in (select w.dest_user_id,t.user_no from us_t_user_answer w 
+		left join us_t_user t on w.user_id = t.id 
+		where t.user_type =2 and t.is_delete = 0 and w.is_delete = 0 group by w.dest_user_id)
 		and u.is_delete = 0
-		<if test="record.userType != null and record.userType != '' and record.userType != '2'">
-			and u.user_type in (0,1)
-		</if>
-		<if test="record.userType != null and record.userType != '' and record.userType != '1'">
-			and u.user_type =0 
-		</if>
-		<if test="record.userName != null and record.userName != '' ">
-			and u.user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
-		</if>
-		<if test="record.userNo != null and record.userNo != '' ">
-			and  u.user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
-		</if>
-		<if test="record.teamName != null and record.teamName != '' ">
-			and u.team_name = #{record.teamName}
-		</if>
-		<if test="record.className != null and record.className != '' ">
-			and u.class_name = #{record.className}
-		</if>
+		and u.user_type in (0,1)
+		and u.teacher_no is not null
+		<include refid="queryCondition" />
   </select>
     <!-- 查询学生评分 -->
   <select id="queryStudentScore" resultMap="UserScoreMap">
