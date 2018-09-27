@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="7200 seconds">
+	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+	<property name="LOG_PATH" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}" />
+	<property name="LOG_FILE" value="${LOG_FILE:-spring.log}"/>
+	<property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wex"/>
+	<property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} : %m%n%wex"/>
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+	</appender>
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 当前Log文件名 -->
+		<file>${LOG_PATH}/${LOG_FILE}</file>
+		<encoder>
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 非当天的Log文件压缩备份 -->
+			<fileNamePattern>${LOG_PATH}/${LOG_FILE}.%d{yyyy-MM-dd}.zip
+			</fileNamePattern>
+			<!-- 超过30天的备份文件会被删除 -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+	</appender>
+	
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+  		<appender-ref ref="FILE" />
+	<!--	<appender-ref ref="ASYNC" /> -->
+	</root>
+	
+	<logger name="jdbc.audit" level="OFF">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="jdbc.resultset" level="OFF">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="jdbc.resultsettable" level="OFF">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="jdbc.sqlonly" level="OFF">
+		<appender-ref ref="FILE" />
+	</logger>
+</configuration>

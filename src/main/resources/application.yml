@@ -1,11 +1,11 @@
 spring:
   application:
-    name: provider-cs-cms
+    name: provider-us
   datasource:
       name: test
       url: jdbc:mysql://47.92.193.39:3306/us?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true
       username: root
-      password: Wang@9403!
+      password: Duan@9403!
       # 使用druid数据源
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.jdbc.Driver
@@ -30,23 +30,32 @@ spring:
     #host: dev-redis-1.runx.vip
     host: 47.92.193.39
     port: 6379
-    password: Wang@9403!
+    password: Duan@9403!
     timeout: 0
 
 us:
   file: 
-    upload-path: /user/local/project/template/
-    download-path: /user/local/project/download/
-
+    base-path: /user/local/project/
+    template-path: template/
+    upload-path: upload/
+    download-path: download/
+  wechat: 
+    app-id: wx648f70aec1a36d27
+    app-secret: 99ec2ec8cd38c979a993c3785b5fc5cc
+  
 server:
   port: 9999
 
 mybatis:
     mapper-locations: classpath*:mapper/*.xml
 logging:
+  path: logs
+  file: us.log
   level:
-   com.runxsports.provider.cms.mapper: debug
-
+   com.tonggu: info
+   tk.mybatis.mapper: ERROR
+   org.springframework.web: WARN
+   org.apache: INFO
 management:
   health:
     redis:

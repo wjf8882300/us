@@ -1,8 +1,10 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2018/8/23 11:21:45                           */
+/* Created on:     2018/9/2 0:17:54                             */
 /*==============================================================*/
 
+
+drop table if exists com_t_param;
 
 drop table if exists us_t_question;
 
@@ -16,30 +18,65 @@ drop index IX_USER_ACITVITY_ANSWER_ID on us_t_user_answer;
 
 drop table if exists us_t_user_answer;
 
+drop index IX_USER_ATTACHMENT_USER_ID on us_t_user_attachment;
+
+drop table if exists us_t_user_attachment;
+
+drop index IX_USER_LOGIN_USER_ID on us_t_user_login;
+
+drop table if exists us_t_user_login;
+
 /*==============================================================*/
-/* Table: us_t_question                                         */
+/* Table: com_t_param                                           */
 /*==============================================================*/
-create table us_t_question
+create table com_t_param
 (
    id                   bigint(20) not null,
-   question_group       char(1) not null comment 'ÌâÄ¿Àà±ğ:0-Ñ§ÉúÌâ/1-Ö§²¿Ìâ/2-Ö¸µ¼Ô±Ìâ',
-   question_type        char(1) not null comment 'ÌâÄ¿ÀàĞÍ:0-Ñ¡ÔñÌâ/1-Ìî¿ÕÌâ',
-   question_content     varchar(1024) not null comment 'ÌâÄ¿ÄÚÈİ',
-   question_sort        int not null comment 'ÅÅĞò',
-   create_date          datetime not null default CURRENT_TIMESTAMP comment '´´½¨Ê±¼ä',
-   create_user          bigint comment '´´½¨ÈË',
-   last_update_date     datetime not null default CURRENT_TIMESTAMP comment '¸üĞÂÊ±¼ä',
-   last_update_user     bigint comment '¸üĞÂÈË',
-   is_delete            char(1) not null default '0' comment 'ÊÇ·ñÉ¾³ı',
-   version              int not null default 0 comment '°æ±¾ºÅ',
-   memo                 varchar(255) comment '±¸×¢',
+   parameter_type       varchar(50) comment 'å‚æ•°ç±»å‹',
+   parameter_name       varchar(50) not null comment 'å‚æ•°å',
+   parameter_value      varchar(500) not null comment 'å‚æ•°å€¼',
+   create_date          datetime not null default CURRENT_TIMESTAMP comment 'åˆ›å»ºæ—¶é—´',
+   create_user          bigint comment 'åˆ›å»ºäºº',
+   last_update_date     datetime not null default CURRENT_TIMESTAMP comment 'æ›´æ–°æ—¶é—´',
+   last_update_user     bigint comment 'æ›´æ–°äºº',
+   is_delete            char(1) not null default '0' comment 'æ˜¯å¦åˆ é™¤
+            0-æœªåˆ é™¤/1-å·²åˆ é™¤',
+   version              int not null default 0 comment 'ç‰ˆæœ¬å·',
+   memo                 varchar(255) comment 'å¤‡æ³¨',
    primary key (id)
 )
 ENGINE = InnoDB
 CHARSET = utf8
 COLLATE = utf8_general_ci;
 
-alter table us_t_question comment 'Ìâ¿â±í';
+alter table com_t_param comment 'åŸºç¡€å‚æ•°è¡¨';
+
+/*==============================================================*/
+/* Table: us_t_question                                         */
+/*==============================================================*/
+create table us_t_question
+(
+   id                   bigint(20) not null,
+   question_group       char(1) not null comment 'é¢˜ç›®ç±»åˆ«:0-å­¦ç”Ÿé¢˜/1-æ”¯éƒ¨é¢˜/2-æŒ‡å¯¼å‘˜é¢˜',
+   question_type        char(1) not null comment 'é¢˜ç›®ç±»å‹:0-é€‰æ‹©é¢˜/1-å¡«ç©ºé¢˜',
+   question_content     varchar(1024) not null comment 'é¢˜ç›®å†…å®¹',
+   question_score       int comment 'é¢˜ç›®åˆ†å€¼',
+   question_desc        varchar(1024) comment 'é¢˜ç›®æè¿°',
+   question_sort        int not null comment 'æ’åº',
+   create_date          datetime not null default CURRENT_TIMESTAMP comment 'åˆ›å»ºæ—¶é—´',
+   create_user          bigint comment 'åˆ›å»ºäºº',
+   last_update_date     datetime not null default CURRENT_TIMESTAMP comment 'æ›´æ–°æ—¶é—´',
+   last_update_user     bigint comment 'æ›´æ–°äºº',
+   is_delete            char(1) not null default '0' comment 'æ˜¯å¦åˆ é™¤',
+   version              int not null default 0 comment 'ç‰ˆæœ¬å·',
+   memo                 varchar(255) comment 'å¤‡æ³¨',
+   primary key (id)
+)
+ENGINE = InnoDB
+CHARSET = utf8
+COLLATE = utf8_general_ci;
+
+alter table us_t_question comment 'é¢˜åº“è¡¨';
 
 /*==============================================================*/
 /* Table: us_t_question_item                                    */
@@ -47,24 +84,24 @@ alter table us_t_question comment 'Ìâ¿â±í';
 create table us_t_question_item
 (
    id                   bigint(20) not null,
-   question_id          bigint(20) not null comment 'Ìâ¿âID',
-   item_no              varchar(10) not null comment 'ĞòºÅ',
-   item_content         varchar(1024) not null comment 'ÄÚÈİ',
-   item_sort            int not null comment 'ÅÅĞò',
-   create_date          datetime not null default CURRENT_TIMESTAMP comment '´´½¨Ê±¼ä',
-   create_user          bigint comment '´´½¨ÈË',
-   last_update_date     datetime not null default CURRENT_TIMESTAMP comment '¸üĞÂÊ±¼ä',
-   last_update_user     bigint comment '¸üĞÂÈË',
-   is_delete            char(1) not null default '0' comment 'ÊÇ·ñÉ¾³ı',
-   version              int not null default 0 comment '°æ±¾ºÅ',
-   memo                 varchar(255) comment '±¸×¢',
+   question_id          bigint(20) not null comment 'é¢˜åº“ID',
+   item_no              varchar(10) not null comment 'åºå·',
+   item_content         varchar(1024) not null comment 'å†…å®¹',
+   item_sort            int not null comment 'æ’åº',
+   create_date          datetime not null default CURRENT_TIMESTAMP comment 'åˆ›å»ºæ—¶é—´',
+   create_user          bigint comment 'åˆ›å»ºäºº',
+   last_update_date     datetime not null default CURRENT_TIMESTAMP comment 'æ›´æ–°æ—¶é—´',
+   last_update_user     bigint comment 'æ›´æ–°äºº',
+   is_delete            char(1) not null default '0' comment 'æ˜¯å¦åˆ é™¤',
+   version              int not null default 0 comment 'ç‰ˆæœ¬å·',
+   memo                 varchar(255) comment 'å¤‡æ³¨',
    primary key (id)
 )
 ENGINE = InnoDB
 CHARSET = utf8
 COLLATE = utf8_general_ci;
 
-alter table us_t_question_item comment '»î¶¯ÌâÄ¿Ñ¡Ïî±í';
+alter table us_t_question_item comment 'æ´»åŠ¨é¢˜ç›®é€‰é¡¹è¡¨';
 
 /*==============================================================*/
 /* Index: IX_ACTIVITY_QUETION_ITEM_QUETION_ID                   */
@@ -80,29 +117,33 @@ create index IX_ACTIVITY_QUETION_ITEM_QUETION_ID on us_t_question_item
 create table us_t_user
 (
    id                   bigint(20) not null,
-   user_type            char(1) not null comment 'ÓÃ»§ÀàĞÍ:0-Ñ§Éú/1-Ö§²¿Êé¼Ç/2-¸¨µ¼Ô±',
-   user_name            varchar(50) not null comment 'ÓÃ»§Ãû³Æ',
-   password             varchar(50) comment 'ÓÃ»§ÃÜÂë',
-   class_name           varchar(50) comment '°à¼¶',
-   user_no              varchar(50) comment 'Ñ§ºÅ',
-   team_name            varchar(50) comment 'ËùÔÚÖ§²¿',
-   team_leader          varchar(50) comment 'Ö§²¿Êé¼Ç',
-   teacher              varchar(50) comment '¸¨µ¼Ô±',
-   create_date          datetime not null default CURRENT_TIMESTAMP comment '´´½¨Ê±¼ä',
-   create_user          bigint comment '´´½¨ÈË',
-   last_update_date     datetime not null default CURRENT_TIMESTAMP comment '¸üĞÂÊ±¼ä',
-   last_update_user     bigint comment '¸üĞÂÈË',
-   is_delete            char(1) not null default '0' comment 'ÊÇ·ñÉ¾³ı
-            0-Î´É¾³ı/1-ÒÑÉ¾³ı',
-   version              int not null default 0 comment '°æ±¾ºÅ',
-   memo                 varchar(255) comment '±¸×¢',
+   user_type            char(1) not null comment 'ç”¨æˆ·ç±»å‹:0-å­¦ç”Ÿ/1-æ”¯éƒ¨ä¹¦è®°/2-è¾…å¯¼å‘˜',
+   user_name            varchar(50) not null comment 'ç”¨æˆ·åç§°',
+   password             varchar(50) comment 'ç”¨æˆ·å¯†ç ',
+   class_name           varchar(50) comment 'ç­çº§',
+   user_no              varchar(50) comment 'å­¦å·',
+   team_name            varchar(50) comment 'æ‰€åœ¨æ”¯éƒ¨',
+   team_leader          varchar(50) comment 'æ”¯éƒ¨ä¹¦è®°',
+   team_leader_no       varchar(50) comment 'team_leader_no',
+   team_leader_id       bigint(20) comment 'æ”¯éƒ¨ä¹¦è®°ID',
+   teacher              varchar(50) comment 'è¾…å¯¼å‘˜',
+   teacher_no           varchar(50) comment 'è¾…å¯¼å…ƒå·¥å·',
+   teacher_id           bigint(20) comment 'è¾…å¯¼å‘˜ID',
+   create_date          datetime not null default CURRENT_TIMESTAMP comment 'åˆ›å»ºæ—¶é—´',
+   create_user          bigint comment 'åˆ›å»ºäºº',
+   last_update_date     datetime not null default CURRENT_TIMESTAMP comment 'æ›´æ–°æ—¶é—´',
+   last_update_user     bigint comment 'æ›´æ–°äºº',
+   is_delete            char(1) not null default '0' comment 'æ˜¯å¦åˆ é™¤
+            0-æœªåˆ é™¤/1-å·²åˆ é™¤',
+   version              int not null default 0 comment 'ç‰ˆæœ¬å·',
+   memo                 varchar(255) comment 'å¤‡æ³¨',
    primary key (id)
 )
 ENGINE = InnoDB
 CHARSET = utf8
 COLLATE = utf8_general_ci;
 
-alter table us_t_user comment 'ÓÃ»§±í';
+alter table us_t_user comment 'ç”¨æˆ·è¡¨';
 
 /*==============================================================*/
 /* Table: us_t_user_answer                                      */
@@ -110,24 +151,24 @@ alter table us_t_user comment 'ÓÃ»§±í';
 create table us_t_user_answer
 (
    id                   bigint(20) not null,
-   question_id          bigint(20) not null comment 'Ìâ¿âID',
-   user_id              bigint(20) not null comment 'ÓÃ»§ID',
-   dest_user_id         bigint(20) comment 'ÆÀ¼ÛÓÃ»§ID',
-   answer               varchar(255) not null comment '´ğ°¸',
-   create_date          datetime not null default CURRENT_TIMESTAMP comment '´´½¨Ê±¼ä',
-   create_user          bigint comment '´´½¨ÈË',
-   last_update_date     datetime not null default CURRENT_TIMESTAMP comment '¸üĞÂÊ±¼ä',
-   last_update_user     bigint comment '¸üĞÂÈË',
-   is_delete            char(1) not null default '0' comment 'ÊÇ·ñÉ¾³ı',
-   version              int not null default 0 comment '°æ±¾ºÅ',
-   memo                 varchar(255) comment '±¸×¢',
+   question_id          bigint(20) not null comment 'é¢˜åº“ID',
+   user_id              bigint(20) not null comment 'ç”¨æˆ·ID',
+   dest_user_id         bigint(20) comment 'è¯„ä»·ç”¨æˆ·ID',
+   answer               varchar(255) not null comment 'ç­”æ¡ˆ',
+   create_date          datetime not null default CURRENT_TIMESTAMP comment 'åˆ›å»ºæ—¶é—´',
+   create_user          bigint comment 'åˆ›å»ºäºº',
+   last_update_date     datetime not null default CURRENT_TIMESTAMP comment 'æ›´æ–°æ—¶é—´',
+   last_update_user     bigint comment 'æ›´æ–°äºº',
+   is_delete            char(1) not null default '0' comment 'æ˜¯å¦åˆ é™¤',
+   version              int not null default 0 comment 'ç‰ˆæœ¬å·',
+   memo                 varchar(255) comment 'å¤‡æ³¨',
    primary key (id)
 )
 ENGINE = InnoDB
 CHARSET = utf8
 COLLATE = utf8_general_ci;
 
-alter table us_t_user_answer comment 'ÓÃ»§ÆÀ·Ö±í';
+alter table us_t_user_answer comment 'ç”¨æˆ·è¯„åˆ†è¡¨';
 
 /*==============================================================*/
 /* Index: IX_USER_ACITVITY_ANSWER_ID                            */
@@ -137,5 +178,73 @@ create index IX_USER_ACITVITY_ANSWER_ID on us_t_user_answer
    question_id,
    user_id,
    dest_user_id
+);
+
+/*==============================================================*/
+/* Table: us_t_user_attachment                                  */
+/*==============================================================*/
+create table us_t_user_attachment
+(
+   id                   bigint(20) not null,
+   user_id              bigint(20) not null comment 'ç”¨æˆ·ID',
+   attachement_name     varchar(255) comment 'é™„ä»¶åç§°',
+   attachement_type     char(1) comment 'é™„ä»¶ç±»å‹',
+   attachement_path     varchar(500) not null comment 'é™„ä»¶è·¯å¾„',
+   create_date          datetime not null default CURRENT_TIMESTAMP comment 'åˆ›å»ºæ—¶é—´',
+   create_user          bigint comment 'åˆ›å»ºäºº',
+   last_update_date     datetime not null default CURRENT_TIMESTAMP comment 'æ›´æ–°æ—¶é—´',
+   last_update_user     bigint comment 'æ›´æ–°äºº',
+   is_delete            char(1) not null default '0' comment 'æ˜¯å¦åˆ é™¤
+            0-æœªåˆ é™¤/1-å·²åˆ é™¤',
+   version              int not null default 0 comment 'ç‰ˆæœ¬å·',
+   memo                 varchar(255) comment 'å¤‡æ³¨',
+   primary key (id)
+)
+ENGINE = InnoDB
+CHARSET = utf8
+COLLATE = utf8_general_ci;
+
+alter table us_t_user_attachment comment 'ç”¨æˆ·é™„ä»¶è¡¨';
+
+/*==============================================================*/
+/* Index: IX_USER_ATTACHMENT_USER_ID                            */
+/*==============================================================*/
+create index IX_USER_ATTACHMENT_USER_ID on us_t_user_attachment
+(
+   user_id,
+   attachement_path
+);
+
+/*==============================================================*/
+/* Table: us_t_user_login                                       */
+/*==============================================================*/
+create table us_t_user_login
+(
+   id                   bigint(20) not null,
+   user_id              bigint(20) not null comment 'ç”¨æˆ·ID',
+   open_id              varchar(50) not null comment 'ç”¨æˆ·åç§°',
+   create_date          datetime not null default CURRENT_TIMESTAMP comment 'åˆ›å»ºæ—¶é—´',
+   create_user          bigint comment 'åˆ›å»ºäºº',
+   last_update_date     datetime not null default CURRENT_TIMESTAMP comment 'æ›´æ–°æ—¶é—´',
+   last_update_user     bigint comment 'æ›´æ–°äºº',
+   is_delete            char(1) not null default '0' comment 'æ˜¯å¦åˆ é™¤
+            0-æœªåˆ é™¤/1-å·²åˆ é™¤',
+   version              int not null default 0 comment 'ç‰ˆæœ¬å·',
+   memo                 varchar(255) comment 'å¤‡æ³¨',
+   primary key (id)
+)
+ENGINE = InnoDB
+CHARSET = utf8
+COLLATE = utf8_general_ci;
+
+alter table us_t_user_login comment 'ç”¨æˆ·ç™»å½•è¡¨';
+
+/*==============================================================*/
+/* Index: IX_USER_LOGIN_USER_ID                                 */
+/*==============================================================*/
+create index IX_USER_LOGIN_USER_ID on us_t_user_login
+(
+   user_id,
+   open_id
 );
 

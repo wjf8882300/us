@@ -1,38 +1,47 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.runxsports.provider.cs.cms.mapper.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.runxsports.provider.cs.cms.entity.User" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tonggu.provider.us.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.tonggu.provider.us.entity.User">
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="user_type" property="userType" jdbcType="CHAR" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="class_name" property="className" jdbcType="VARCHAR" />
-    <result column="user_no" property="userNo" jdbcType="VARCHAR" />
-    <result column="team_name" property="teamName" jdbcType="VARCHAR" />
-    <result column="team_leader" property="teamLeader" jdbcType="VARCHAR" />
-    <result column="teacher" property="teacher" jdbcType="VARCHAR" />
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-    <result column="create_user" property="createUser" jdbcType="BIGINT" />
-    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
-    <result column="last_update_user" property="lastUpdateUser" jdbcType="BIGINT" />
-    <result column="is_delete" property="isDelete" jdbcType="CHAR" />
-    <result column="version" property="version" jdbcType="INTEGER" />
-    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_type" jdbcType="CHAR" property="userType" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="class_name" jdbcType="VARCHAR" property="className" />
+    <result column="user_no" jdbcType="VARCHAR" property="userNo" />
+    <result column="team_name" jdbcType="VARCHAR" property="teamName" />
+    <result column="team_leader" jdbcType="VARCHAR" property="teamLeader" />
+    <result column="teacher" jdbcType="VARCHAR" property="teacher" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user" jdbcType="BIGINT" property="createUser" />
+    <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    <result column="last_update_user" jdbcType="BIGINT" property="lastUpdateUser" />
+    <result column="is_delete" jdbcType="CHAR" property="isDelete" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="team_leader_no" jdbcType="VARCHAR" property="teamLeaderNo" />
+    <result column="team_leader_id" jdbcType="BIGINT" property="teamLeaderId" />
+    <result column="teacher_no" jdbcType="VARCHAR" property="teacherNo" />
+    <result column="teacher_id" jdbcType="BIGINT" property="teacherId" />
   </resultMap>
 
 	<!-- 批量插入用户信息 -->
 	<insert id="batchInsert" parameterType="java.util.List">
 		insert into us_t_user
 		(id, user_type, user_name,
-		password,class_name,user_no,team_name,team_leader,teacher,create_date,last_update_date,is_delete)
+		password,class_name,user_no,
+		team_name,team_leader,teacher,
+		team_leader_no, teacher_no, 
+		create_date,last_update_date,is_delete)
 		values
-		<foreach collection="list" separator="," open="" close=""
-			item="item">
+		<foreach close="" collection="list" item="item" open="" separator=",">
 			(#{item.id}, #{item.userType}, #{item.userName},
-			#{item.password},#{item.className},#{item.userNo},#{item.teamName},#{item.teamLeader},#{item.teacher},#{item.createDate},#{item.lastUpdateDate},'0')
+			#{item.password},#{item.className},#{item.userNo},
+			#{item.teamName},#{item.teamLeader},#{item.teacher},
+			#{item.teamLeaderNo},#{item.teacherNo},
+			#{item.createDate},#{item.lastUpdateDate},'0')
 		</foreach>
 	</insert>
 	
@@ -45,7 +54,7 @@
 		where t.is_delete = '0'
 	</update>
 	
-	<select id="findByUserNo" resultType="com.runxsports.provider.cs.cms.entity.User">
+	<select id="findByUserNo" resultType="com.tonggu.provider.us.entity.User">
 		select us.id,
 			   us.user_type as userType ,
 		       us.user_name as userName,
@@ -56,5 +65,76 @@
 			   us.teacher as teacher 
 		from us_t_user us 
 		where us.user_no = #{userNo}
+	</select>
+	
+	<!-- 查詢支部书记下的学生 -->
+	<select id="queryUserByNo" resultType="com.tonggu.provider.us.entity.User" >
+		select   u.user_name as userName,
+				 u.class_name as className,
+				 u.user_no as userNo,
+				 u.team_name as teamName,
+				 u.team_leader as teamLeader,
+				 u.teacher_no as teacherNo,
+				 u.teacher 
+		 from us_t_user u 
+		 where u.is_delete = 0
+		 <if test="userType==1">and u.team_leader_id=#{No}</if>
+		 <if test="userType==2">and u.teacher_id=#{No}</if> 
+	</select>
+	
+	<update id = "updateLeaderId">
+			update us_t_user r 
+			left join us_t_user a on r.team_leader_no = a.user_no and a.user_type=1
+			left join us_t_user b on r.teacher_no = b.user_no and b.user_type=2
+			set r.team_leader_id = a.id,r.teacher_id=b.id
+			where (r.team_leader_id is null or r.teacher_id is null)
+			 and r.is_delete = 0 
+			 and a.is_delete = 0
+			 and b.is_delete = 0
+	</update>
+	
+	<!-- 查询支部 -->
+	<select id="queryTeam" resultMap="BaseResultMap">
+		select  distinct u.team_name as team_name  
+		 from us_t_user u 
+		 where u.is_delete = 0
+		 and u.team_name is not null
+		 order by u.team_name
+	</select>
+	
+	<!-- 查询班级 -->
+	<select id="queryClass" resultMap="BaseResultMap">
+		select  distinct u.class_name as class_name
+		 from us_t_user u 
+		 where u.is_delete = 0
+		 and u.class_name is not null
+		 order by u.class_name
+	</select>
+	
+	<!-- 查询所有信息 -->
+	<select id="queryAll"  resultMap="BaseResultMap">
+		select id, user_type, user_name,
+		password,class_name,user_no,
+		team_name,team_leader,teacher,
+		team_leader_id, teacher_id,
+		team_leader_no, teacher_no, 
+		create_date,last_update_date,is_delete,version,memo
+		from us_t_user u
+		where u.is_delete = 0
+		<if test="record.userName != null and record.userName != '' ">
+			and user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+		</if>
+		<if test="record.userNo != null and record.userNo != '' ">
+			and user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+		</if>
+		<if test="record.userType != null and record.userType != '' ">
+			and user_type = #{record.userType}
+		</if>
+		<if test="record.teamName != null and record.teamName != '' ">
+			and team_name = #{record.teamName}
+		</if>
+		<if test="record.className != null and record.className != '' ">
+			and class_name = #{record.className}
+		</if>
 	</select>
 </mapper>

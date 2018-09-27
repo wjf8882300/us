@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.runxsports.provider.cs.cms.mapper.UserAnswerMapper" >
-  <resultMap id="BaseResultMap" type="com.runxsports.provider.cs.cms.entity.UserAnswer" >
+<mapper namespace="com.tonggu.provider.us.mapper.UserAnswerMapper" >
+  <resultMap id="BaseResultMap" type="com.tonggu.provider.us.entity.UserAnswer" >
     <!--
       WARNING - @mbg.generated
     -->
@@ -19,6 +19,16 @@
     <result column="memo" property="memo" jdbcType="VARCHAR" />
   </resultMap>
   
+  <resultMap id="UserScoreMap" type="com.tonggu.provider.us.model.vo.UserAnswerVO" >
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="user_no" property="userNo" jdbcType="VARCHAR" />
+    <result column="team_name" property="teamName" jdbcType="VARCHAR" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="question_sort" property="questionSort" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
   <select id="findByQuestion" resultType="java.lang.Integer">
   	  select count(1) from us_t_user_answer 
   	  where question_id=#{t.questionId} 
@@ -27,55 +37,208 @@
   	    and is_delete = 0
   </select>
   
-   <insert id="save" parameterType="com.runxsports.provider.cs.cms.entity.UserAnswer">
-	  	insert into us_t_user_answer(question_id,user_id,dest_user_id,answer,create_date,create_user,last_update_date,last_update_user,memo)
-		values(#{t.questionId},#{t.userId},#{t.destUserId},#{t.answer},now(),#{t.destUserId},now(),#{t.destUserId},#{t.memo})
-  </insert>
   
-  <delete id="deleteByUserId">
+  <update id="deleteByUserId">
   	 update from us_t_user_answer set is_delete =1 
   	 where question_id=#{t.questionId} 
   	  and  user_id=#{t.userId} 
   	  and  dest_user_id=#{t.destUserId}
-  </delete>
+  </update>
    
   <!-- 根据角色查询评价信息 -->
-  <select id="queryByGroup">
-      <!-- 学生自评 -->
-     <if test="group == 0">
-   		select q.question_content,
-   		       a.answer,
-   		       a.create_date,
-   		       u.user_no,
-   		       u.user_name,
-   		       u.team_leader,
-   		       u.teacher
-		 from us_t_user_answer a
-		left join us_t_question q on a.question_id = q.id and q.is_delete = 0
-		left join us_t_user u on a.user_id = u.id and u.is_delete = 0
-	  	where u.user_type = #{group} and a.is_delete = 0 and a.user_id = a.dest_user_id
-     </if>
-  	  
-  	   <!-- 党支部评 -->
-     <if test="group == 1">
-  		select q.question_content,a.answer,a.create_date,u.user_no,u.user_name,
-		r.user_no,r.user_name,u.team_leader,u.teacher
-		 from us_t_user_answer a
-		left join us_t_question q on a.question_id = q.id 
-		left join us_t_user u on a.user_id = u.id and u.is_delete = 0
-		left join us_t_user r on a.dest_user_id = r.id and r.is_delete = 0
-	  	where u.user_type = #{group} and a.is_delete = 0  
-     </if>
-  	<!-- 党支部评 -->
-     <if test="group == 2">
-  		select q.question_content,a.answer,a.create_date,u.user_no,u.user_name,
-		r.user_no,r.user_name,u.team_leader,u.teacher
-		 from us_t_user_answer a
-		left join us_t_question q on a.question_id = q.id 
-		left join us_t_user u on a.user_id = u.id and u.is_delete = 0
-		left join us_t_user r on a.dest_user_id = r.id and r.is_delete = 0
-	  	where u.user_type = #{group} and a.is_delete = 0  
-     </if>
+  <select id="queryByGroup" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
+		  select   u.user_no as userNo,
+			       u.user_name as userName,
+			       u.team_name as teamName,
+			       u.class_name as className,
+			       IFNULL(sum(a.answer),0) as answer,
+			       u.teacher,
+			       u.team_leader as  teamLeader,
+				   u.teacher_no as teacherNo
+			from us_t_user u
+			inner join us_t_user_answer a on a.dest_user_id = u.id 
+			inner join us_t_question q on a.question_id = q.id 
+			where 
+				 a.is_delete = 0  
+				and q.is_delete = 0
+				and u.is_delete = 0
+				and a.user_id in (
+					select id
+					from us_t_user
+					where is_delete = 0  
+					and user_type = #{record.userType}
+				)
+				<if test="record.userName != null and record.userName != '' ">
+					and user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+				</if>
+				<if test="record.userNo != null and record.userNo != '' ">
+					and user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+				</if>
+				<if test="record.teamName != null and record.teamName != '' ">
+					and team_name = #{record.teamName}
+				</if>
+				<if test="record.className != null and record.className != '' ">
+					and class_name = #{record.className}
+				</if>
+				group by u.user_no 
   </select>
   
+  <sql id="queryCondition">
+  	  <if test="record.userName != null and record.userName != '' ">
+		  and u.user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+	 </if>
+	 <if test="record.userNo != null and record.userNo != '' ">
+		  and  u.user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+	 </if>
+	 <if test="record.teamName != null and record.teamName != '' ">
+		  and u.team_name = #{record.teamName}
+	 </if>
+	 <if test="record.className != null and record.className != '' ">
+		  and u.class_name = #{record.className}
+	 </if>
+  </sql>
+  
+    <!-- 查询学生未自我评价人 -->
+  <select id = "queryStudentNotScore" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
+		  select 
+				 u.user_name as userName,
+				 u.class_name as className,
+				 u.user_no as userNo,
+				 u.team_name as teamName,
+				 u.teacher,
+				 u.team_leader as  teamLeader,
+				 u.teacher_no as teacherNo
+		  from us_t_user u 
+		where u.id not in (
+					select a.dest_user_id 
+					from us_t_user_answer a 
+					where a.is_delete=0 
+					and a.user_id=a.dest_user_id) 
+		and u.is_delete = 0 
+		and u.user_type = 0
+		<include refid="queryCondition" />
+  </select>
+  
+  <select id="queryTeamNotScore" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
+  		select 
+				 u.user_name as userName,
+				 u.class_name as className,
+				 u.user_no as userNo,
+				 u.team_name as teamName,
+				 u.team_leader as  teamLeader,
+				 u.teacher,
+				 u.teacher_no
+		from us_t_user u
+		where (u.id,u.team_leader_no) not in (select w.dest_user_id,t.user_no from us_t_user_answer w 
+					left join us_t_user t on w.user_id = t.id 
+					where t.user_type =1 and t.is_delete = 0 and w.is_delete = 0 group by w.dest_user_id)
+		and u.is_delete = 0
+		and u.user_type in (0)
+		and u.team_leader_no is not null
+		<include refid="queryCondition" />
+  </select>
+
+  <!--查询支部书记/辅导员没有评价的学生 -->
+  <select id = "queryTeacherNotScore" resultType="com.tonggu.provider.us.model.vo.UserAnswerVO">
+		select 
+				 u.user_name as userName,
+				 u.class_name as className,
+				 u.user_no as userNo,
+				 u.team_name as teamName,
+				 u.team_leader as  teamLeader,
+				  u.teacher,
+				 u.teacher_no
+		  from us_t_user u
+		where (u.id,u.teacher_no) not in (select w.dest_user_id,t.user_no from us_t_user_answer w 
+		left join us_t_user t on w.user_id = t.id 
+		where t.user_type =2 and t.is_delete = 0 and w.is_delete = 0 group by w.dest_user_id)
+		and u.is_delete = 0
+		and u.user_type in (0,1)
+		and u.teacher_no is not null
+		<include refid="queryCondition" />
+  </select>
+    <!-- 查询学生评分 -->
+  <select id="queryStudentScore" resultMap="UserScoreMap">
+	select u.user_name, u.class_name, u.user_no,
+	       u.team_name, ua.answer, q.question_sort,
+	       ua.create_date
+	from us_t_user_answer ua, us_t_user u, us_t_question q
+	where ua.user_id = u.id and ua.question_id = q.id
+	and u.user_type = 0
+	and u.is_delete = 0
+	and ua.is_delete = 0
+	<if test="record.userName != null and record.userName != '' ">
+		and user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+	</if>
+	<if test="record.userNo != null and record.userNo != '' ">
+		and user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+	</if>
+	<if test="record.teamName != null and record.teamName != '' ">
+		and team_name = #{record.teamName}
+	</if>
+	<if test="record.className != null and record.className != '' ">
+		and class_name = #{record.className}
+	</if>
+  </select>
+  
+  <!-- 根据用户类型查询评分（学生除外） -->
+  <select id="queryOtherScore" resultMap="UserScoreMap">
+  	select u.user_name, u.class_name, u.user_no,
+	       u.team_name, ua.answer, q.question_sort,
+	       ua.create_date
+	from us_t_user_answer ua, us_t_user u, us_t_question q
+	where ua.dest_user_id = u.id and ua.question_id = q.id
+	and ua.user_id in (
+		select s.id 
+		from us_t_user s
+		where s.user_type = #{record.userType}
+		and s.is_delete = 0
+	)
+	and u.is_delete = 0
+	and ua.is_delete = 0
+	<if test="record.userName != null and record.userName != '' ">
+		and user_name like CONCAT('%', CONCAT(#{record.userName}, '%'))
+	</if>
+	<if test="record.userNo != null and record.userNo != '' ">
+		and user_no like CONCAT('%', CONCAT(#{record.userNo}, '%'))
+	</if>
+	<if test="record.teamName != null and record.teamName != '' ">
+		and team_name = #{record.teamName}
+	</if>
+	<if test="record.className != null and record.className != '' ">
+		and class_name = #{record.className}
+	</if>
+  </select>
+  
+  <update id="deleteByUserIdAndDestUserId">
+  	 update us_t_user_answer set is_delete =1 
+  	 where is_delete = 0
+  	  and  user_id=#{userId} 
+  	  and  dest_user_id=#{destUserId}
+  </update>
+  
+  	<!-- 批量插入答案信息 -->
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into us_t_user_answer
+		(id,question_id,user_id,dest_user_id,answer,create_date,last_update_date,is_delete)
+		values
+		<foreach collection="list" separator="," open="" close=""
+			item="item">
+			(#{item.id}, #{item.questionId}, #{item.userId},
+			#{item.destUserId},#{item.answer},#{item.createDate},#{item.lastUpdateDate},'0')
+		</foreach>
+	</insert>
+	
+	<!-- 批量删除被评分人 -->
+  <update id="deleteByDestUserId">
+	  	 update us_t_user_answer set is_delete =1 
+	  	 where is_delete = 0
+	  	  and  user_id  =#{userId}
+	  	  and  dest_user_id in
+	  	  <foreach collection="list" item="item" open="(" close=")" separator=",">
+	  	  		#{item.destUserId}
+	  	  </foreach>
+  </update>
+  
+	
 </mapper>
