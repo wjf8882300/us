@@ -3,9 +3,9 @@ spring:
     name: provider-us
   datasource:
       name: test
-      url: jdbc:mysql://47.92.193.39:3306/us?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true
+      url: jdbc:mysql://xxx.xxx.xxx:3306/us?useUnicode=true&characterEncoding=UTF8&allowMultiQueries=true
       username: root
-      password: Duan@9403!
+      password: xxxx
       # 使用druid数据源
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.jdbc.Driver
@@ -28,9 +28,9 @@ spring:
       max-file-size: 5MB
   redis:
     #host: dev-redis-1.runx.vip
-    host: 47.92.193.39
+    host: xxx.xxx.xxx
     port: 6379
-    password: Duan@9403!
+    password: xxx
     timeout: 0
 
 us:
@@ -40,8 +40,8 @@ us:
     upload-path: upload/
     download-path: download/
   wechat: 
-    app-id: wx648f70aec1a36d27
-    app-secret: 99ec2ec8cd38c979a993c3785b5fc5cc
+    app-id: xxx
+    app-secret: xxx
   
 server:
   port: 9999
